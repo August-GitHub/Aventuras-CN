@@ -3,14 +3,16 @@ name: Pre-release (Android Only)
 on:
   push:
     tags:
-      - 'v*-pre*'
       - 'v*-test*'
-      - 'v*-alpha*'
-      - 'v*-beta*'
+      - 'v*-pre*'
   workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
+  ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+  ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+  ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+  ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
 permissions:
   contents: write
@@ -28,6 +30,15 @@ jobs:
       - name: Read VERSION
         id: version
         run: echo "VERSION=$(cat VERSION)" >> $GITHUB_OUTPUT
+
+      - name: Check signing key
+        id: signing
+        run: |
+          if [ -n "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "has_signing_key=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_signing_key=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Generate Changelog
         id: changelog
@@ -76,29 +87,23 @@ jobs:
         run: npx tauri android build
 
       - name: Decode keystore
-        env:
-          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-        if: secrets.ANDROID_KEYSTORE_BASE64 != ''
+        if: steps.signing.outputs.has_signing_key == 'true'
         run: |
-          echo "$KEYSTORE_BASE64" | base64 -d > aventura-release.keystore
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > aventura-release.keystore
 
       - name: Sign APK
-        env:
-          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        if: secrets.ANDROID_KEYSTORE_BASE64 != ''
+        if: steps.signing.outputs.has_signing_key == 'true'
         run: |
           $ANDROID_HOME/build-tools/34.0.0/apksigner sign \
             --ks aventura-release.keystore \
-            --ks-key-alias "$KEY_ALIAS" \
-            --ks-pass pass:"$KEYSTORE_PASSWORD" \
-            --key-pass pass:"$KEY_PASSWORD" \
+            --ks-key-alias "$ANDROID_KEY_ALIAS" \
+            --ks-pass pass:"$ANDROID_KEYSTORE_PASSWORD" \
+            --key-pass pass:"$ANDROID_KEY_PASSWORD" \
             --out aventura-release.apk \
             src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
 
       - name: Rename APK (unsigned)
-        if: secrets.ANDROID_KEYSTORE_BASE64 == ''
+        if: steps.signing.outputs.has_signing_key != 'true'
         run: |
           cp src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk aventura-release.apk
 
