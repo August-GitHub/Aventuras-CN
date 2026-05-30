@@ -24,14 +24,15 @@
 
   import * as Tabs from '$lib/components/ui/tabs'
   import { Button } from '$lib/components/ui/button'
+  import { _ } from 'svelte-i18n'
 
   const tabs = [
-    { id: 'characters' as const, icon: Users, label: 'Characters' },
-    { id: 'locations' as const, icon: MapPin, label: 'Locations' },
-    { id: 'inventory' as const, icon: Backpack, label: 'Inventory' },
-    { id: 'quests' as const, icon: Scroll, label: 'Quests' },
-    { id: 'time' as const, icon: Clock, label: 'Time' },
-    { id: 'branches' as const, icon: GitBranch, label: 'Branches' },
+    { id: 'characters' as const, icon: Users, labelKey: 'layout.characters' },
+    { id: 'locations' as const, icon: MapPin, labelKey: 'layout.locations' },
+    { id: 'inventory' as const, icon: Backpack, labelKey: 'layout.inventory' },
+    { id: 'quests' as const, icon: Scroll, labelKey: 'layout.quests' },
+    { id: 'time' as const, icon: Clock, labelKey: 'layout.time' },
+    { id: 'branches' as const, icon: GitBranch, labelKey: 'layout.branches' },
   ]
 
   function handleSwipeLeft() {
@@ -83,7 +84,7 @@
           <Tabs.Trigger
             value={tab.id}
             class="data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:bg-muted/30 hover:bg-muted/20 text-muted-foreground flex-1 rounded-none border-b-2 border-transparent bg-transparent py-3 transition-colors"
-            title={tab.label}
+            title={$_(tab.labelKey)}
           >
             <tab.icon class="h-4 w-4" />
           </Tabs.Trigger>
@@ -125,10 +126,10 @@
         ? '!bg-primary/10 !text-primary'
         : ''}"
       onclick={() => ui.setActivePanel('story')}
-      title="Story"
+      title={$_('layout.story')}
     >
       <BookOpen class="h-4 w-4" />
-      <span>Story</span>
+      <span>{$_('layout.story')}</span>
     </Button>
     <Button
       variant="ghost"
@@ -137,10 +138,10 @@
         ? '!bg-primary/10 !text-primary'
         : ''}"
       onclick={() => ui.setActivePanel('lorebook')}
-      title="Lorebook"
+      title={$_('layout.lorebook')}
     >
       <BookMarked class="h-4 w-4" />
-      <span>Lorebook</span>
+      <span>{$_('layout.lorebook')}</span>
     </Button>
     <Button
       variant="ghost"
@@ -149,10 +150,10 @@
         ? '!bg-primary/10 !text-primary'
         : ''}"
       onclick={() => ui.setActivePanel('memory')}
-      title="Memory"
+      title={$_('layout.memory')}
     >
       <Brain class="h-4 w-4" />
-      <span>Memory</span>
+      <span>{$_('layout.memory')}</span>
     </Button>
   </div>
 </aside>

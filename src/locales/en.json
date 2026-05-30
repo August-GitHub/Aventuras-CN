@@ -1,0 +1,66 @@
+{
+  "layout": {
+    "library": "Library",
+    "story": "Story",
+    "lorebook": "Lorebook",
+    "memory": "Memory",
+    "vault": "Vault",
+    "gallery": "Gallery",
+    "settings": "Settings",
+    "characters": "Characters",
+    "locations": "Locations",
+    "inventory": "Inventory",
+    "quests": "Quests",
+    "time": "Time",
+    "branches": "Branches"
+  },
+  "header": {
+    "export": "Export",
+    "import": "Import",
+    "importExport": "Import/Export",
+    "exportAventuras": "Aventuras (.avt)",
+    "exportMarkdown": "Markdown (.md)",
+    "exportText": "Plain Text (.txt)",
+    "sillyTavern": "SillyTavern Chat (.jsonl)",
+    "generating": "Generating...",
+    "analyzing": "Analyzing...",
+    "image": "image",
+    "images": "images",
+    "returnToLibrary": "Return to Library",
+    "viewGeneratedImages": "View generated images",
+    "menu": "Menu",
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu",
+    "joinDiscord": "Join our Discord community",
+    "hideSidebar": "Hide sidebar",
+    "showSidebar": "Show sidebar",
+    "viewActiveLorebookEntries": "View active lorebook entries",
+    "exportedStoryAs": "Exported story as {format}",
+    "exportCancelled": "Export cancelled",
+    "exportFailed": "Export failed: {error}",
+    "words": "words"
+  },
+  "welcome": {
+    "title": "Welcome",
+    "description": "Start your adventure",
+    "getStarted": "Get Started"
+  },
+  "settings": {
+    "interface": "Interface",
+    "apiConnection": "API Connection",
+    "generation": "Generation",
+    "images": "Images",
+    "storySettings": "Story Settings",
+    "theme": "Theme",
+    "fontSize": "Font Size",
+    "small": "Small",
+    "medium": "Medium",
+    "large": "Large"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "confirm": "Confirm"
+  }
+}

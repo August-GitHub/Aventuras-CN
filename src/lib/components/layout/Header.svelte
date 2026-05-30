@@ -31,6 +31,7 @@
     MessageSquare,
     AlertTriangle,
   } from 'lucide-svelte'
+  import { _ } from 'svelte-i18n'
 
   let showExportMenu = $state(false)
   let showMobileMenu = $state(false)
@@ -94,20 +95,26 @@
     }
   })
 
-  async function handleExport(exportFn: () => Promise<boolean>, formatName: string) {
+  async function handleExport(
+    exportFn: () => Promise<boolean>,
+    formatKey: string,
+    formatName: string,
+  ) {
     if (!story.currentStory) return
     showExportMenu = false
     try {
       const success = await exportFn()
       if (success) {
-        ui.showToast(`Exported story as ${formatName}`, 'info')
+        ui.showToast($_('header.exportedStoryAs', { values: { format: formatName } }), 'info')
       } else {
-        ui.showToast('Export cancelled', 'info')
+        ui.showToast($_('header.exportCancelled'), 'info')
       }
     } catch (error) {
       console.error('[Header] Export failed:', error)
       ui.showToast(
-        `Export failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        $_('header.exportFailed', {
+          values: { error: error instanceof Error ? error.message : 'Unknown error' },
+        }),
         'error',
       )
     }
@@ -132,7 +139,8 @@
           data.branches,
           data.chapters,
         ),
-      'Aventuras (.avt)',
+      'header.exportAventuras',
+      $_('header.exportAventuras'),
     )
   }
 
@@ -148,7 +156,8 @@
           story.locations,
           true,
         ),
-      'Markdown (.md)',
+      'header.exportMarkdown',
+      $_('header.exportMarkdown'),
     )
   }
 
@@ -157,30 +166,31 @@
     if (!currentStory) return
     await handleExport(
       () => exportService.exportToText(currentStory, story.entries),
-      'Plain Text (.txt)',
+      'header.exportText',
+      $_('header.exportText'),
     )
   }
 </script>
 
 {#snippet importExportMenuItems()}
-  <DropdownMenu.Label>Import</DropdownMenu.Label>
+  <DropdownMenu.Label>{$_('header.import')}</DropdownMenu.Label>
   <DropdownMenu.Item onclick={() => ui.openSTChatImport()}>
     <MessageSquare class="text-muted-foreground h-4 w-4" />
-    SillyTavern Chat (.jsonl)
+    {$_('header.sillyTavern')}
   </DropdownMenu.Item>
   <DropdownMenu.Separator />
-  <DropdownMenu.Label>Export</DropdownMenu.Label>
+  <DropdownMenu.Label>{$_('header.export')}</DropdownMenu.Label>
   <DropdownMenu.Item onclick={exportAventuras}>
     <FileJson class="text-accent-400 h-4 w-4" />
-    Aventuras (.avt)
+    {$_('header.exportAventuras')}
   </DropdownMenu.Item>
   <DropdownMenu.Item onclick={exportMarkdown}>
     <FileText class="h-4 w-4 text-blue-400" />
-    Markdown (.md)
+    {$_('header.exportMarkdown')}
   </DropdownMenu.Item>
   <DropdownMenu.Item onclick={exportText}>
     <FileText class="text-muted-foreground h-4 w-4" />
-    Plain Text (.txt)
+    {$_('header.exportText')}
   </DropdownMenu.Item>
 {/snippet}
 
@@ -211,7 +221,7 @@
         </div>
         {#if settings.uiSettings.showWordCount}
           <span class="text-muted-foreground hidden text-sm sm:-translate-y-px lg:inline"
-            >({story.wordCount} words)</span
+            >({story.wordCount} {$_('header.words')})</span
           >
         {/if}
       {:else}
@@ -227,24 +237,25 @@
       {#if ui.isGenerating}
         <div class="text-accent-400 hidden items-center gap-1.5 text-sm sm:flex">
           <div class="bg-accent-500 h-2 w-2 animate-pulse rounded-full"></div>
-          <span>Generating...</span>
+          <span>{$_('header.generating')}</span>
         </div>
       {/if}
 
       <!-- Image generation status indicators -->
       {#if ui.imageAnalysisInProgress}
-        <div
-          class="flex items-center gap-1.5 text-sm text-blue-400"
-          title="Analyzing scene for images"
-        >
+        <div class="flex items-center gap-1.5 text-sm text-blue-400" title={$_('header.analyzing')}>
           <ImageIcon class="h-3.5 w-3.5 animate-pulse" />
-          <span class="hidden sm:inline">Analyzing...</span>
+          <span class="hidden sm:inline">{$_('header.analyzing')}</span>
         </div>
       {:else if ui.imagesGenerating > 0}
-        <div class="flex items-center gap-1.5 text-sm text-emerald-400" title="Generating images">
+        <div
+          class="flex items-center gap-1.5 text-sm text-emerald-400"
+          title={$_('header.generating')}
+        >
           <ImageIcon class="h-3.5 w-3.5" />
           <span class="hidden sm:inline">
-            {ui.imagesGenerating} image{ui.imagesGenerating > 1 ? 's' : ''}
+            {ui.imagesGenerating}
+            {ui.imagesGenerating > 1 ? $_('header.images') : $_('header.image')}
           </span>
           <div class="h-2 w-2 animate-pulse rounded-full bg-emerald-500"></div>
         </div>
@@ -256,11 +267,11 @@
       <div class="hidden sm:block">
         <Button
           icon={Library}
-          label="Library"
+          label={$_('layout.library')}
           variant="text"
           class="text-muted-foreground hover:text-primary min-h-11 min-w-11"
           onclick={goToLibrary}
-          title="Return to Library"
+          title={$_('header.returnToLibrary')}
         />
       </div>
     {/if}
@@ -269,11 +280,11 @@
       <!-- Gallery Button -->
       <Button
         icon={ImageIcon}
-        label="Gallery"
+        label={$_('layout.gallery')}
         variant="text"
         class="text-muted-foreground hover:text-primary min-h-11 min-w-11"
         onclick={() => ui.setActivePanel(ui.activePanel === 'gallery' ? 'story' : 'gallery')}
-        title="View generated images"
+        title={$_('header.viewGeneratedImages')}
       />
 
       <!-- Import / Export Menu -->
@@ -284,11 +295,11 @@
               <Button
                 {...props}
                 icon={ArrowUpDown}
-                label="Import/Export"
+                label={$_('header.importExport')}
                 endIcon={ChevronDown}
                 variant="text"
                 class="text-muted-foreground hover:text-primary min-h-11 min-w-11"
-                title="Import / Export story"
+                title={$_('header.importExport')}
               />
             {/snippet}
           </DropdownMenu.Trigger>
@@ -307,8 +318,8 @@
             {...props}
             variant="text"
             class="text-muted-foreground hover:text-primary min-h-11 min-w-11 sm:hidden"
-            title="Menu"
-            aria-label={showMobileMenu ? 'Close menu' : 'Open menu'}
+            title={$_('header.menu')}
+            aria-label={showMobileMenu ? $_('header.closeMenu') : $_('header.openMenu')}
           >
             {#if showMobileMenu}
               <ChevronUp class="h-5 w-5" />
@@ -322,7 +333,7 @@
         {#if story.currentStory}
           <DropdownMenu.Item onclick={goToLibrary}>
             <Library class="text-muted-foreground h-4 w-4" />
-            Library
+            {$_('layout.library')}
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
           {@render importExportMenuItems()}
@@ -330,7 +341,7 @@
         {/if}
         <DropdownMenu.Item onclick={() => ui.openSettings()}>
           <Settings class="text-muted-foreground h-4 w-4" />
-          Settings
+          {$_('layout.settings')}
           {#if settings.hasGenerationConfigIssues}
             <AlertTriangle class="ml-auto h-3.5 w-3.5 text-amber-500" />
           {/if}
@@ -343,7 +354,7 @@
         variant="text"
         class="text-muted-foreground hover:text-primary relative hidden min-h-11 min-w-11 sm:flex"
         onclick={() => ui.toggleLorebookDebug()}
-        title="View active lorebook entries"
+        title={$_('header.viewActiveLorebookEntries')}
       >
         <Bug class="h-5 w-5" />
         {#if ui.lastLorebookRetrieval && ui.lastLorebookRetrieval.all.length > 0}
@@ -363,11 +374,11 @@
         rel="noopener noreferrer"
         variant="text"
         class="text-muted-foreground hover:text-primary min-h-[44px] min-w-[44px] sm:hidden"
-        title="Join our Discord community"
+        title={$_('header.joinDiscord')}
       >
         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
           <path
-            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"
+            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.077 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"
           />
         </svg>
       </Button>
@@ -376,7 +387,7 @@
     <div class="relative hidden sm:block">
       <Button
         icon={Settings}
-        label="Settings"
+        label={$_('layout.settings')}
         variant="text"
         class="text-muted-foreground hover:text-primary min-h-11 min-w-11"
         onclick={() => ui.openSettings()}
@@ -396,7 +407,7 @@
         variant="text"
         class="text-muted-foreground hover:text-primary min-h-11 min-w-11"
         onclick={() => ui.toggleSidebar()}
-        title={ui.sidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
+        title={ui.sidebarOpen ? $_('header.hideSidebar') : $_('header.showSidebar')}
       />
     {/if}
   </div>

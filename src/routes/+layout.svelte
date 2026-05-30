@@ -5,6 +5,7 @@
   import { ui } from '$lib/stores/ui.svelte'
   import { story } from '$lib/stores/story.svelte'
   import { isAndroid } from '$lib/utils/platform'
+  import '$lib/i18n'
 
   let { children } = $props()
 

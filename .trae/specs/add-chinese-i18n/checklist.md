@@ -1,0 +1,21 @@
+- [ ] beta 分支已从 master 创建并切换
+- [ ] svelte-i18n 已安装并在应用入口正确初始化，默认语言 zh-CN
+- [ ] `src/locales/zh-CN.json` 和 `src/locales/en.json` 翻译文件已创建，键按功能模块分组
+- [ ] `app.html` 的 `lang` 属性已改为 `zh-CN`
+- [ ] 核心布局组件（Header、Sidebar）中所有硬编码英文已替换为 i18n 调用
+- [ ] 欢迎与引导组件（WelcomeScreen、SetupWizard 及步骤组件）已汉化
+- [ ] 设置组件中所有标签、描述、按钮文本已汉化
+- [ ] 故事相关组件（StoryView、ActionInput、LibraryView 等）已汉化
+- [ ] 知识库组件（LorebookView、LorebookEntryForm 等）已汉化
+- [ ] 记忆组件（MemoryView、ChapterCard 等）已汉化
+- [ ] 保险库组件（VaultPanel、VaultBrowser 等）已汉化
+- [ ] 发现组件（DiscoveryModal、DiscoveryCard 等）已汉化
+- [ ] 其余组件（BranchPanel、SyncModal、debug、tags、world 等）已汉化
+- [ ] 服务层和 store 中的 Toast 消息、错误提示、确认对话框文本已汉化
+- [ ] 约定俗成的技术术语（Token、API、LLM、Prompt、Lorebook、Vault 等）保留英文未翻译
+- [ ] 翻译键缺失时能正确回退显示英文原文
+- [ ] 所有翻译由大模型完成，未使用通用机器翻译 API
+- [ ] 仅改动了 UI 文字，未修改任何业务逻辑
+- [ ] `npm run check` 通过，无类型错误
+- [ ] `npm run lint` 通过，无 lint 错误
+- [ ] `npm run build` 构建成功

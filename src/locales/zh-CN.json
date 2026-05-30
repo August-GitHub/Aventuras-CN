@@ -1,0 +1,66 @@
+{
+  "layout": {
+    "library": "库",
+    "story": "故事",
+    "lorebook": "Lorebook",
+    "memory": "记忆",
+    "vault": "Vault",
+    "gallery": "图库",
+    "settings": "设置",
+    "characters": "角色",
+    "locations": "地点",
+    "inventory": "背包",
+    "quests": "任务",
+    "time": "时间",
+    "branches": "分支"
+  },
+  "header": {
+    "export": "导出",
+    "import": "导入",
+    "importExport": "导入/导出",
+    "exportAventuras": "Aventuras (.avt)",
+    "exportMarkdown": "Markdown (.md)",
+    "exportText": "纯文本 (.txt)",
+    "sillyTavern": "SillyTavern 聊天 (.jsonl)",
+    "generating": "生成中...",
+    "analyzing": "分析中...",
+    "image": "张图片",
+    "images": "张图片",
+    "returnToLibrary": "返回库",
+    "viewGeneratedImages": "查看生成的图片",
+    "menu": "菜单",
+    "closeMenu": "关闭菜单",
+    "openMenu": "打开菜单",
+    "joinDiscord": "加入我们的 Discord 社区",
+    "hideSidebar": "隐藏侧边栏",
+    "showSidebar": "显示侧边栏",
+    "viewActiveLorebookEntries": "查看活动的 Lorebook 条目",
+    "exportedStoryAs": "已将故事导出为 {format}",
+    "exportCancelled": "导出已取消",
+    "exportFailed": "导出失败：{error}",
+    "words": "词"
+  },
+  "welcome": {
+    "title": "欢迎",
+    "description": "开始你的冒险",
+    "getStarted": "开始使用"
+  },
+  "settings": {
+    "interface": "界面",
+    "apiConnection": "API 连接",
+    "generation": "生成",
+    "images": "图片",
+    "storySettings": "故事设置",
+    "theme": "主题",
+    "fontSize": "字体大小",
+    "small": "小",
+    "medium": "中",
+    "large": "大"
+  },
+  "common": {
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "confirm": "确认"
+  }
+}
