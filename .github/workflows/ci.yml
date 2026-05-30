@@ -108,24 +108,36 @@ jobs:
       - name: Sign APK
         if: steps.signing.outputs.has_signing_key == 'true'
         run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          BRANCH="${{ steps.branch.outputs.branch }}"
+          TAG="${{ github.ref_name }}"
+          APK_NAME="aventuras-${BRANCH}-${TAG}.apk"
           $ANDROID_HOME/build-tools/34.0.0/apksigner sign \
             --ks aventura-release.keystore \
             --ks-key-alias "$ANDROID_KEY_ALIAS" \
             --ks-pass pass:"$ANDROID_KEYSTORE_PASSWORD" \
             --key-pass pass:"$ANDROID_KEY_PASSWORD" \
-            --out aventura-release.apk \
+            --out "$APK_NAME" \
             src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+          echo "APK_NAME=$APK_NAME" >> $GITHUB_OUTPUT
 
       - name: Rename APK (unsigned)
         if: steps.signing.outputs.has_signing_key != 'true'
+        id: rename
         run: |
-          cp src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk aventura-release.apk
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          BRANCH="${{ steps.branch.outputs.branch }}"
+          TAG="${{ github.ref_name }}"
+          APK_NAME="aventuras-${BRANCH}-${TAG}.apk"
+          cp src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk "$APK_NAME"
+          echo "APK_NAME=$APK_NAME" >> $GITHUB_OUTPUT
 
       - name: Upload to GitHub Release (Pre-release)
         uses: softprops/action-gh-release@v1
         with:
           prerelease: true
-          files: aventura-release.apk
+          files: |
+            ${{ steps.sign.outputs.APK_NAME || steps.rename.outputs.APK_NAME }}
           body: |
             ## 📦 预发布版本 (Pre-release)
 

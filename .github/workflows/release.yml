@@ -111,25 +111,38 @@ jobs:
 
       - name: Sign APK
         if: steps.signing.outputs.has_signing_key == 'true'
+        id: sign
         run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          BRANCH="${{ steps.branch.outputs.branch }}"
+          TAG="${{ github.ref_name }}"
+          APK_NAME="aventuras-${BRANCH}-${TAG}.apk"
           $ANDROID_HOME/build-tools/34.0.0/apksigner sign \
             --ks aventura-release.keystore \
             --ks-key-alias "$ANDROID_KEY_ALIAS" \
             --ks-pass pass:"$ANDROID_KEYSTORE_PASSWORD" \
             --key-pass pass:"$ANDROID_KEY_PASSWORD" \
-            --out aventura-release.apk \
+            --out "$APK_NAME" \
             src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+          echo "APK_NAME=$APK_NAME" >> $GITHUB_OUTPUT
 
       - name: Rename APK (unsigned)
         if: steps.signing.outputs.has_signing_key != 'true'
+        id: rename
         run: |
-          cp src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk aventura-release.apk
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          BRANCH="${{ steps.branch.outputs.branch }}"
+          TAG="${{ github.ref_name }}"
+          APK_NAME="aventuras-${BRANCH}-${TAG}.apk"
+          cp src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk "$APK_NAME"
+          echo "APK_NAME=$APK_NAME" >> $GITHUB_OUTPUT
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           draft: false
-          files: aventura-release.apk
+          files: |
+            ${{ steps.sign.outputs.APK_NAME || steps.rename.outputs.APK_NAME }}
           body: |
             ## 📦 更新内容 (What's New)
 
@@ -139,9 +152,9 @@ jobs:
 
             ## 📥 下载说明 (Download)
 
-            请在 **Assets** 中下载 `aventura-release.apk` 文件进行安装。
+            请在 **Assets** 中下载 APK 文件进行安装。
 
-            Download `aventura-release.apk` from the **Assets** section below.
+            Download the APK file from the **Assets** section below.
 
             ### 版本信息 (Version Info)
             - 版本号 / Version: ${{ steps.version.outputs.VERSION }}
