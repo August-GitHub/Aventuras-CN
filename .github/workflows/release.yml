@@ -93,19 +93,46 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Cache Android NDK
+        id: cache-ndk
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/android/ndk
+          key: ndk-r27-${{ runner.os }}
+
       - name: Setup Android NDK
+        if: steps.cache-ndk.outputs.cache-hit != 'true'
         uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
           ndk-version: r27
+
+      - name: Set NDK path (cached)
+        if: steps.cache-ndk.outputs.cache-hit == 'true'
+        run: echo "NDK_PATH=/usr/local/lib/android/ndk/r27" >> $GITHUB_ENV
+
+      - name: Set NDK path (fresh install)
+        if: steps.cache-ndk.outputs.cache-hit != 'true'
+        run: echo "NDK_PATH=${{ steps.setup-ndk.outputs.ndk-path }}" >> $GITHUB_ENV
+
+      - name: Cache Cargo registry and index
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: cargo-registry-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: cargo-registry-${{ runner.os }}-
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build Android APK
         env:
-          NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+          NDK_HOME: ${{ env.NDK_PATH }}
+          ANDROID_NDK_HOME: ${{ env.NDK_PATH }}
         run: npx tauri android build
 
       - name: Decode keystore
