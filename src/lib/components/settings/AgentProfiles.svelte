@@ -480,7 +480,7 @@
         <Card.Content class="grid gap-4">
           <div class="grid grid-cols-2 gap-3">
             <div class="grid gap-2">
-              <Label>Name</Label>
+              <Label>{$_('settings.name')}</Label>
               <Input
                 type="text"
                 bind:value={preset.name}
@@ -489,7 +489,7 @@
               />
             </div>
             <div class="grid gap-2">
-              <Label>Description</Label>
+              <Label>{$_('settings.description')}</Label>
               <Input
                 type="text"
                 bind:value={preset.description}
@@ -550,7 +550,7 @@
 
           <!-- Structured Output (unchanged) -->
           <div class="grid gap-2">
-            <Label>Structured Output</Label>
+            <Label>{$_('settings.structuredOutput')}</Label>
             <div class="flex rounded-md border">
               {#each [['auto', 'Auto'], ['on', 'Force On'], ['off', 'Force Off']] as [val, label] (val)}
                 {@const isActive = (preset.structuredOutputOverride ?? 'auto') === val}

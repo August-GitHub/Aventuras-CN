@@ -67,7 +67,7 @@
       <!-- Export scope -->
       {#if hasSelection}
         <div class="space-y-3">
-          <Label>What to export</Label>
+          <Label>{$_('settings.whatToExport')}</Label>
           <RadioGroup
             value={exportSelected ? 'selected' : 'all'}
             onValueChange={(v) => (exportSelected = v === 'selected')}
@@ -106,13 +106,13 @@
       {:else}
         <div class="bg-muted/50 rounded-lg border p-3">
           <div class="text-foreground font-medium">{story.lorebookEntries.length} entries</div>
-          <div class="text-muted-foreground text-xs">All lorebook entries will be exported</div>
+          <div class="text-muted-foreground text-xs">{$_('settings.allLorebookEntriesExported')}</div>
         </div>
       {/if}
 
       <!-- Format selection -->
       <div class="space-y-3">
-        <Label>Export format</Label>
+        <Label>{$_('settings.exportFormat')}</Label>
         <RadioGroup
           value={selectedFormat}
           onValueChange={(v) => (selectedFormat = v as LorebookImportExport.ExportFormat)}

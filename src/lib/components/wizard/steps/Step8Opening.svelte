@@ -115,7 +115,7 @@
   </p>
 
   <div class="space-y-2">
-    <Label>Story Title</Label>
+    <Label>{$_('settings.storyTitle')}</Label>
     <Input
       type="text"
       value={storyTitle}
@@ -131,7 +131,7 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <FileJson class="text-accent-400 h-4 w-4" />
-            <h4 class="text-foreground font-medium">Imported Opening Scene</h4>
+            <h4 class="text-foreground font-medium">{$_('settings.importedOpeningScene')}</h4>
           </div>
           <Button
             variant="ghost"
@@ -211,14 +211,14 @@
   {#if storyTitle.trim()}
     <Card.Root class="bg-surface-900 border-surface-700">
       <Card.Content class="space-y-3 p-4">
-        <h4 class="text-foreground font-medium">Opening Scene</h4>
+        <h4 class="text-foreground font-medium">{$_('settings.openingScene')}</h4>
         <p class="text-muted-foreground text-sm">
           Write your own opening scene or generate one with AI
         </p>
 
         <!-- Manual Text Entry -->
         <div class="space-y-2">
-          <Label>Write Your Own Opening</Label>
+          <Label>{$_('settings.writeYourOwnOpening')}</Label>
           <Textarea
             value={manualOpeningText}
             oninput={(e) => onManualOpeningChange(e.currentTarget.value)}
@@ -381,7 +381,7 @@
   <!-- Summary -->
   <Card.Root class="bg-surface-800 border-surface-700">
     <Card.Content class="space-y-2 p-4 text-sm">
-      <h4 class="text-foreground font-medium">Story Summary</h4>
+      <h4 class="text-foreground font-medium">{$_('settings.storySummary')}</h4>
       <div class="text-muted-foreground grid grid-cols-2 gap-2">
         <div>
           <strong class="text-foreground">Mode:</strong>

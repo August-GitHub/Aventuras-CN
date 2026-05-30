@@ -263,7 +263,7 @@
     <!-- Temperature -->
     <div class="grid gap-4">
       <div class="flex justify-between">
-        <Label>Temperature</Label>
+        <Label>{$_('settings.temperature')}</Label>
         <span class="text-muted-foreground text-xs">{temperature.toFixed(2)}</span>
       </div>
       <Slider
@@ -284,7 +284,7 @@
     <div class="grid gap-4">
       <div class="flex items-center justify-between">
         <div class="grid gap-0.5">
-          <Label>Max Output Tokens</Label>
+          <Label>{$_('settings.maxOutputTokens')}</Label>
           <span class="text-muted-foreground text-[10px] leading-tight">
             Includes reasoning + response tokens
           </span>
@@ -372,7 +372,7 @@
       <div class="grid gap-4">
         {#if binaryReasoningProvider}
           <div class="flex items-center justify-between">
-            <Label>Thinking</Label>
+            <Label>{$_('settings.thinking')}</Label>
             <Switch
               checked={reasoningEffort !== 'off'}
               onCheckedChange={(v) => onReasoningChange(v ? 'high' : 'off')}

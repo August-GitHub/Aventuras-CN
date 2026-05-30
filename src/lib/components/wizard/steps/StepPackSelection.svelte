@@ -40,7 +40,7 @@
       <Package class="text-primary h-4 w-4" />
     </div>
     <div>
-      <h3 class="text-lg font-semibold">Prompt Pack</h3>
+      <h3 class="text-lg font-semibold">{$_('settings.promptPack')}</h3>
       <p class="text-muted-foreground text-sm">
         Choose which prompt templates to use for this story.
       </p>
@@ -50,7 +50,7 @@
   <!-- Pack Dropdown (only shown when multiple packs exist) -->
   {#if hasMultiplePacks}
     <div class="space-y-2">
-      <Label>Pack</Label>
+      <Label>{$_('settings.pack')}</Label>
       <Select.Root
         type="single"
         value={selectedPackId}
@@ -67,7 +67,7 @@
               <div class="flex items-center gap-2">
                 {pack.name}
                 {#if pack.isDefault}
-                  <Badge variant="secondary" class="text-xs">Default</Badge>
+                  <Badge variant="secondary" class="text-xs">{$_('settings.default')}</Badge>
                 {/if}
               </div>
             </Select.Item>

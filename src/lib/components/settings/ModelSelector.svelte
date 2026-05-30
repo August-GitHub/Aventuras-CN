@@ -118,7 +118,7 @@
 <div class={cn('grid gap-4', className)}>
   {#if showProfileSelector}
     <div class="grid gap-2">
-      <div class="flex h-4 items-center"><Label>API Profile</Label></div>
+      <div class="flex h-4 items-center"><Label>{$_('settings.apiProfile')}</Label></div>
       <div class="flex gap-2">
         <Select.Root
           type="single"

@@ -73,7 +73,7 @@
   </div>
 
   <div class="space-y-2 {changed('keywords')}">
-    <Label>Keywords</Label>
+    <Label>{$_('lorebook.keywords')}</Label>
     <Input
       value={data.keywords?.join(', ') ?? ''}
       oninput={(e) => {
@@ -91,7 +91,7 @@
   </div>
 
   <div class="space-y-2 {changed('aliases')}">
-    <Label>Aliases</Label>
+    <Label>{$_('lorebook.aliases')}</Label>
     <Input
       value={data.aliases?.join(', ') ?? ''}
       oninput={(e) => {

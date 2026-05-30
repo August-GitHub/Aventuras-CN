@@ -8,6 +8,7 @@
 </script>
 
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { settings } from '$lib/stores/settings.svelte'
   import {
     FlaskConical,
@@ -255,10 +256,9 @@
   <div class="flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4">
     <AlertTriangle class="mt-0.5 h-5 w-5 shrink-0 text-amber-500" />
     <div class="space-y-1">
-      <p class="text-sm font-medium text-amber-500">Experimental Features</p>
+      <p class="text-sm font-medium text-amber-500">{$_('settings.experimentalFeatures')}</p>
       <p class="text-muted-foreground text-xs">
-        These features are in active development. They may change behavior or data formats.
-        <strong>Always create a backup before enabling.</strong>
+        {$_('settings.featuresInActiveDevelopment')}
       </p>
     </div>
   </div>
@@ -267,12 +267,10 @@
   <div class="bg-muted/30 space-y-3 rounded-lg border p-4">
     <div class="flex items-center gap-2">
       <ShieldCheck class="text-primary h-4 w-4" />
-      <Label class="text-sm font-medium">Data Safety</Label>
+      <Label class="text-sm font-medium">{$_('settings.dataSafety')}</Label>
     </div>
     <p class="text-muted-foreground text-xs">
-      Download a full backup of your database and all stories as a ZIP archive. Includes the raw
-      SQLite database and individual story exports (.avt) for maximum safety. You can restore from a
-      backup to revert to a previous state.
+      {$_('settings.downloadFullBackup')}
     </p>
     <div class="flex items-center gap-3">
       <Button
@@ -284,10 +282,10 @@
       >
         {#if isBackingUp}
           <Loader2 class="h-4 w-4 animate-spin" />
-          Creating Backup...
+          {$_('settings.creatingBackup')}
         {:else}
           <Download class="h-4 w-4" />
-          Download Backup
+          {$_('settings.downloadBackup')}
         {/if}
       </Button>
       <Button
@@ -299,10 +297,10 @@
       >
         {#if isRestoring}
           <Loader2 class="h-4 w-4 animate-spin" />
-          Restoring...
+          {$_('settings.restoring')}
         {:else}
           <Upload class="h-4 w-4" />
-          Restore from Backup
+          {$_('settings.restoreFromBackup')}
         {/if}
       </Button>
     </div>
@@ -324,7 +322,7 @@
   <div class="space-y-5">
     <div class="flex items-center gap-2">
       <FlaskConical class="text-muted-foreground h-4 w-4" />
-      <Label class="text-sm font-medium">Feature Toggles</Label>
+      <Label class="text-sm font-medium">{$_('settings.featureToggles')}</Label>
     </div>
 
     <!-- State Tracking -->
@@ -332,15 +330,14 @@
       <div class="space-y-0.5">
         <div class="flex items-center gap-2">
           <Database class="text-muted-foreground h-4 w-4" />
-          <Label>State Tracking</Label>
+          <Label>{$_('settings.stateTracking')}</Label>
         </div>
         <p class="text-muted-foreground text-xs">
-          Record world state changes (deltas) on each story entry after AI classification. This is
-          the foundation for rollback and lightweight branches.
+          {$_('settings.recordWorldStateChanges')}
         </p>
         {#if settings.experimentalFeatures.stateTracking}
           <p class="pt-1 text-xs font-medium text-amber-500">
-            Active — deltas will be recorded on new entries.
+            {$_('settings.activeDeltasRecorded')}
           </p>
         {/if}
       </div>
@@ -357,19 +354,18 @@
       <div class="space-y-0.5">
         <div class="flex items-center gap-2">
           <Undo2 class="text-muted-foreground h-4 w-4" />
-          <Label>Rollback on Delete</Label>
+          <Label>{$_('settings.rollbackOnDelete')}</Label>
         </div>
         <p class="text-muted-foreground text-xs">
-          When deleting a message, automatically undo all world state changes from that point
-          onward. Entries after the deleted one are also removed (cascade).
+          {$_('settings.undoWorldStateChanges')}
         </p>
         {#if !settings.experimentalFeatures.stateTracking}
           <p class="text-muted-foreground pt-1 text-xs italic">
-            Requires State Tracking to be enabled.
+            {$_('settings.requiresStateTracking')}
           </p>
         {:else if settings.experimentalFeatures.rollbackOnDelete}
           <p class="pt-1 text-xs font-medium text-amber-500">
-            Active — deleting entries will cascade and rollback state.
+            {$_('settings.activeDeletingEntriesCascade')}
           </p>
         {/if}
       </div>
@@ -390,19 +386,18 @@
       <div class="space-y-0.5">
         <div class="flex items-center gap-2">
           <GitBranch class="text-muted-foreground h-4 w-4" />
-          <Label>Lightweight Branches</Label>
+          <Label>{$_('settings.lightweightBranches')}</Label>
         </div>
         <p class="text-muted-foreground text-xs">
-          New branches share parent world state instead of copying all entities. Changes are
-          copy-on-write — only modified entities get duplicated.
+          {$_('settings.shareParentWorldState')}
         </p>
         {#if !settings.experimentalFeatures.stateTracking}
           <p class="text-muted-foreground pt-1 text-xs italic">
-            Requires State Tracking to be enabled.
+            {$_('settings.requiresStateTracking')}
           </p>
         {:else if settings.experimentalFeatures.lightweightBranches}
           <p class="pt-1 text-xs font-medium text-amber-500">
-            Active — new branches will use copy-on-write.
+            {$_('settings.activeNewBranchesCopyOnWrite')}
           </p>
         {/if}
       </div>
@@ -420,11 +415,10 @@
   <div class="space-y-3 {!settings.experimentalFeatures.stateTracking ? 'opacity-50' : ''}">
     <div class="flex items-center gap-2">
       <Clock class="text-muted-foreground h-4 w-4" />
-      <Label>Auto-Snapshot Interval</Label>
+      <Label>{$_('settings.autoSnapshotInterval')}</Label>
     </div>
     <p class="text-muted-foreground text-xs">
-      Number of entries between automatic world state snapshots. Lower values allow faster rollback
-      but use more storage.
+      {$_('settings.numberBetweenSnapshots')}
     </p>
     <div class="flex items-center gap-4">
       <Slider
@@ -450,7 +444,7 @@
     <div class="space-y-5">
       <div class="flex items-center gap-2">
         <Smartphone class="text-muted-foreground h-4 w-4" />
-        <Label class="text-sm font-medium">Android Background Generation</Label>
+        <Label class="text-sm font-medium">{$_('settings.androidBackgroundGeneration')}</Label>
       </div>
 
       <!-- Background Generation toggle -->
@@ -458,15 +452,14 @@
         <div class="space-y-0.5">
           <div class="flex items-center gap-2">
             <Smartphone class="text-muted-foreground h-4 w-4" />
-            <Label>Background Generation</Label>
+            <Label>{$_('settings.backgroundGeneration')}</Label>
           </div>
           <p class="text-muted-foreground text-xs">
-            Keeps the app alive during text generation when you switch apps or lock your screen.
-            Uses a foreground service and wake lock — may use slightly more battery.
+            {$_('settings.keepsAppAlive')}
           </p>
           {#if settings.experimentalFeatures.backgroundGeneration}
             <p class="pt-1 text-xs font-medium text-amber-500">
-              Active — generation will continue when the app is backgrounded.
+              {$_('settings.activeBackgrounded')}
             </p>
           {/if}
         </div>
@@ -486,14 +479,14 @@
         <div class="space-y-0.5">
           <div class="flex items-center gap-2">
             <Bell class="text-muted-foreground h-4 w-4" />
-            <Label>Completion Notifications</Label>
+            <Label>{$_('settings.completionNotifications')}</Label>
           </div>
           <p class="text-muted-foreground text-xs">
-            Send a notification when text generation finishes while the app is in the background.
+            {$_('settings.sendNotification')}
           </p>
           {#if !settings.experimentalFeatures.backgroundGeneration}
             <p class="text-muted-foreground pt-1 text-xs italic">
-              Requires Background Generation to be enabled.
+              {$_('settings.requiresBackgroundGeneration')}
             </p>
           {/if}
         </div>
@@ -514,14 +507,14 @@
         <div class="space-y-0.5">
           <div class="flex items-center gap-2">
             <Eye class="text-muted-foreground h-4 w-4" />
-            <Label>Include Preview</Label>
+            <Label>{$_('settings.includePreview')}</Label>
           </div>
           <p class="text-muted-foreground text-xs">
-            Show the first few lines of generated text in the notification body.
+            {$_('settings.showFirstLines')}
           </p>
           {#if !settings.experimentalFeatures.generationNotifications}
             <p class="text-muted-foreground pt-1 text-xs italic">
-              Requires Completion Notifications to be enabled.
+              {$_('settings.requiresCompletionNotifications')}
             </p>
           {/if}
         </div>
@@ -533,9 +526,7 @@
       </div>
 
       <p class="text-muted-foreground text-xs italic">
-        Note: Some phone manufacturers (Xiaomi, Huawei, Samsung, etc.) have aggressive battery
-        optimization that may still interrupt generation. You may need to exempt Aventura from
-        battery optimization in your device settings.
+        {$_('settings.somePhoneManufacturers')}
       </p>
     </div>
 
@@ -545,14 +536,14 @@
   <!-- Reset Button -->
   <div class="flex items-center justify-between">
     <div class="space-y-0.5">
-      <p class="text-sm font-medium">Reset Experimental Features</p>
+      <p class="text-sm font-medium">{$_('settings.resetExperimentalFeatures')}</p>
       <p class="text-muted-foreground text-xs">
-        Disable all experimental features and reset to defaults.
+        {$_('settings.disableAllExperimental')}
       </p>
     </div>
     <Button variant="outline" size="sm" onclick={handleResetAll} class="gap-2">
       <RotateCcw class="h-4 w-4" />
-      Reset
+      {$_('settings.reset')}
     </Button>
   </div>
 
@@ -563,10 +554,10 @@
     <div class="space-y-0.5">
       <div class="flex items-center gap-2">
         <Terminal class="text-muted-foreground h-4 w-4" />
-        <Label>SQL Query Console</Label>
+        <Label>{$_('settings.sqlQueryConsole')}</Label>
       </div>
       <p class="text-muted-foreground text-xs">
-        Run raw SQL queries directly against the internal SQLite database.
+        {$_('settings.runRawSql')}
       </p>
     </div>
     <Switch checked={showSqlEditor} onCheckedChange={(v) => (showSqlEditor = v)} />
@@ -579,10 +570,7 @@
       >
         <AlertTriangle class="text-destructive mt-0.5 h-4 w-4 shrink-0" />
         <p class="text-destructive text-xs">
-          <strong>Danger zone.</strong> Write queries (INSERT, UPDATE, DELETE, DROP) can permanently
-          modify or corrupt your data. Always create a backup first. Press
-          <kbd class="bg-destructive/20 rounded px-1 py-0.5 font-mono text-[10px]">Ctrl+Enter</kbd> to
-          run.
+          <strong>{$_('settings.dangerZone')}</strong> {$_('settings.writeQueries')}
         </p>
       </div>
 
@@ -607,16 +595,16 @@
         >
           {#if isQuerying}
             <Loader2 class="h-4 w-4 animate-spin" />
-            Running...
+            {$_('settings.running')}
           {:else}
             <Play class="h-4 w-4" />
-            Run Query
+            {$_('settings.runQuery')}
           {/if}
         </Button>
         {#if queryResult}
           <Button variant="ghost" size="sm" onclick={handleCopyResults} class="gap-2">
             <Copy class="h-4 w-4" />
-            Copy JSON
+            {$_('settings.copyJson')}
           </Button>
           <span class="text-muted-foreground text-xs">
             {queryResult.rows.length} row{queryResult.rows.length !== 1 ? 's' : ''} in {queryTime}ms
@@ -663,7 +651,7 @@
           </table>
         </div>
       {:else if queryResult && queryResult.rows.length === 0}
-        <p class="text-muted-foreground text-xs italic">Query returned no rows.</p>
+        <p class="text-muted-foreground text-xs italic">{$_('settings.queryReturnedNoRows')}</p>
       {/if}
     </div>
   {/if}

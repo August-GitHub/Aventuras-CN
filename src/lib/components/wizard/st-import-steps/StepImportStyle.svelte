@@ -70,7 +70,7 @@
 <div class="flex h-full flex-col gap-5">
   <!-- Story Mode -->
   <div class="space-y-2">
-    <Label>Story Mode</Label>
+    <Label>{$_('settings.storyMode')}</Label>
     <div class="grid grid-cols-2 gap-3">
       <button class="w-full text-left focus:outline-none" onclick={() => onModeChange('adventure')}>
         <Card.Root
@@ -85,8 +85,8 @@
                 : 'text-muted-foreground'}"
             />
             <div>
-              <p class="text-sm font-medium">Adventure</p>
-              <p class="text-muted-foreground text-xs">You are the protagonist</p>
+              <p class="text-sm font-medium">{$_('settings.adventure')}</p>
+              <p class="text-muted-foreground text-xs">{$_('settings.youAreTheProtagonist')}</p>
             </div>
           </Card.Content>
         </Card.Root>
@@ -118,7 +118,7 @@
 
   <!-- Chat Import Mode -->
   <div class="space-y-2">
-    <Label>Chat History</Label>
+    <Label>{$_('settings.chatHistory')}</Label>
     <div class="grid grid-cols-2 gap-3">
       <button
         class="w-full text-left focus:outline-none"

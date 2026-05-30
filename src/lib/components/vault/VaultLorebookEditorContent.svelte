@@ -732,7 +732,7 @@
               </div>
 
               <div class="space-y-2">
-                <Label>Tags</Label>
+                <Label>{$_('settings.tags')}</Label>
                 <TagInput
                   value={tags}
                   type="lorebook"

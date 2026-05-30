@@ -1350,7 +1350,7 @@
     </div>
 
     <div class="space-y-2">
-      <Label>Provider</Label>
+      <Label>{$_('settings.provider')}</Label>
       <Autocomplete
         items={providerTypes}
         selected={providerTypes.find((p) => p.value === profileProviderType)}
@@ -1366,7 +1366,7 @@
     <!-- comfy and a1111 don't require API keys -->
     {#if profileProviderType !== 'comfyui' && profileProviderType !== 'a1111'}
       <div class="space-y-2">
-        <Label>API Key</Label>
+        <Label>{$_('settings.apiKey')}</Label>
         <div class="flex gap-2">
           <div class="relative flex-1">
             <Input
@@ -1425,7 +1425,7 @@
     {/if}
 
     {#snippet modelSelectContent()}
-      <Label>Model</Label>
+      <Label>{$_('settings.model')}</Label>
       <ImageModelSelect
         models={profileModels}
         selectedModelId={profileModel}
@@ -1465,15 +1465,15 @@
       </div>
       <div class="grid grid-cols-2 gap-4 pt-2">
         <div class="space-y-2">
-          <Label>Steps</Label>
+          <Label>{$_('settings.steps')}</Label>
           <Input type="number" bind:value={profileSteps} placeholder="20" min="1" />
         </div>
         <div class="space-y-2">
-          <Label>CFG Scale</Label>
+          <Label>{$_('settings.cfgScale')}</Label>
           <Input type="number" bind:value={profileCfg} placeholder="7" step="0.5" />
         </div>
         <div class="space-y-2">
-          <Label>Sampler</Label>
+          <Label>{$_('settings.sampler')}</Label>
           <Autocomplete
             items={profileSamplers}
             selected={profileSamplers.find((s) => s.value === profileSampler)}
@@ -1486,7 +1486,7 @@
           />
         </div>
         <div class="space-y-2">
-          <Label>Scheduler</Label>
+          <Label>{$_('settings.scheduler')}</Label>
           <Autocomplete
             items={profileSchedulers}
             selected={profileSchedulers.find((s) => s.value === profileScheduler)}
@@ -1499,7 +1499,7 @@
           />
         </div>
         <div class="col-span-2 space-y-2">
-          <Label>Negative Prompt</Label>
+          <Label>{$_('settings.negativePrompt')}</Label>
           <Textarea bind:value={profileNegativePrompt} placeholder="Negative prompt..." />
         </div>
       </div>
@@ -1507,7 +1507,7 @@
     {#if profileProviderType === 'comfyui'}
       <div class="grid grid-cols-2 gap-4 pt-2">
         <div class="col-span-2 space-y-2">
-          <Label>Mode</Label>
+          <Label>{$_('settings.mode')}</Label>
           <Autocomplete
             items={profileModes}
             selected={profileModes.find((s) => s.value === profileMode)}
@@ -1524,7 +1524,7 @@
             {@render modelSelectContent()}
           </div>
           <div class="space-y-2">
-            <Label>Sampler</Label>
+            <Label>{$_('settings.sampler')}</Label>
             <Autocomplete
               items={profileSamplers}
               selected={profileSamplers.find((s) => s.value === profileSampler)}
@@ -1537,7 +1537,7 @@
             />
           </div>
           <div class="space-y-2">
-            <Label>Scheduler</Label>
+            <Label>{$_('settings.scheduler')}</Label>
             <Autocomplete
               items={profileSchedulers}
               selected={profileSchedulers.find((s) => s.value === profileScheduler)}
@@ -1550,21 +1550,21 @@
             />
           </div>
           <div class="space-y-2">
-            <Label>CFG</Label>
+            <Label>{$_('settings.cfg')}</Label>
             <Input type="number" bind:value={profileCfg} placeholder="Enter CFG" step="0.1" />
           </div>
           <div class="space-y-2">
-            <Label>Steps</Label>
+            <Label>{$_('settings.steps')}</Label>
             <Input type="number" bind:value={profileSteps} placeholder="Enter Steps" />
           </div>
         {/if}
         <div class="col-span-2 space-y-2">
-          <Label>Positive Prompt Base</Label>
+          <Label>{$_('settings.positivePromptBase')}</Label>
           <Textarea bind:value={profilePositivePrompt} placeholder="Base positive prompt..." />
         </div>
         {#if (profileMode !== ComfyMode.CustomWorkflow && profileMode !== ComfyMode.UnetTxt2Img) || profileCustomWorkflow?.negativePromptPath}
           <div class="col-span-2 space-y-2">
-            <Label>Negative Prompt</Label>
+            <Label>{$_('settings.negativePrompt')}</Label>
             <Textarea bind:value={profileNegativePrompt} placeholder="Negative prompt..." />
           </div>
         {/if}
@@ -1709,7 +1709,7 @@
       {#if profileMode === ComfyMode.LoraTxt2Img}
         <div class="grid grid-cols-2 gap-4 pt-2">
           <div class="col-span-2 space-y-2">
-            <Label>LoRA Model</Label>
+            <Label>{$_('settings.loraModel')}</Label>
             <Autocomplete
               items={loraItems}
               selected={availableLoras.includes(profileLoraName)
@@ -1729,7 +1729,7 @@
 
           {#if profileLoraName}
             <div class="space-y-2">
-              <Label>Model Strength</Label>
+              <Label>{$_('settings.modelStrength')}</Label>
               <Input
                 type="number"
                 bind:value={profileLoraStrengthModel}
@@ -1738,7 +1738,7 @@
               />
             </div>
             <div class="space-y-2">
-              <Label>CLIP Strength</Label>
+              <Label>{$_('settings.clipStrength')}</Label>
               <Input
                 type="number"
                 bind:value={profileLoraStrengthClip}
@@ -1787,7 +1787,7 @@
           </div>
 
           <div class="col-span-2 space-y-2">
-            <Label>VAE</Label>
+            <Label>{$_('settings.vae')}</Label>
             <Autocomplete
               items={vaeItems}
               selected={availableVaes.includes(profileVaeName)
@@ -1812,7 +1812,7 @@
           </div>
 
           <div class="space-y-2">
-            <Label>CLIP Type</Label>
+            <Label>{$_('settings.clipType')}</Label>
             <Autocomplete
               items={clipTypeItems}
               selected={clipTypeItems.find((s) => s.value === profileClipType)}
@@ -1826,7 +1826,7 @@
           </div>
 
           <div class="space-y-2">
-            <Label>Weight Dtype</Label>
+            <Label>{$_('settings.weightDtype')}</Label>
             <Autocomplete
               items={weightDtypeItems}
               selected={weightDtypeItems.find((s) => s.value === profileWeightDtype)}

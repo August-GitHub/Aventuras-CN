@@ -366,7 +366,7 @@
     <div class="border-border bg-muted/20 space-y-4 rounded-lg border p-4">
       <div class="flex items-center justify-between">
         <div>
-          <Label>Volume Override</Label>
+          <Label>{$_('settings.volumeOverride')}</Label>
           <p class="text-muted-foreground text-xs">Manually control TTS narration volume.</p>
         </div>
         <Switch
@@ -457,7 +457,7 @@
       <!-- Remove HTML tags Toggle -->
       <div class="flex items-center justify-between">
         <div>
-          <Label>Remove HTML tags</Label>
+          <Label>{$_('settings.removeHtmlTags')}</Label>
           <p class="text-muted-foreground text-xs">
             Remove HTML tags from narrated text before sending to TTS.
           </p>
@@ -494,7 +494,7 @@
         <!-- Remove all tag content Toggle -->
         <div class="flex items-center justify-between">
           <div>
-            <Label>Remove all tag content</Label>
+            <Label>{$_('settings.removeAllTagContent')}</Label>
             <p class="text-muted-foreground text-xs">
               Removes content inside any HTML tag before narration.
             </p>

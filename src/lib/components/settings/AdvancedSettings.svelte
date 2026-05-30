@@ -135,7 +135,7 @@
             <!-- Batch Size -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>Batch Size</Label>
+                <Label>{$_('settings.batchSize')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.serviceSpecificSettings.lorebookClassifier?.batchSize ?? 50}
                 </span>
@@ -154,15 +154,15 @@
               <div
                 class="text-muted-foreground flex justify-between text-[10px] font-medium tracking-wider uppercase"
               >
-                <span>Reliable</span>
-                <span>Fast</span>
+                <span>{$_('settings.reliable')}</span>
+                <span>{$_('settings.fast')}</span>
               </div>
             </div>
 
             <!-- Max Concurrent -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>Max Concurrent Requests</Label>
+                <Label>{$_('settings.maxConcurrentRequests')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.serviceSpecificSettings.lorebookClassifier?.maxConcurrent ?? 5}
                 </span>
@@ -235,7 +235,7 @@
             <!-- Max Iterations -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>Max Iterations</Label>
+                <Label>{$_('settings.maxIterations')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.systemServicesSettings.loreManagement?.maxIterations ?? 50}
                 </span>
@@ -254,8 +254,8 @@
               <div
                 class="text-muted-foreground flex justify-between text-[10px] font-medium tracking-wider uppercase"
               >
-                <span>Conservative</span>
-                <span>Extensive</span>
+                <span>{$_('settings.conservative')}</span>
+                <span>{$_('settings.extensive')}</span>
               </div>
             </div>
           </div>
@@ -429,7 +429,7 @@
             <!-- Max Words Per Entry -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>Max Words Per Entry</Label>
+                <Label>{$_('settings.maxWordsPerEntry')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.systemServicesSettings.entryRetrieval?.maxWordsPerEntry === 0
                     ? 'Unlimited'
@@ -526,7 +526,7 @@
             {#if settings.systemServicesSettings.timelineFill?.enabled}
               <!-- Mode Selection -->
               <div class="space-y-3">
-                <Label>Retrieval Mode</Label>
+                <Label>{$_('settings.retrievalMode')}</Label>
                 <div class="grid grid-cols-2 gap-2">
                   <button
                     class="flex flex-col items-start gap-1 rounded-lg border p-3 text-left transition-colors {settings
@@ -566,7 +566,7 @@
               {#if settings.systemServicesSettings.timelineFill?.mode === 'static' || !settings.systemServicesSettings.timelineFill?.mode}
                 <div class="space-y-3">
                   <div class="flex justify-between">
-                    <Label>Max Queries</Label>
+                    <Label>{$_('settings.maxQueries')}</Label>
                     <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                       {settings.systemServicesSettings.timelineFill?.maxQueries ?? 5}
                     </span>
@@ -592,7 +592,7 @@
               {#if settings.systemServicesSettings.timelineFill?.mode === 'agentic'}
                 <div class="space-y-3">
                   <div class="flex justify-between">
-                    <Label>Max Iterations</Label>
+                    <Label>{$_('settings.maxIterations')}</Label>
                     <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                       {settings.systemServicesSettings.agenticRetrieval?.maxIterations ?? 30}
                     </span>
@@ -691,7 +691,7 @@
             <!-- Tiered Context -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>Tiered Context Building</Label>
+                <Label>{$_('settings.tieredContextBuilding')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.serviceSpecificSettings.contextWindow?.recentEntriesForTiered ?? 10} entries
                 </span>
@@ -713,7 +713,7 @@
             <!-- Action Choices Context -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>Action Choices</Label>
+                <Label>{$_('settings.actionChoices')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.serviceSpecificSettings.contextWindow?.recentEntriesForChoices ?? 5} entries
                 </span>
@@ -781,7 +781,7 @@
             <!-- Max for Suggestions -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>Suggestions</Label>
+                <Label>{$_('settings.suggestions')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.serviceSpecificSettings.lorebookLimits?.maxForSuggestions ?? 15} entries
                 </span>
@@ -803,7 +803,7 @@
             <!-- Max for Action Choices -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>Action Choices</Label>
+                <Label>{$_('settings.actionChoices')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.serviceSpecificSettings.lorebookLimits?.maxForActionChoices ?? 12} entries
                 </span>
@@ -825,7 +825,7 @@
             <!-- Max per Tier -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>Per Tier</Label>
+                <Label>{$_('settings.perTier')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.serviceSpecificSettings.lorebookLimits?.maxEntriesPerTier ?? 20} entries
                 </span>
@@ -847,7 +847,7 @@
             <!-- LLM Threshold -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>LLM Selection Threshold</Label>
+                <Label>{$_('settings.llmSelectionThreshold')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.serviceSpecificSettings.lorebookLimits?.llmThreshold ?? 30} entries
                 </span>
