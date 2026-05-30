@@ -4,6 +4,7 @@
   import { database } from '$lib/services/database'
   import { importExportService } from '$lib/services/packs/import-export'
   import { ui } from '$lib/stores/ui.svelte'
+  import { _ } from 'svelte-i18n'
   import { Skeleton } from '$lib/components/ui/skeleton'
   import { Button } from '$lib/components/ui/button'
   import * as ResponsiveModal from '$lib/components/ui/responsive-modal'
@@ -72,10 +73,10 @@
   async function handleExportPack(packId: string) {
     try {
       const success = await importExportService.exportPack(packId)
-      if (success) ui.showToast('Pack exported successfully', 'info')
+      if (success) ui.showToast($_('vault.promptPacks.packExported'), 'info')
     } catch (e) {
       console.error('Export failed:', e)
-      ui.showToast('Export failed', 'error')
+      ui.showToast($_('vault.promptPacks.exportFailed'), 'error')
     }
   }
 
@@ -85,15 +86,18 @@
     try {
       const result = await packService.deletePack(deleteTarget.id)
       if (result.deleted) {
-        ui.showToast(`Deleted "${deleteTarget.name}"`, 'info')
+        ui.showToast(
+          $_('vault.promptPacks.deleted', { values: { name: deleteTarget.name } }),
+          'info',
+        )
         deleteTarget = null
         await loadPacks()
       } else {
-        ui.showToast(result.reason ?? 'Could not delete pack', 'error')
+        ui.showToast(result.reason ?? $_('vault.promptPacks.couldNotDelete'), 'error')
       }
     } catch (e) {
       console.error('Delete failed:', e)
-      ui.showToast('Delete failed', 'error')
+      ui.showToast($_('vault.promptPacks.deleteFailed'), 'error')
     } finally {
       deleting = false
     }
@@ -147,9 +151,9 @@
 >
   <ResponsiveModal.Content class="p-0 sm:max-w-sm">
     <ResponsiveModal.Header class="border-b px-6 py-4">
-      <ResponsiveModal.Title>Delete Pack</ResponsiveModal.Title>
+      <ResponsiveModal.Title>{$_('vault.promptPacks.deletePackTitle')}</ResponsiveModal.Title>
       <ResponsiveModal.Description>
-        Are you sure you want to delete "{deleteTarget?.name}"? This cannot be undone.
+        {$_('vault.promptPacks.deletePackConfirm', { values: { name: deleteTarget?.name ?? '' } })}
       </ResponsiveModal.Description>
     </ResponsiveModal.Header>
     <ResponsiveModal.Footer class="border-t px-6 py-4">
@@ -157,10 +161,10 @@
         variant="outline"
         onclick={() => {
           deleteTarget = null
-        }}>Cancel</Button
+        }}>{$_('common.cancel')}</Button
       >
       <Button variant="destructive" onclick={handleConfirmDelete} disabled={deleting}>
-        {deleting ? 'Deleting...' : 'Delete'}
+        {deleting ? $_('vault.promptPacks.deleting') : $_('common.delete')}
       </Button>
     </ResponsiveModal.Footer>
   </ResponsiveModal.Content>

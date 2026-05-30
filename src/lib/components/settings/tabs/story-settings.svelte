@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { onDestroy } from 'svelte'
   import { story } from '$lib/stores/story.svelte'
   import { hasRequiredCredentials } from '$lib/services/ai/image'
@@ -161,8 +162,8 @@
 
 <div class="space-y-6">
   <div>
-    <h3 class="text-lg font-semibold">Story Settings</h3>
-    <p class="text-muted-foreground text-sm">Configure settings for the current story.</p>
+    <h3 class="text-lg font-semibold">{$_('settings.storySettingsTitle')}</h3>
+    <p class="text-muted-foreground text-sm">{$_('settings.configureForCurrentStory')}</p>
   </div>
 
   <WritingStyleFields
@@ -183,25 +184,25 @@
       story.updateStorySettings({ backgroundImagesEnabled: v })}
     onReferenceModeChange={(v) => story.updateStorySettings({ referenceMode: v })}
     disabledFields={{ pov: true, tense: true, visualProseMode: true }}
-    disabledReason="Cannot be changed mid-story. Set during story creation."
+    disabledReason={$_('settings.cannotChangeMidStory')}
   />
 
   <!-- ── Custom System Prompt ─────────────────────────────────────────────── -->
   <div class="border-t pt-4">
     <div class="mb-3 flex items-center justify-between gap-2">
       <div class="flex items-center gap-2">
-        <Label class="text-sm font-medium">Custom System Prompt</Label>
+        <Label class="text-sm font-medium">{$_('settings.customSystemPrompt')}</Label>
         {#if isActive}
           <span
             class="rounded-full bg-amber-500/15 px-2 py-0.5 text-xs font-medium text-amber-600 dark:text-amber-400"
           >
-            Active
+            {$_('settings.active')}
           </span>
         {/if}
       </div>
       <div class="flex gap-2">
         <Button variant="outline" size="sm" onclick={loadCurrentTemplate}>
-          Load default template
+          {$_('settings.loadDefaultTemplate')}
         </Button>
         {#if isActive || customPromptDraft}
           <Button
@@ -210,15 +211,14 @@
             class="text-destructive hover:text-destructive"
             onclick={clearOverride}
           >
-            Clear override
+            {$_('settings.clearOverride')}
           </Button>
         {/if}
       </div>
     </div>
 
     <p class="text-muted-foreground mb-3 text-xs">
-      Replaces the default pack template for this story only. Supports Liquid template variables.
-      Changes take effect on the next generation — no restart needed.
+      {$_('settings.replacesTemplateForStory')}
     </p>
 
     <Textarea
@@ -232,20 +232,22 @@
     {#if customPromptDraft.trim()}
       <div class="mt-2 space-y-1">
         {#if validationResult === null}
-          <p class="text-muted-foreground text-xs">Validating…</p>
+          <p class="text-muted-foreground text-xs">{$_('settings.validating')}</p>
         {:else if validationResult.success}
-          <p class="text-xs text-green-600 dark:text-green-400">✓ Template is valid</p>
+          <p class="text-xs text-green-600 dark:text-green-400">{$_('settings.templateIsValid')}</p>
         {:else}
-          <p class="text-destructive text-xs">✕ Syntax error: {validationResult.error}</p>
+          <p class="text-destructive text-xs">
+            {$_('settings.syntaxError', { values: { error: validationResult.error } })}
+          </p>
         {/if}
 
         {#if unknownVars.length > 0}
           <p class="text-xs text-amber-600 dark:text-amber-400">
-            ⚠ Unknown variables (will render empty):
+            {$_('settings.unknownVariables')}
             {#each unknownVars as v, i (v)}
               <code class="font-mono">{v}</code>{i < unknownVars.length - 1 ? ', ' : ''}
             {/each}
-            — these may be custom pack variables.
+            {$_('settings.customPackVariables')}
           </p>
         {/if}
       </div>
@@ -254,8 +256,8 @@
     <!-- Save / status row -->
     {#if isDirty}
       <div class="mt-3 flex items-center justify-between gap-2">
-        <p class="text-muted-foreground text-xs">Unsaved changes</p>
-        <Button size="sm" onclick={savePrompt} disabled={!canSave}>Save</Button>
+        <p class="text-muted-foreground text-xs">{$_('settings.unsavedChanges')}</p>
+        <Button size="sm" onclick={savePrompt} disabled={!canSave}>{$_('settings.save')}</Button>
       </div>
     {/if}
 
@@ -267,7 +269,7 @@
         type="button"
       >
         <span>{showVarReference ? '▾' : '▸'}</span>
-        Available template variables
+        {$_('settings.availableTemplateVariables')}
       </button>
 
       {#if showVarReference}
@@ -295,20 +297,16 @@
 
     <!-- Tips -->
     <div class="border-border mt-4 space-y-2 rounded-md border border-dashed p-3 text-xs">
-      <p class="font-medium">Tips</p>
+      <p class="font-medium">{$_('settings.tips')}</p>
       <ul class="text-muted-foreground list-disc space-y-1 pl-4">
         <li>
-          This override applies to this story only. The default pack template is untouched and used
-          by all other stories.
+          {$_('settings.overrideAppliesToThisStoryOnly')}
         </li>
         <li>
-          Custom pack variables (defined in Vault → Prompts) are also available here. They will
-          appear in the unknown variable warning below, but that's expected — they're resolved at
-          generation time and will work correctly.
+          {$_('settings.customPackVariablesAvailable')}
         </li>
         <li>
-          For more advanced use cases — multiple template variants or sharing prompts across stories
-          — consider creating a <strong>custom prompt pack</strong> in the Vault instead.
+          {$_('settings.considerCustomPromptPack')}
         </li>
       </ul>
     </div>

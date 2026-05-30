@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import type { VaultCharacter } from '$lib/types'
   import { characterVault } from '$lib/stores/characterVault.svelte'
   import { Loader2, Bot } from 'lucide-svelte'
@@ -38,7 +39,7 @@
 
   async function handleSubmit() {
     if (!formData.name.trim()) {
-      _error = 'Name is required'
+      _error = $_('character.nameRequired')
       return
     }
 
@@ -47,7 +48,6 @@
 
     try {
       if (isEditing && character) {
-        // Update existing
         await characterVault.update(character.id, {
           ...formData,
           name: formData.name.trim(),
@@ -55,7 +55,6 @@
         })
         onSaved?.(characterVault.getById(character.id)!)
       } else {
-        // Create new
         const newCharacter = await characterVault.add({
           name: formData.name.trim(),
           description: formData.description,
@@ -72,7 +71,7 @@
       }
       onClose()
     } catch (e) {
-      _error = e instanceof Error ? e.message : 'Failed to save character'
+      _error = e instanceof Error ? e.message : $_('character.saveFailed')
     } finally {
       saving = false
     }
@@ -86,7 +85,9 @@
   }}
 >
   <ResponsiveModal.Content class="flex flex-col md:h-auto md:max-h-[90vh] md:max-w-150">
-    <ResponsiveModal.Header title={isEditing ? 'Edit Character' : 'New Character'} />
+    <ResponsiveModal.Header
+      title={isEditing ? $_('character.editCharacter') : $_('character.newCharacter')}
+    />
 
     <div class="flex-1 overflow-y-auto px-4 sm:pr-4">
       <form
@@ -117,7 +118,7 @@
           }}
         >
           <Bot class="h-4 w-4" />
-          Ask Assistant
+          {$_('character.askAssistant')}
         </Button>
       {/if}
       <Button
@@ -129,7 +130,7 @@
         {#if saving}
           <Loader2 class="h-4 w-4 animate-spin" />
         {/if}
-        {isEditing ? 'Save Changes' : 'Create Character'}
+        {isEditing ? $_('character.saveChanges') : $_('character.createCharacter')}
       </Button>
     </ResponsiveModal.Footer>
   </ResponsiveModal.Content>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { Sword, Feather, MessageSquare, FileText } from 'lucide-svelte'
   import * as Card from '$lib/components/ui/card'
   import { Label } from '$lib/components/ui/label'

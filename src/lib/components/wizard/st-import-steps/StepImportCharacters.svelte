@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { User, Users, Edit3, Trash2, Archive, Check } from 'lucide-svelte'
   import * as Card from '$lib/components/ui/card'
   import { Button } from '$lib/components/ui/button'

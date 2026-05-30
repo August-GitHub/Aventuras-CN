@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import type { StoryEntry, EmbeddedImage } from '$lib/types'
   import { story } from '$lib/stores/story.svelte'
   import { ui } from '$lib/stores/ui.svelte'
@@ -776,7 +777,7 @@
                 <svg class="regenerating-spinner" viewBox="0 0 50 50">
                   <circle cx="25" cy="25" r="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="80, 200" stroke-dashoffset="0"></circle>
                 </svg>
-                <span class="regenerating-text">Regenerating...</span>
+                <span class="regenerating-text">${$_('story.imageStatus.regenerating')}</span>
               </div>
             </div>
           </div>`
@@ -791,22 +792,22 @@
       const isStuck = now - expandedImage.createdAt > IMAGE_STUCK_THRESHOLD_MS
       innerHtml += `<div class="inline-image-placeholder generating">
         <div class="placeholder-spinner"></div>
-        <span class="placeholder-status">Generating...</span>
-        ${isStuck ? `<button class="inline-image-retry" data-image-id="${expandedImage.id}">Force Retry</button>` : ''}
+        <span class="placeholder-status">${$_('story.imageStatus.generating')}</span>
+        ${isStuck ? `<button class="inline-image-retry" data-image-id="${expandedImage.id}">${$_('story.imageStatus.forceRetry')}</button>` : ''}
       </div>`
     } else if (expandedImage.status === 'pending') {
       const isStuck = now - expandedImage.createdAt > IMAGE_STUCK_THRESHOLD_MS
       innerHtml += `<div class="inline-image-placeholder pending">
         <div class="placeholder-icon">⏳</div>
-        <span class="placeholder-status">Queued...</span>
-        ${isStuck ? `<button class="inline-image-retry" data-image-id="${expandedImage.id}">Force Retry</button>` : ''}
+        <span class="placeholder-status">${$_('story.imageStatus.queued')}</span>
+        ${isStuck ? `<button class="inline-image-retry" data-image-id="${expandedImage.id}">${$_('story.imageStatus.forceRetry')}</button>` : ''}
       </div>`
     } else if (expandedImage.status === 'failed') {
       innerHtml += `<div class="inline-image-placeholder failed">
         <div class="placeholder-icon">⚠️</div>
-        <span class="placeholder-status">Generation Failed</span>
+        <span class="placeholder-status">${$_('story.imageStatus.generationFailed')}</span>
         ${expandedImage.errorMessage ? `<span class="placeholder-text">${expandedImage.errorMessage}</span>` : ''}
-        <button class="inline-image-retry" data-image-id="${expandedImage.id}">Retry Generation</button>
+        <button class="inline-image-retry" data-image-id="${expandedImage.id}">${$_('story.imageStatus.retryGeneration')}</button>
       </div>`
     }
 
@@ -1082,11 +1083,13 @@
   <div class="mb-2 flex items-center gap-2">
     <!-- Left side: Entry type indicator + reasoning toggle -->
     {#if entry.type === 'user_action'}
-      <span class="user-action text-primary text-sm font-semibold tracking-wide">You</span>
+      <span class="user-action text-primary text-sm font-semibold tracking-wide"
+        >{$_('story.userAction')}</span
+      >
     {:else if entry.type === 'system'}
       <div class="text-muted-foreground flex items-center gap-1.5">
         <Icon class="h-4 w-4 shrink-0 translate-y-px" />
-        <span class="text-xs font-medium tracking-wider uppercase">System</span>
+        <span class="text-xs font-medium tracking-wider uppercase">{$_('story.system')}</span>
       </div>
     {:else}
       <Icon class="text-muted-foreground h-4 w-4 shrink-0 translate-y-px" />
@@ -1109,7 +1112,6 @@
         <span class="text-muted-foreground/50 mx-0.5">+</span>
       {/if}
       <span class="text-muted-foreground">{contentTokens}</span>
-      <span class="text-muted-foreground ml-0.5">tokens</span>
     </span>
 
     <!-- Spacer to push buttons to the right -->
@@ -1124,7 +1126,7 @@
             size="icon"
             onclick={() => ui.triggerRetryLastMessage()}
             class="h-7 w-7 text-amber-500 hover:text-amber-600"
-            title="Generate a different response"
+            title={$_('story.actions.retry')}
           >
             <RotateCcw class="h-4 w-4" />
           </Button>
@@ -1135,7 +1137,7 @@
             size="icon"
             onclick={() => (isBranching = true)}
             class="h-7 w-7 text-amber-500 hover:text-amber-600"
-            title="Branch from here"
+            title={$_('story.actions.branch')}
           >
             <GitBranch class="h-4 w-4" />
           </Button>
@@ -1146,7 +1148,7 @@
             size="icon"
             onclick={() => (isCreatingCheckpoint = true)}
             class="h-7 w-7 text-blue-500 hover:text-blue-600"
-            title="Create checkpoint"
+            title={$_('story.actions.checkpoint')}
           >
             <Bookmark class="h-4 w-4" />
           </Button>
@@ -1157,7 +1159,7 @@
           onclick={handleTTSToggle}
           disabled={isGeneratingTTS}
           class="text-muted-foreground hover:text-foreground h-7 w-7"
-          title={isPlayingTTS ? 'Stop narration' : 'Narrate'}
+          title={isPlayingTTS ? $_('story.actions.ttsStop') : $_('story.actions.ttsNarrate')}
         >
           {#if isGeneratingTTS}
             <Loader2 class="h-4 w-4 animate-spin" />
@@ -1174,7 +1176,9 @@
             onclick={handleGenerateStoryImages}
             disabled={ui.isGenerating || isGeneratingStoryImages || embeddedImages.length > 0}
             class="text-muted-foreground hover:text-foreground h-7 w-7"
-            title={embeddedImages.length > 0 ? 'Images already generated' : 'Generate story images'}
+            title={embeddedImages.length > 0
+              ? $_('story.actions.imagesGenerated')
+              : $_('story.actions.generateImages')}
           >
             {#if isGeneratingStoryImages}
               <Loader2 class="h-4 w-4 animate-spin" />
@@ -1189,7 +1193,9 @@
           onclick={startEdit}
           disabled={ui.isGenerating}
           class="text-muted-foreground hover:text-foreground h-7 w-7"
-          title={ui.isGenerating ? 'Cannot edit during generation' : 'Edit'}
+          title={ui.isGenerating
+            ? $_('story.actions.cannotEditDuringGeneration')
+            : $_('story.actions.edit')}
         >
           <Pencil class="h-4 w-4" />
         </Button>
@@ -1199,7 +1205,9 @@
           onclick={() => (isDeleting = true)}
           disabled={ui.isGenerating}
           class="text-muted-foreground h-7 w-7 hover:text-red-500"
-          title={ui.isGenerating ? 'Cannot delete during generation' : 'Delete'}
+          title={ui.isGenerating
+            ? $_('story.actions.cannotDeleteDuringGeneration')
+            : $_('story.actions.delete')}
         >
           <Trash2 class="h-4 w-4" />
         </Button>
@@ -1220,30 +1228,30 @@
         <div class="flex gap-2">
           <Button size="sm" onclick={saveEdit} class="h-9 px-3">
             <Check class="mr-1.5 h-4 w-4" />
-            Save
+            {$_('story.edit.save')}
           </Button>
           <Button variant="secondary" size="sm" onclick={cancelEdit} class="h-9 px-3">
             <X class="mr-1.5 h-4 w-4" />
-            Cancel
+            {$_('story.edit.cancel')}
           </Button>
         </div>
         <p class="text-muted-foreground hidden text-xs sm:block">
-          Ctrl+Enter to save, Esc to cancel
+          {$_('story.edit.keyboardHint')}
         </p>
         {#if canSaveAndRegenerate}
           <p class="hidden items-center gap-1 text-xs text-amber-500/80 sm:flex">
-            Regenerate narration after significant changes
+            {$_('story.edit.regenerateHint')}
             <RotateCcw class="h-3 w-3" />
           </p>
         {/if}
       </div>
     {:else if isDeleting}
       <div class="space-y-2">
-        <p class="text-muted-foreground text-sm">Delete this entry?</p>
+        <p class="text-muted-foreground text-sm">{$_('story.delete.confirm')}</p>
         <div class="flex gap-2">
           <Button variant="destructive" size="sm" onclick={confirmDelete} class="h-9 px-3">
             <Trash2 class="mr-1.5 h-4 w-4" />
-            Delete
+            {$_('story.actions.delete')}
           </Button>
           <Button
             variant="secondary"
@@ -1252,17 +1260,17 @@
             class="h-9 px-3"
           >
             <X class="mr-1.5 h-4 w-4" />
-            Cancel
+            {$_('story.edit.cancel')}
           </Button>
         </div>
       </div>
     {:else if isBranching}
       <div class="space-y-2">
-        <p class="text-muted-foreground text-sm">Create a branch from this point:</p>
+        <p class="text-muted-foreground text-sm">{$_('story.branch.title')}</p>
         <Input
           type="text"
           class="h-9 text-sm"
-          placeholder="Branch name..."
+          placeholder={$_('story.branch.namePlaceholder')}
           bind:value={branchName}
           onkeydown={(e) => {
             if (e.key === 'Enter') handleCreateBranch()
@@ -1277,24 +1285,24 @@
             class="h-9 bg-amber-500 px-3 text-white hover:bg-amber-600"
           >
             <GitBranch class="mr-1.5 h-4 w-4" />
-            Create Branch
+            {$_('story.branch.create')}
           </Button>
           <Button variant="secondary" size="sm" onclick={cancelBranch} class="h-9 px-3">
             <X class="mr-1.5 h-4 w-4" />
-            Cancel
+            {$_('story.edit.cancel')}
           </Button>
         </div>
         <p class="text-muted-foreground text-xs">
-          This will create a new timeline from this checkpoint.
+          {$_('story.branch.hint')}
         </p>
       </div>
     {:else if isCreatingCheckpoint}
       <div class="space-y-2">
-        <p class="text-muted-foreground text-sm">Create a checkpoint at this point:</p>
+        <p class="text-muted-foreground text-sm">{$_('story.checkpoint.title')}</p>
         <Input
           type="text"
           class="h-9 text-sm"
-          placeholder="Checkpoint name..."
+          placeholder={$_('story.checkpoint.namePlaceholder')}
           bind:value={checkpointName}
           onkeydown={(e) => {
             if (e.key === 'Enter') handleCreateCheckpoint()
@@ -1309,15 +1317,15 @@
             class="h-9 bg-blue-500 px-3 text-white hover:bg-blue-600"
           >
             <Bookmark class="mr-1.5 h-4 w-4" />
-            Create Checkpoint
+            {$_('story.checkpoint.create')}
           </Button>
           <Button variant="secondary" size="sm" onclick={cancelCheckpoint} class="h-9 px-3">
             <X class="mr-1.5 h-4 w-4" />
-            Cancel
+            {$_('story.edit.cancel')}
           </Button>
         </div>
         <p class="text-muted-foreground text-xs">
-          Checkpoints save the current story state and allow branching from this point.
+          {$_('story.checkpoint.hint')}
         </p>
       </div>
     {:else}
@@ -1389,7 +1397,7 @@
             <div
               class="bg-primary/90 animate-bounce rounded-full px-3 py-1.5 text-xs font-medium text-white"
             >
-              Tap a paragraph to link image
+              {$_('story.imageLink.tapToLink')}
             </div>
           </div>
         {/if}
@@ -1401,10 +1409,10 @@
           <div class="mb-2 flex items-center gap-2">
             <ImageIcon class="text-muted-foreground h-3.5 w-3.5" />
             <span class="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
-              Unplaced Illustrations
+              {$_('story.unplacedImages.title')}
             </span>
             <span class="text-muted-foreground/60 text-[10px] italic">
-              (Drag to a paragraph to link)
+              {$_('story.unplacedImages.hint')}
             </span>
           </div>
           <div
@@ -1475,7 +1483,7 @@
             class="h-8 border-red-500/30 px-3 text-red-500 hover:border-red-400/50 hover:bg-red-500/10 hover:text-red-400"
           >
             <RefreshCw class="h-3.5 w-3.5" />
-            Retry
+            {$_('story.error.retry')}
           </Button>
           <Button
             variant="outline"
@@ -1485,7 +1493,7 @@
             class="text-muted-foreground border-border h-8 px-3 hover:border-red-400/50 hover:bg-red-500/10 hover:text-red-400"
           >
             <Trash2 class="h-3.5 w-3.5" />
-            Dismiss
+            {$_('story.error.dismiss')}
           </Button>
         </div>
       {/if}
@@ -1522,7 +1530,7 @@
             ? 'bg-primary text-primary-foreground'
             : 'text-surface-400 hover:text-surface-200'}"
         >
-          From chat
+          {$_('story.imageModal.fromChat')}
         </button>
         <button
           type="button"
@@ -1532,7 +1540,7 @@
             ? 'bg-primary text-primary-foreground'
             : 'text-surface-400 hover:text-surface-200'}"
         >
-          Custom
+          {$_('story.imageModal.custom')}
         </button>
       </div>
 
@@ -1541,15 +1549,17 @@
         <p
           class="text-surface-400 border-surface-700 line-clamp-3 rounded border border-dashed px-2.5 py-2 text-xs leading-relaxed"
         >
-          {viewingImagePrompt || 'No prompt available'}
+          {viewingImagePrompt || $_('story.imageModal.noPrompt')}
         </p>
       {:else}
         <!-- Editable custom prompt -->
         <!-- svelte-ignore a11y_label_has_associated_control -->
-        <label class="text-surface-400 mb-1.5 block text-xs">Custom Prompt</label>
+        <label class="text-surface-400 mb-1.5 block text-xs"
+          >{$_('story.imageModal.customPrompt')}</label
+        >
         <Textarea
           bind:value={viewingImagePrompt}
-          placeholder="Describe the image you want to generate..."
+          placeholder={$_('story.imageModal.promptPlaceholder')}
           rows={3}
           class="resize-none text-sm"
         />
@@ -1566,7 +1576,7 @@
         onclick={() => (isViewingImage = false)}
         class="h-8 text-xs"
       >
-        Close
+        {$_('story.imageModal.close')}
       </Button>
       <Button
         size="sm"
@@ -1575,7 +1585,7 @@
         class="h-8 gap-1.5 text-xs"
       >
         <RefreshCw class="h-3.5 w-3.5" />
-        Regenerate
+        {$_('story.imageModal.regenerate')}
       </Button>
     </div>
   </ResponsiveModal.Content>

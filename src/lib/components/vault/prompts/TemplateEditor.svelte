@@ -16,6 +16,7 @@
   import { Button } from '$lib/components/ui/button'
   import TemplatePreview from './TemplatePreview.svelte'
   import { createIsMobile } from '$lib/hooks/is-mobile.svelte'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     packId: string
@@ -338,7 +339,7 @@
 
 {#if loading}
   <div class="flex h-full items-center justify-center">
-    <p class="text-muted-foreground text-sm">Loading template...</p>
+    <p class="text-muted-foreground text-sm">{$_('vault.promptPacks.loadingTemplate')}</p>
   </div>
 {:else}
   <div class="flex h-full flex-col overflow-hidden">
@@ -352,7 +353,7 @@
         {#if !isMobile.current}
           <div class="border-b px-4 py-2">
             <h4 class="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-              Editor
+              {$_('vault.promptPacks.editor')}
             </h4>
           </div>
         {/if}
@@ -402,7 +403,11 @@
                 <span class="text-muted-foreground">
                   {error.message}
                   {#if error.line}
-                    <span class="text-muted-foreground/70">(line {error.line})</span>
+                    <span class="text-muted-foreground/70"
+                      >({$_('vault.promptPacks.templateError', {
+                        values: { line: error.line },
+                      })})</span
+                    >
                   {/if}
                 </span>
               </div>
@@ -411,7 +416,7 @@
         {:else}
           <div class="flex items-center gap-2 text-xs">
             <CircleCheck class="h-3.5 w-3.5 text-green-500" />
-            <span class="text-muted-foreground">Template is valid</span>
+            <span class="text-muted-foreground">{$_('vault.promptPacks.templateValid')}</span>
           </div>
         {/if}
       </div>
@@ -424,7 +429,7 @@
           onclick={onTestVarsOpen}
         >
           <FlaskConical class="h-3.5 w-3.5" />
-          Test Variables
+          {$_('vault.promptPacks.testVariables')}
         </Button>
       {/if}
     </div>

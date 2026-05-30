@@ -1,5 +1,6 @@
 <script lang="ts">
   import { untrack } from 'svelte'
+  import { _ } from 'svelte-i18n'
   import type { FullPack } from '$lib/services/packs/types'
   import { allSamples } from './sampleContext'
   import { packService } from '$lib/services/packs/pack-service'
@@ -279,7 +280,7 @@
         <h2 class="min-w-0 shrink truncate font-semibold">{fullPack.pack.name}</h2>
         {#if isEditorDirty}
           <Badge variant="outline" class="shrink-0 border-yellow-500/50 text-xs text-yellow-500"
-            >Unsaved</Badge
+            >{$_('vault.promptPacks.unsaved')}</Badge
           >
         {/if}
       {/if}
@@ -299,10 +300,10 @@
               class="mr-1 gap-0"
             >
               <ToggleGroup.Item value="system" class="h-7 rounded-r-none px-2.5 text-xs"
-                >System</ToggleGroup.Item
+                >{$_('vault.promptPacks.system')}</ToggleGroup.Item
               >
               <ToggleGroup.Item value="user" class="h-7 rounded-l-none px-2.5 text-xs"
-                >User</ToggleGroup.Item
+                >{$_('vault.promptPacks.user')}</ToggleGroup.Item
               >
             </ToggleGroup.Root>
           {/if}
@@ -319,7 +320,7 @@
             class="h-8 w-8"
             disabled={!isEditorDirty}
             onclick={() => editorRef?.save()}
-            title="Save"
+            title={$_('vault.promptPacks.save')}
           >
             <Save class="h-3.5 w-3.5" />
           </Button>
@@ -330,7 +331,7 @@
             class="h-8 w-8"
             disabled={!isEditorDirty}
             onclick={() => editorRef?.discard()}
-            title="Discard"
+            title={$_('vault.promptPacks.discard')}
           >
             <Undo2 class="h-3.5 w-3.5" />
           </Button>
@@ -340,7 +341,7 @@
             size="icon"
             class="h-8 w-8"
             onclick={() => editorRef?.reset()}
-            title="Reset to default"
+            title={$_('vault.promptPacks.resetToDefault')}
           >
             <RotateCcw class="h-3.5 w-3.5" />
           </Button>
@@ -376,10 +377,18 @@
           size="sm"
           class="gap-0"
         >
-          <ToggleGroup.Item value="editor" class="h-7 w-7 rounded-r-none" title="Editor">
+          <ToggleGroup.Item
+            value="editor"
+            class="h-7 w-7 rounded-r-none"
+            title={$_('vault.promptPacks.editor')}
+          >
             <Pencil class="h-3.5 w-3.5" />
           </ToggleGroup.Item>
-          <ToggleGroup.Item value="preview" class="h-7 w-7 rounded-l-none" title="Preview">
+          <ToggleGroup.Item
+            value="preview"
+            class="h-7 w-7 rounded-l-none"
+            title={$_('vault.promptPacks.preview')}
+          >
             <Eye class="h-3.5 w-3.5" />
           </ToggleGroup.Item>
         </ToggleGroup.Root>
@@ -396,10 +405,10 @@
             class="gap-0"
           >
             <ToggleGroup.Item value="system" class="h-7 rounded-r-none px-2.5 text-xs"
-              >System</ToggleGroup.Item
+              >{$_('vault.promptPacks.system')}</ToggleGroup.Item
             >
             <ToggleGroup.Item value="user" class="h-7 rounded-l-none px-2.5 text-xs"
-              >User</ToggleGroup.Item
+              >{$_('vault.promptPacks.user')}</ToggleGroup.Item
             >
           </ToggleGroup.Root>
         {/if}
@@ -416,7 +425,7 @@
             class="h-8 w-8"
             disabled={!isEditorDirty}
             onclick={() => editorRef?.save()}
-            title="Save"
+            title={$_('vault.promptPacks.save')}
           >
             <Save class="h-3.5 w-3.5" />
           </Button>
@@ -427,7 +436,7 @@
             class="h-8 w-8"
             disabled={!isEditorDirty}
             onclick={() => editorRef?.discard()}
-            title="Discard"
+            title={$_('vault.promptPacks.discard')}
           >
             <Undo2 class="h-3.5 w-3.5" />
           </Button>
@@ -437,7 +446,7 @@
             size="icon"
             class="h-8 w-8"
             onclick={() => editorRef?.reset()}
-            title="Reset to default"
+            title={$_('vault.promptPacks.resetToDefault')}
           >
             <RotateCcw class="h-3.5 w-3.5" />
           </Button>
@@ -515,7 +524,7 @@
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                   <Settings class="text-muted-foreground h-4 w-4" />
-                  <h3 class="text-sm font-medium">Pack Settings</h3>
+                  <h3 class="text-sm font-medium">{$_('vault.promptPacks.packSettings')}</h3>
                 </div>
                 {#if !editingSettings && !fullPack.pack.isDefault}
                   <Button
@@ -525,7 +534,7 @@
                     onclick={startEditSettings}
                   >
                     <Pencil class="h-3.5 w-3.5" />
-                    Edit
+                    {$_('vault.promptPacks.edit')}
                   </Button>
                 {/if}
               </div>
@@ -534,12 +543,12 @@
                 <!-- Edit mode -->
                 <div class="space-y-4">
                   <div class="space-y-1.5">
-                    <Label for="pack-name">Name</Label>
+                    <Label for="pack-name">{$_('vault.promptPacks.name')}</Label>
                     <Input id="pack-name" bind:value={settingsDraft.name} placeholder="Pack name" />
                   </div>
 
                   <div class="space-y-1.5">
-                    <Label for="pack-author">Author</Label>
+                    <Label for="pack-author">{$_('vault.promptPacks.author')}</Label>
                     <Input
                       id="pack-author"
                       bind:value={settingsDraft.author}
@@ -548,8 +557,10 @@
                   </div>
 
                   <div class="space-y-1.5">
-                    <Label for="pack-desc">Description</Label>
-                    <p class="text-muted-foreground text-xs">Supports Markdown and HTML</p>
+                    <Label for="pack-desc">{$_('vault.promptPacks.description')}</Label>
+                    <p class="text-muted-foreground text-xs">
+                      {$_('vault.promptPacks.supportsMarkdown')}
+                    </p>
                     <Textarea
                       id="pack-desc"
                       bind:value={settingsDraft.description}
@@ -562,11 +573,11 @@
                   <div class="flex gap-2">
                     <Button size="sm" onclick={saveSettings} disabled={!settingsDraft.name.trim()}>
                       <Check class="mr-1.5 h-3.5 w-3.5" />
-                      Save
+                      {$_('vault.promptPacks.save')}
                     </Button>
                     <Button variant="ghost" size="sm" onclick={discardSettings}>
                       <X class="mr-1.5 h-3.5 w-3.5" />
-                      Cancel
+                      {$_('common.cancel')}
                     </Button>
                   </div>
                 </div>
@@ -574,9 +585,9 @@
                 <!-- Read-only display -->
                 <div class="space-y-4">
                   <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
-                    <span class="text-muted-foreground">Name</span>
+                    <span class="text-muted-foreground">{$_('vault.promptPacks.name')}</span>
                     <span>{fullPack.pack.name}</span>
-                    <span class="text-muted-foreground">Author</span>
+                    <span class="text-muted-foreground">{$_('vault.promptPacks.author')}</span>
                     <span>{fullPack.pack.author || '—'}</span>
                   </div>
 
@@ -588,7 +599,7 @@
                     </div>
                   {:else if !fullPack.pack.isDefault}
                     <div class="text-muted-foreground border-t pt-4 text-center text-sm">
-                      No description. Click Edit to add one.
+                      {$_('vault.promptPacks.noDescription')}
                     </div>
                   {/if}
                 </div>
@@ -600,7 +611,7 @@
     </div>
   {:else}
     <div class="flex flex-1 items-center justify-center">
-      <p class="text-muted-foreground text-sm">Pack not found</p>
+      <p class="text-muted-foreground text-sm">{$_('vault.promptPacks.packNotFound')}</p>
     </div>
   {/if}
 </div>
@@ -610,7 +621,7 @@
   <Drawer.Root bind:open={drawerOpen}>
     <Drawer.Content class="h-[70vh]">
       <Drawer.Header>
-        <Drawer.Title>Templates</Drawer.Title>
+        <Drawer.Title>{$_('vault.promptPacks.templates')}</Drawer.Title>
       </Drawer.Header>
       <div class="flex-1 overflow-hidden">
         <TemplateGroupList
@@ -641,13 +652,15 @@
 <Dialog.Root bind:open={showDirtyDialog}>
   <Dialog.Content class="gap-4 py-6 sm:max-w-md">
     <Dialog.Header>
-      <Dialog.Title>Unsaved Changes</Dialog.Title>
-      <Dialog.Description>You have unsaved changes. What would you like to do?</Dialog.Description>
+      <Dialog.Title>{$_('vault.promptPacks.unsavedChanges')}</Dialog.Title>
+      <Dialog.Description>{$_('vault.promptPacks.unsavedChangesDescription')}</Dialog.Description>
     </Dialog.Header>
     <Dialog.Footer class="flex gap-2 sm:justify-end">
-      <Button variant="outline" onclick={handleCancelSwitch}>Cancel</Button>
-      <Button variant="secondary" onclick={handleDiscardAndSwitch}>Discard</Button>
-      <Button onclick={handleSaveAndSwitch}>Save & Continue</Button>
+      <Button variant="outline" onclick={handleCancelSwitch}>{$_('common.cancel')}</Button>
+      <Button variant="secondary" onclick={handleDiscardAndSwitch}
+        >{$_('vault.promptPacks.discard')}</Button
+      >
+      <Button onclick={handleSaveAndSwitch}>{$_('vault.promptPacks.saveAndContinue')}</Button>
     </Dialog.Footer>
   </Dialog.Content>
 </Dialog.Root>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { slide } from 'svelte/transition'
+  import { _ } from 'svelte-i18n'
   import { FileJson, Loader2, Check, Sparkles, PenTool, Book, X, ChevronDown } from 'lucide-svelte'
   import { Button } from '$lib/components/ui/button'
   import { Input } from '$lib/components/ui/input'

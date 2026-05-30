@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { story } from '$lib/stores/story.svelte'
   import { Lightbulb, ArrowRight, Loader2, RefreshCw, ChevronDown, ChevronUp } from 'lucide-svelte'
   import type { Suggestion } from '$lib/services/ai/sdk/schemas/suggestions'
@@ -24,10 +25,10 @@
   }
 
   const typeLabels: Record<string, string> = {
-    action: 'Action',
-    dialogue: 'Dialogue',
-    revelation: 'Revelation',
-    twist: 'Twist',
+    action: $_('suggestions.types.action'),
+    dialogue: $_('suggestions.types.dialogue'),
+    revelation: $_('suggestions.types.revelation'),
+    twist: $_('suggestions.types.twist'),
   }
 
   // Swipe handlers for mobile
@@ -60,9 +61,11 @@
     >
       <div class="text-surface-300 flex items-center gap-2">
         <Lightbulb class="h-4 w-4" />
-        <span class="text-sm font-medium">What happens next?</span>
+        <span class="text-sm font-medium">{$_('suggestions.title')}</span>
         {#if collapsed && suggestions.length > 0}
-          <span class="text-surface-500 text-xs">({suggestions.length} suggestions)</span>
+          <span class="text-surface-500 text-xs"
+            >{$_('suggestions.count', { values: { count: suggestions.length } })}</span
+          >
         {/if}
       </div>
       <div class="flex items-center gap-1">
@@ -75,7 +78,7 @@
               onRefresh()
             }}
             disabled={loading}
-            title="Generate new suggestions"
+            title={$_('suggestions.refresh')}
           >
             <RefreshCw class="h-4 w-4 {loading ? 'animate-spin' : ''}" />
           </button>
@@ -96,11 +99,11 @@
         {#if loading}
           <div class="text-surface-400 flex items-center justify-center py-2">
             <Loader2 class="mr-2 h-5 w-5 animate-spin" />
-            <span class="text-sm">Generating suggestions...</span>
+            <span class="text-sm">{$_('suggestions.generating')}</span>
           </div>
         {:else if suggestions.length === 0}
           <div class="text-surface-500 py-1 text-center text-sm">
-            No suggestions available. Click refresh to generate some.
+            {$_('suggestions.empty')}
           </div>
         {:else}
           <div class="space-y-1.5 pt-0.5">

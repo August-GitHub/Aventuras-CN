@@ -6,6 +6,7 @@
   import { Input } from '$lib/components/ui/input'
   import { Textarea } from '$lib/components/ui/textarea'
   import { Label } from '$lib/components/ui/label'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     open: boolean
@@ -59,21 +60,23 @@
 <ResponsiveModal.Root {open} onOpenChange={handleOpenChange}>
   <ResponsiveModal.Content class="p-0 sm:max-w-md">
     <ResponsiveModal.Header class="border-b px-6 py-4">
-      <ResponsiveModal.Title>Create Prompt Pack</ResponsiveModal.Title>
+      <ResponsiveModal.Title>{$_('vault.promptPacks.createPack')}</ResponsiveModal.Title>
       <ResponsiveModal.Description>
-        New packs start as a copy of the default templates. You can customize them after creation.
+        {$_('vault.promptPacks.createPackDescription')}
       </ResponsiveModal.Description>
     </ResponsiveModal.Header>
 
     <div class="flex flex-col gap-4 px-6 py-4">
       <div class="flex flex-col gap-2">
-        <Label for="pack-name">Name <span class="text-destructive">*</span></Label>
+        <Label for="pack-name"
+          >{$_('vault.promptPacks.name')} <span class="text-destructive">*</span></Label
+        >
         <Input id="pack-name" bind:value={name} placeholder="My Custom Pack" />
       </div>
 
       <div class="flex flex-col gap-2">
-        <Label for="pack-description">Description</Label>
-        <p class="text-muted-foreground text-xs">Supports Markdown and HTML</p>
+        <Label for="pack-description">{$_('vault.promptPacks.description')}</Label>
+        <p class="text-muted-foreground text-xs">{$_('vault.promptPacks.supportsMarkdown')}</p>
         <Textarea
           id="pack-description"
           bind:value={description}
@@ -83,18 +86,20 @@
       </div>
 
       <div class="flex flex-col gap-2">
-        <Label for="pack-author">Author</Label>
+        <Label for="pack-author">{$_('vault.promptPacks.author')}</Label>
         <Input id="pack-author" bind:value={author} placeholder="Your name" />
       </div>
     </div>
 
     <ResponsiveModal.Footer class="border-t px-6 py-4">
-      <Button variant="outline" onclick={() => handleOpenChange(false)}>Cancel</Button>
+      <Button variant="outline" onclick={() => handleOpenChange(false)}
+        >{$_('common.cancel')}</Button
+      >
       <Button onclick={handleCreate} disabled={!canCreate}>
         {#if creating}
-          Creating...
+          {$_('vault.promptPacks.creating')}
         {:else}
-          Create
+          {$_('vault.promptPacks.create')}
         {/if}
       </Button>
     </ResponsiveModal.Footer>

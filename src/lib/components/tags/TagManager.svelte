@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { tagStore } from '$lib/stores/tags.svelte'
   import type { VaultTag, VaultType } from '$lib/types'
   import { Trash2, Edit2, Check, Plus } from 'lucide-svelte'

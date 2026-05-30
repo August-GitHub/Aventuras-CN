@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import type { VaultPendingChange } from '$lib/services/ai/sdk/schemas/vault'
   import type { VaultCharacterInput, VaultScenarioInput } from '$lib/services/ai/sdk/schemas/vault'
   import type { VaultLorebook, VaultLorebookEntry } from '$lib/types'
@@ -105,19 +106,19 @@
 
   const entityLabel = $derived(
     change.entityType === 'character'
-      ? 'Character'
+      ? $_('diff.character')
       : change.entityType === 'lorebook-entry'
-        ? 'Lorebook Entry'
+        ? $_('diff.lorebookEntry')
         : change.entityType === 'lorebook'
-          ? 'Lorebook'
-          : 'Scenario',
+          ? $_('diff.lorebook')
+          : $_('diff.scenario'),
   )
 
   const isViewMode = $derived(vaultEditor.viewMode)
 
   const actionLabel = $derived(
     isViewMode
-      ? 'View'
+      ? $_('common.edit')
       : 'action' in change
         ? change.action.charAt(0).toUpperCase() + change.action.slice(1)
         : '',
@@ -283,7 +284,7 @@
       {:else if !('data' in change)}
         <div class="p-4">
           <p class="text-muted-foreground text-sm">
-            Delete operations cannot be edited — approve or reject directly.
+            {$_('diff.deleteCannotEdit')}
           </p>
         </div>
       {/if}
@@ -295,7 +296,7 @@
     >
       {#if isViewMode}
         <Button variant="outline" size="sm" class="border-surface-600 h-7 text-xs" onclick={onClose}
-          >Close</Button
+          >{$_('common.close')}</Button
         >
         <Button
           size="sm"
@@ -303,11 +304,11 @@
           onclick={handleViewModeSave}
         >
           <Save class="h-3 w-3" />
-          Save
+          {$_('common.save')}
         </Button>
       {:else}
         <Button variant="outline" size="sm" class="border-surface-600 h-7 text-xs" onclick={onClose}
-          >Cancel</Button
+          >{$_('common.cancel')}</Button
         >
         <Button
           size="sm"
@@ -315,7 +316,7 @@
           onclick={handleApproveWithEdits}
         >
           <Check class="h-3 w-3" />
-          Confirm & Approve
+          {$_('diff.confirmApprove')}
         </Button>
       {/if}
     </div>

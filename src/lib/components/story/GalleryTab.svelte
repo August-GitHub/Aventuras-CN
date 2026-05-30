@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { story } from '$lib/stores/story.svelte'
   import { ui } from '$lib/stores/ui.svelte'
   import { database } from '$lib/services/database'
@@ -61,7 +62,7 @@
       images = loaded
     } catch (error) {
       console.error('[Gallery] Failed to load images:', error)
-      ui.showToast('Failed to load gallery images', 'error')
+      ui.showToast($_('gallery.toast.loadFailed'), 'error')
       images = []
     } finally {
       isLoading = false
@@ -121,14 +122,18 @@
 
       if (success) {
         const message =
-          imagesToSave === 1 ? 'Saved 1 image as PNG' : `Saved ${imagesToSave} images as ZIP`
+          imagesToSave === 1
+            ? $_('gallery.toast.savedOneImage')
+            : $_('gallery.toast.savedImages', { values: { count: imagesToSave } })
         ui.showToast(message, 'info')
         resetSelection()
       }
     } catch (error) {
       console.error('[Gallery] Save failed:', error)
       ui.showToast(
-        `Failed to save images: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        $_('gallery.toast.saveFailed', {
+          values: { error: error instanceof Error ? error.message : 'Unknown error' },
+        }),
         'error',
       )
     } finally {
@@ -260,7 +265,7 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
         <ImageIcon class="text-accent-400 h-5 w-5" />
-        <h2 class="text-surface-100 text-lg font-semibold">Gallery</h2>
+        <h2 class="text-surface-100 text-lg font-semibold">{$_('gallery.title')}</h2>
         {#if images.length > 0}
           <span class="text-surface-500 text-sm">({images.length})</span>
         {/if}
@@ -274,7 +279,7 @@
             size="icon"
             onclick={refreshImages}
             disabled={isLoading || !story.currentStory}
-            title="Refresh gallery"
+            title={$_('gallery.buttons.refresh')}
             class="h-8 w-8"
           >
             <RefreshCw class="h-3.5 w-3.5 {isLoading ? 'animate-spin' : ''}" />
@@ -287,22 +292,26 @@
             onclick={handleSaveImages}
             disabled={isSaving}
             title={isSaving
-              ? 'Saving images...'
+              ? $_('gallery.buttons.saving')
               : selectedImageIds.size > 0
-                ? `Save ${selectedImageIds.size} selected`
-                : 'Save all images'}
+                ? $_('gallery.buttons.saveSelected', { values: { count: selectedImageIds.size } })
+                : $_('gallery.buttons.saveAll')}
             class="h-8 gap-1.5 px-2.5 text-xs"
           >
             <Download class="h-3.5 w-3.5" />
             <span class="hidden sm:inline">
               {isSaving
-                ? 'Saving...'
+                ? $_('gallery.buttons.saving')
                 : selectedImageIds.size > 0
-                  ? `Save ${selectedImageIds.size}`
-                  : 'Save All'}
+                  ? $_('gallery.buttons.saveSelected', { values: { count: selectedImageIds.size } })
+                  : $_('gallery.buttons.saveAll')}
             </span>
             <span class="sm:hidden">
-              {isSaving ? '...' : selectedImageIds.size > 0 ? selectedImageIds.size : 'All'}
+              {isSaving
+                ? '...'
+                : selectedImageIds.size > 0
+                  ? selectedImageIds.size
+                  : $_('gallery.buttons.save')}
             </span>
           </Button>
 
@@ -311,11 +320,11 @@
             variant="outline"
             size="sm"
             onclick={closeGallery}
-            title="Close gallery (Esc)"
+            title={$_('gallery.buttons.closeTitle')}
             class="h-8 gap-1 px-2.5 text-xs"
           >
             <X class="h-3.5 w-3.5" />
-            <span class="hidden sm:inline">Close</span>
+            <span class="hidden sm:inline">{$_('gallery.buttons.close')}</span>
           </Button>
         </div>
       {/if}
@@ -334,10 +343,10 @@
       />
       <span class="text-surface-400 text-xs sm:text-sm">
         {selectedImageIds.size === 0
-          ? 'Select images to download'
+          ? $_('gallery.selection.selectImages')
           : selectedImageIds.size === images.length
-            ? 'All selected'
-            : `${selectedImageIds.size} selected`}
+            ? $_('gallery.selection.allSelected')
+            : $_('gallery.selection.selected', { values: { count: selectedImageIds.size } })}
       </span>
     </div>
   {/if}
@@ -351,16 +360,16 @@
           <div
             class="border-surface-600 border-t-accent-400 h-8 w-8 animate-spin rounded-full border-2"
           ></div>
-          <p class="text-surface-400 text-sm">Loading images...</p>
+          <p class="text-surface-400 text-sm">{$_('gallery.loading')}</p>
         </div>
       </div>
     {:else if images.length === 0}
       <!-- Empty state -->
       <div class="flex flex-col items-center justify-center py-12 text-center">
         <ImageIcon class="text-surface-700 mb-3 h-12 w-12" />
-        <p class="text-surface-300 font-medium">No generated images yet</p>
+        <p class="text-surface-300 font-medium">{$_('gallery.empty.title')}</p>
         <p class="text-surface-500 mt-1 text-sm">
-          Generate images using the image generation feature in your story
+          {$_('gallery.empty.description')}
         </p>
       </div>
     {:else}
@@ -408,25 +417,27 @@
               <div class="text-surface-400 space-y-1">
                 {#if image.model}
                   <p class="truncate">
-                    <span class="text-surface-500 font-medium">Model:</span>
+                    <span class="text-surface-500 font-medium">{$_('gallery.metadata.model')}:</span
+                    >
                     {image.model}
                   </p>
                 {/if}
                 {#if image.styleId}
                   <p class="truncate">
-                    <span class="text-surface-500 font-medium">Style:</span>
+                    <span class="text-surface-500 font-medium">{$_('gallery.metadata.style')}:</span
+                    >
                     {image.styleId}
                   </p>
                 {/if}
                 {#if image.width && image.height}
                   <p>
-                    <span class="text-surface-500 font-medium">Size:</span>
+                    <span class="text-surface-500 font-medium">{$_('gallery.metadata.size')}:</span>
                     {image.width}×{image.height}
                   </p>
                 {/if}
                 {#if image.generationMode}
                   <p class="capitalize">
-                    <span class="text-surface-500 font-medium">Mode:</span>
+                    <span class="text-surface-500 font-medium">{$_('gallery.metadata.mode')}:</span>
                     {image.generationMode}
                   </p>
                 {/if}
@@ -445,8 +456,14 @@
         <AlertCircle class="mt-0.5 h-4 w-4 flex-shrink-0" />
         <p>
           {selectedImageIds.size > 0
-            ? `${selectedImageIds.size} image${selectedImageIds.size > 1 ? 's' : ''} selected for download`
-            : `${images.length} image${images.length > 1 ? 's' : ''} available. Select images to download.`}
+            ? selectedImageIds.size === 1
+              ? $_('gallery.footer.oneSelectedForDownload')
+              : $_('gallery.footer.selectedForDownload', {
+                  values: { count: selectedImageIds.size },
+                })
+            : images.length === 1
+              ? $_('gallery.footer.oneAvailable')
+              : $_('gallery.footer.available', { values: { count: images.length } })}
         </p>
       </div>
     </div>
@@ -469,7 +486,7 @@
           onclick={previousImage}
           disabled={lightboxImageIndex === 0}
           class="bg-surface-800/80 hover:bg-surface-700 text-surface-300 absolute top-1/2 left-2 -translate-y-1/2 rounded-full p-2 transition-colors hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
-          title="Previous (←)"
+          title={$_('gallery.navigation.previous')}
         >
           <ChevronLeft class="h-5 w-5" />
         </button>
@@ -490,7 +507,8 @@
                 <div
                   class="border-surface-400 border-t-accent-400 h-6 w-6 animate-spin rounded-full border-2"
                 ></div>
-                <span class="text-surface-300 text-sm">Regenerating...</span>
+                <span class="text-surface-300 text-sm">{$_('gallery.imageModal.regenerating')}</span
+                >
               </div>
             </div>
           {/if}
@@ -503,7 +521,7 @@
           onclick={nextImage}
           disabled={lightboxImageIndex === images.length - 1}
           class="bg-surface-800/80 hover:bg-surface-700 text-surface-300 absolute top-1/2 right-2 -translate-y-1/2 rounded-full p-2 transition-colors hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
-          title="Next (→)"
+          title={$_('gallery.navigation.next')}
         >
           <ChevronRight class="h-5 w-5" />
         </button>
@@ -513,10 +531,10 @@
     <!-- Edit area -->
     <div class="bg-surface-900 border-surface-800 border-t px-4 py-3">
       <!-- svelte-ignore a11y_label_has_associated_control -->
-      <label class="text-surface-400 mb-1.5 block text-xs">Image Prompt</label>
+      <label class="text-surface-400 mb-1.5 block text-xs">{$_('gallery.imageModal.prompt')}</label>
       <Textarea
         bind:value={editingImagePrompt}
-        placeholder="Describe the image you want to generate..."
+        placeholder={$_('gallery.imageModal.promptPlaceholder')}
         rows={3}
         class="resize-none text-sm"
       />
@@ -529,16 +547,18 @@
       <!-- Counter -->
       <div class="text-surface-400 text-sm tabular-nums">
         {#if images.length > 1}
-          {lightboxImageIndex + 1} of {images.length}
+          {$_('gallery.imageModal.of', {
+            values: { current: lightboxImageIndex + 1, total: images.length },
+          })}
         {:else}
-          1 image
+          {$_('gallery.imageModal.oneImage')}
         {/if}
       </div>
 
       <!-- Actions -->
       <div class="flex items-center gap-2">
         <Button variant="outline" size="sm" onclick={closeLightbox} class="h-8 text-xs">
-          Close
+          {$_('gallery.buttons.close')}
         </Button>
         {#if lightboxImage}
           <Button
@@ -561,7 +581,7 @@
             {:else}
               <RotateCcw class="h-3.5 w-3.5" />
             {/if}
-            Regenerate
+            {$_('gallery.imageModal.regenerate')}
           </Button>
         {/if}
       </div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { story } from '$lib/stores/story.svelte'
   import { ui } from '$lib/stores/ui.svelte'
   import { Sword, MessageCircle, Search, MapPin, Loader2 } from 'lucide-svelte'
@@ -52,7 +53,7 @@
 {#if ui.actionChoicesLoading}
   <div class="text-muted-foreground flex items-center justify-center gap-2 py-4">
     <Loader2 class="h-4 w-4 animate-spin" />
-    <span class="text-sm">Generating options...</span>
+    <span class="text-sm">{$_('actionChoices.generating')}</span>
   </div>
 {:else if ui.actionChoices.length > 0}
   <div
@@ -61,9 +62,9 @@
       : 'bg-card'}"
   >
     <div class="text-muted-foreground mb-2 flex items-center gap-2 text-xs tracking-wide uppercase">
-      <span>What do you do?</span>
+      <span>{$_('actionChoices.title')}</span>
       <span class="text-muted-foreground/60 hidden sm:inline"
-        >(Press 1-{ui.actionChoices.length} to quick select)</span
+        >{$_('actionChoices.quickSelectHint', { values: { count: ui.actionChoices.length } })}</span
       >
     </div>
 

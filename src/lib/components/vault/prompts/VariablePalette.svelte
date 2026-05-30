@@ -4,6 +4,7 @@
   import * as Popover from '$lib/components/ui/popover'
   import * as Command from '$lib/components/ui/command'
   import { Braces } from 'lucide-svelte'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     customVariables: CustomVariable[]
@@ -31,7 +32,7 @@
         <button
           {...props}
           type="button"
-          title="Insert Variable"
+          title={$_('vault.promptPacks.insertVariable')}
           class="text-muted-foreground hover:text-foreground hover:bg-muted inline-flex h-8 w-8 items-center justify-center rounded-md transition-colors"
         >
           <Braces class="h-3.5 w-3.5" />
@@ -43,18 +44,18 @@
           class="text-muted-foreground hover:text-foreground hover:bg-muted inline-flex min-h-11 items-center gap-1.5 rounded-md px-3 py-2 text-sm transition-colors"
         >
           <Braces class="h-4 w-4" />
-          <span class="hidden sm:inline">Insert Variable</span>
+          <span class="hidden sm:inline">{$_('vault.promptPacks.insertVariable')}</span>
         </button>
       {/if}
     {/snippet}
   </Popover.Trigger>
   <Popover.Content class="w-80 p-0" align="start" side="bottom">
     <Command.Root>
-      <Command.Input placeholder="Search variables..." />
+      <Command.Input placeholder={$_('vault.promptPacks.searchVariables')} />
       <Command.List class="max-h-75">
-        <Command.Empty>No variable found.</Command.Empty>
+        <Command.Empty>{$_('vault.promptPacks.noVariableFound')}</Command.Empty>
 
-        <Command.Group heading="System">
+        <Command.Group heading={$_('vault.promptPacks.system')}>
           {#each systemVars as v (v.name)}
             <Command.Item value={v.name} onSelect={() => handleSelect(v.name)}>
               <span class="font-mono text-xs">{v.name}</span>
@@ -65,7 +66,7 @@
 
         <Command.Separator />
 
-        <Command.Group heading="Runtime">
+        <Command.Group heading={$_('vault.promptPacks.runtime')}>
           {#each runtimeVars as v (v.name)}
             <Command.Item value={v.name} onSelect={() => handleSelect(v.name)}>
               <span class="font-mono text-xs">{v.name}</span>
@@ -76,7 +77,7 @@
 
         {#if customVariables.length > 0}
           <Command.Separator />
-          <Command.Group heading="Custom">
+          <Command.Group heading={$_('vault.promptPacks.custom')}>
             {#each customVariables as v (v.id)}
               <Command.Item value={v.variableName} onSelect={() => handleSelect(v.variableName)}>
                 <span class="font-mono text-xs">{v.variableName}</span>

@@ -9,6 +9,7 @@
   import { Separator } from '$lib/components/ui/separator'
   import * as Select from '$lib/components/ui/select'
   import { ChevronDown, ChevronUp, Trash2, Plus, ArrowUp, ArrowDown, X } from 'lucide-svelte'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     variable: CustomVariable
@@ -50,20 +51,20 @@
 
   let nameError = $derived(
     editName.length === 0
-      ? 'Variable name is required'
+      ? $_('vault.promptPacks.variableNameRequired')
       : !VARIABLE_NAME_REGEX.test(editName)
-        ? 'Lowercase letters, numbers, and underscores only (e.g. my_variable)'
+        ? $_('vault.promptPacks.variableNameHelp')
         : null,
   )
 
   let canSave = $derived(!nameError && editName.length > 0 && editDisplayName.length > 0)
 
-  const TYPE_LABELS: Record<CustomVariableType, string> = {
-    text: 'Text',
-    textarea: 'Textarea',
-    number: 'Number',
-    boolean: 'Boolean',
-    enum: 'Enum',
+  const TYPE_LABELS: Record<CustomVariableType, () => string> = {
+    text: () => $_('vault.promptPacks.text'),
+    textarea: () => $_('vault.promptPacks.textarea'),
+    number: () => $_('vault.promptPacks.number'),
+    boolean: () => $_('vault.promptPacks.boolean'),
+    enum: () => $_('vault.promptPacks.enum'),
   }
 
   const VARIABLE_TYPES: CustomVariableType[] = ['text', 'textarea', 'number', 'boolean', 'enum']
@@ -187,47 +188,42 @@
   {#if expanded}
     <Separator />
     <div class="space-y-4 px-4 py-4">
-      <!-- Variable Name -->
       <div class="space-y-2">
-        <Label>Variable Name</Label>
+        <Label>{$_('vault.promptPacks.variableName')}</Label>
         <Input bind:value={editName} placeholder="my_variable" class="font-mono text-sm" />
         {#if nameError}
           <p class="text-destructive text-xs">{nameError}</p>
         {/if}
       </div>
 
-      <!-- Display Name -->
       <div class="space-y-1.5">
-        <Label>Display Name</Label>
+        <Label>{$_('vault.promptPacks.displayName')}</Label>
         <Input bind:value={editDisplayName} placeholder="My Variable" />
       </div>
 
-      <!-- Description -->
       <div class="space-y-1.5">
-        <Label>Description</Label>
+        <Label>{$_('vault.promptPacks.description')}</Label>
         <Input bind:value={editDescription} placeholder="Help text shown in wizard" />
       </div>
 
-      <!-- Type -->
       <div class="space-y-1.5">
-        <Label>Type</Label>
+        <Label>{$_('vault.promptPacks.type')}</Label>
         <Select.Root type="single" value={editType} onValueChange={handleTypeChange}>
           <Select.Trigger class="h-9 w-full">
-            {TYPE_LABELS[editType]}
+            {TYPE_LABELS[editType]()}
           </Select.Trigger>
           <Select.Content>
             {#each VARIABLE_TYPES as vtype (vtype)}
-              <Select.Item value={vtype} label={TYPE_LABELS[vtype]}>
-                {TYPE_LABELS[vtype]}
+              <Select.Item value={vtype} label={TYPE_LABELS[vtype]()}>
+                {TYPE_LABELS[vtype]()}
               </Select.Item>
             {/each}
           </Select.Content>
         </Select.Root>
       </div>
 
-      <!-- Default Value -->
       <div class="space-y-1.5">
-        <Label>Default Value</Label>
+        <Label>{$_('vault.promptPacks.defaultValue')}</Label>
         {#if editType === 'text'}
           <Input bind:value={editDefault} placeholder="Default text value" />
         {:else if editType === 'textarea'}
@@ -243,7 +239,8 @@
           {#if editEnumOptions.length > 0}
             <Select.Root type="single" value={editDefault} onValueChange={(v) => (editDefault = v)}>
               <Select.Trigger class="h-9 w-full">
-                {editEnumOptions.find((o) => o.value === editDefault)?.label || 'Select default'}
+                {editEnumOptions.find((o) => o.value === editDefault)?.label ||
+                  $_('vault.promptPacks.selectDefault')}
               </Select.Trigger>
               <Select.Content>
                 {#each editEnumOptions as opt (opt.value)}
@@ -256,82 +253,82 @@
               </Select.Content>
             </Select.Root>
           {:else}
-            <p class="text-muted-foreground text-xs">Add enum options first</p>
+            <p class="text-muted-foreground text-xs">
+              {$_('vault.promptPacks.addEnumOptionsFirst')}
+            </p>
           {/if}
         {/if}
       </div>
 
-      <!-- Enum Options Editor -->
-      {#if editType === 'enum'}
+      <div class="space-y-2">
+        <Label>{$_('vault.promptPacks.enumOptions')}</Label>
         <div class="space-y-2">
-          <Label>Enum Options</Label>
-          <div class="space-y-2">
-            {#each editEnumOptions as opt, i (i)}
-              <div class="flex items-center gap-2">
-                <Input
-                  value={opt.label}
-                  oninput={(e) => updateEnumOption(i, 'label', e.currentTarget.value)}
-                  placeholder="Label"
-                  class="h-8 flex-1 text-xs"
-                />
-                <Input
-                  value={opt.value}
-                  oninput={(e) => updateEnumOption(i, 'value', e.currentTarget.value)}
-                  placeholder="Value"
-                  class="h-8 flex-1 font-mono text-xs"
-                />
-                <div class="flex shrink-0 gap-0.5">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    class="h-7 w-7"
-                    disabled={i === 0}
-                    onclick={() => moveEnumOption(i, 'up')}
-                  >
-                    <ArrowUp class="h-3 w-3" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    class="h-7 w-7"
-                    disabled={i === editEnumOptions.length - 1}
-                    onclick={() => moveEnumOption(i, 'down')}
-                  >
-                    <ArrowDown class="h-3 w-3" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    class="text-destructive h-7 w-7"
-                    onclick={() => removeEnumOption(i)}
-                  >
-                    <X class="h-3 w-3" />
-                  </Button>
-                </div>
+          {#each editEnumOptions as opt, i (i)}
+            <div class="flex items-center gap-2">
+              <Input
+                value={opt.label}
+                oninput={(e) => updateEnumOption(i, 'label', e.currentTarget.value)}
+                placeholder="Label"
+                class="h-8 flex-1 text-xs"
+              />
+              <Input
+                value={opt.value}
+                oninput={(e) => updateEnumOption(i, 'value', e.currentTarget.value)}
+                placeholder="Value"
+                class="h-8 flex-1 font-mono text-xs"
+              />
+              <div class="flex shrink-0 gap-0.5">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  class="h-7 w-7"
+                  disabled={i === 0}
+                  onclick={() => moveEnumOption(i, 'up')}
+                >
+                  <ArrowUp class="h-3 w-3" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  class="h-7 w-7"
+                  disabled={i === editEnumOptions.length - 1}
+                  onclick={() => moveEnumOption(i, 'down')}
+                >
+                  <ArrowDown class="h-3 w-3" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  class="text-destructive h-7 w-7"
+                  onclick={() => removeEnumOption(i)}
+                >
+                  <X class="h-3 w-3" />
+                </Button>
               </div>
-            {/each}
-          </div>
-          <Button variant="outline" size="sm" class="h-7 gap-1 text-xs" onclick={addEnumOption}>
-            <Plus class="h-3 w-3" />
-            Add Option
-          </Button>
+            </div>
+          {/each}
         </div>
-      {/if}
+        <Button variant="outline" size="sm" class="h-7 gap-1 text-xs" onclick={addEnumOption}>
+          <Plus class="h-3 w-3" />
+          {$_('vault.promptPacks.addOption')}
+        </Button>
+      </div>
 
       <Separator />
 
-      <!-- Action Buttons -->
       <div class="flex items-center justify-between">
         {#if showDeleteConfirm}
           <div class="flex items-center gap-2">
-            <span class="text-destructive text-xs">Delete this variable?</span>
+            <span class="text-destructive text-xs"
+              >{$_('vault.promptPacks.deleteVariableConfirm')}</span
+            >
             <Button
               variant="destructive"
               size="sm"
               class="h-7 text-xs"
               onclick={() => onDelete(variable.id)}
             >
-              Confirm
+              {$_('common.confirm')}
             </Button>
             <Button
               variant="ghost"
@@ -339,7 +336,7 @@
               class="h-7 text-xs"
               onclick={() => (showDeleteConfirm = false)}
             >
-              Cancel
+              {$_('common.cancel')}
             </Button>
           </div>
         {:else}
@@ -350,16 +347,16 @@
             onclick={() => (showDeleteConfirm = true)}
           >
             <Trash2 class="h-3 w-3" />
-            Delete
+            {$_('common.delete')}
           </Button>
         {/if}
 
         <div class="flex gap-2">
           <Button variant="outline" size="sm" class="h-7 text-xs" onclick={handleCancel}>
-            Cancel
+            {$_('common.cancel')}
           </Button>
           <Button size="sm" class="h-7 text-xs" disabled={!canSave} onclick={handleSave}>
-            Save
+            {$_('vault.promptPacks.save')}
           </Button>
         </div>
       </div>

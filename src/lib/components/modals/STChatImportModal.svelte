@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { ui } from '$lib/stores/ui.svelte'
   import { story } from '$lib/stores/story.svelte'
   import { parseSTChat, type STChatParseResult } from '$lib/services/stChatImporter'

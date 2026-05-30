@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { characterVault } from '$lib/stores/characterVault.svelte'
   import { lorebookVault } from '$lib/stores/lorebookVault.svelte'
   import { scenarioVault } from '$lib/stores/scenarioVault.svelte'
@@ -43,21 +44,21 @@
     {
       character: {
         icon: User,
-        emptyTitle: 'No characters in vault',
-        emptyDesc: 'Create or import characters in the vault to use them here.',
-        searchPlaceholder: 'Search characters...',
+        emptyTitle: $_('browser.noCharactersInVault'),
+        emptyDesc: $_('browser.createOrImportCharacters'),
+        searchPlaceholder: $_('browser.searchCharacters'),
       },
       lorebook: {
         icon: Archive,
-        emptyTitle: 'No lorebooks in vault',
-        emptyDesc: 'Create or import lorebooks in the vault to use them here.',
-        searchPlaceholder: 'Search lorebooks...',
+        emptyTitle: $_('browser.noLorebooksInVault'),
+        emptyDesc: $_('browser.createOrImportLorebooks'),
+        searchPlaceholder: $_('browser.searchLorebooks'),
       },
       scenario: {
         icon: MapPin,
-        emptyTitle: 'No scenarios in vault',
-        emptyDesc: 'Create or import scenarios in the vault to use them here.',
-        searchPlaceholder: 'Search scenarios...',
+        emptyTitle: $_('browser.noScenariosInVault'),
+        emptyDesc: $_('browser.createOrImportScenarios'),
+        searchPlaceholder: $_('browser.searchScenarios'),
       },
     }[type],
   )

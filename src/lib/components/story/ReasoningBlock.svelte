@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { slide } from 'svelte/transition'
   import { parseMarkdown } from '$lib/utils/markdown'
   import { ui } from '$lib/stores/ui.svelte'
@@ -63,9 +64,9 @@
     disabled={!isToggleEnabled}
     title={isToggleEnabled
       ? isOpen
-        ? 'Hide thinking'
-        : 'Show thinking'
-      : 'Reasoning display is disabled in settings'}
+        ? $_('reasoning.hideThinking')
+        : $_('reasoning.showThinking')
+      : $_('reasoning.disabled')}
   >
     <Brain class={cn('h-3.5 w-3.5', isReasoningPhase && 'animate-pulse')} />
     {#if isStreaming}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { story } from '$lib/stores/story.svelte'
   import { ui } from '$lib/stores/ui.svelte'
   import {
@@ -188,13 +189,13 @@
 <div class="flex flex-col gap-1 pb-12">
   <!-- Header -->
   <div class="mb-2 flex items-center justify-between">
-    <h3 class="text-foreground text-xl font-bold tracking-tight">Story Beats</h3>
+    <h3 class="text-foreground text-xl font-bold tracking-tight">{$_('quest.panelTitle')}</h3>
     <Button
       variant="text"
       size="icon"
       class="text-muted-foreground hover:text-foreground h-6 w-6"
       onclick={() => (showAddForm = !showAddForm)}
-      title="Add story beat"
+      title={$_('quest.addBeat')}
     >
       <Plus class="h-6! w-6!" />
     </Button>
@@ -204,7 +205,12 @@
   {#if showAddForm}
     <div class="border-border bg-card mb-2 rounded-lg border p-3 shadow-sm">
       <div class="space-y-3">
-        <Input type="text" bind:value={newTitle} placeholder="Title" class="h-8 text-sm" />
+        <Input
+          type="text"
+          bind:value={newTitle}
+          placeholder={$_('quest.title')}
+          class="h-8 text-sm"
+        />
 
         <Select.Root type="single" bind:value={newType}>
           <Select.Trigger class="h-8 w-full text-xs">
@@ -213,26 +219,28 @@
             </div>
           </Select.Trigger>
           <Select.Content>
-            <Select.Item value="quest" label="Quest" />
-            <Select.Item value="milestone" label="Milestone" />
-            <Select.Item value="revelation" label="Revelation" />
-            <Select.Item value="event" label="Event" />
-            <Select.Item value="plot_point" label="Plot Point" />
+            <Select.Item value="quest" label={$_('quest.quest')} />
+            <Select.Item value="milestone" label={$_('quest.milestone')} />
+            <Select.Item value="revelation" label={$_('quest.revelation')} />
+            <Select.Item value="event" label={$_('quest.event')} />
+            <Select.Item value="plot_point" label={$_('quest.plotPoint')} />
           </Select.Content>
         </Select.Root>
 
         <Textarea
           bind:value={newDescription}
-          placeholder="Description (optional)"
+          placeholder={$_('common.description')}
           class="min-h-15 resize-none text-sm"
           rows={2}
         />
       </div>
       <div class="mt-3 flex justify-end gap-2">
         <Button variant="text" size="sm" class="h-7" onclick={() => (showAddForm = false)}>
-          Cancel
+          {$_('common.cancel')}
         </Button>
-        <Button size="sm" class="h-7" onclick={addBeat} disabled={!newTitle.trim()}>Add</Button>
+        <Button size="sm" class="h-7" onclick={addBeat} disabled={!newTitle.trim()}>
+          {$_('common.add')}
+        </Button>
       </div>
     </div>
   {/if}
@@ -241,7 +249,7 @@
   {#if story.pendingQuests.length > 0}
     <div class="mb-4 flex flex-col gap-2">
       <h4 class="text-muted-foreground pl-1 text-xs font-semibold tracking-wider uppercase">
-        Active
+        {$_('quest.active')}
       </h4>
       {#each story.pendingQuests as beat (beat.id)}
         {@const statusConfig = getStatusConfig(beat.status)}

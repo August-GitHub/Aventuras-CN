@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { story } from '$lib/stores/story.svelte'
   import { ui } from '$lib/stores/ui.svelte'
   import { settings, STORY_WIDTH_OPTIONS } from '$lib/stores/settings.svelte'
@@ -335,8 +336,8 @@
       {#if story.entries.length === 0 && !ui.isStreaming}
         <EmptyState
           icon={BookOpen}
-          title="Your adventure begins here..."
-          description="Type an action below to start your story."
+          title={$_('story.emptyState.title')}
+          description={$_('story.emptyState.description')}
           class="py-12 sm:py-20"
         />
       {:else}
@@ -344,15 +345,19 @@
         {#if displayedEntries.hiddenAtTop > 0}
           <div class="border-border mb-3 flex flex-col items-center gap-2 border-b py-3">
             <p class="text-muted-foreground text-sm">
-              {displayedEntries.hiddenAtTop} earlier entries hidden for performance
+              {$_('story.entries.earlierHidden', {
+                values: { count: displayedEntries.hiddenAtTop },
+              })}
             </p>
             <div class="flex flex-row gap-2">
               <Button variant="secondary" size="sm" class="h-7 text-xs" onclick={showMoreAbove}>
-                Show {Math.min(LOAD_MORE_BATCH, displayedEntries.hiddenAtTop)} more
+                {$_('story.entries.showMore', {
+                  values: { count: Math.min(LOAD_MORE_BATCH, displayedEntries.hiddenAtTop) },
+                })}
               </Button>
               {#if !settings.uiSettings.showScrollToTop}
                 <Button variant="secondary" size="sm" class="h-7 text-xs" onclick={scrollToTop}>
-                  Go to top
+                  {$_('story.entries.goToTop')}
                 </Button>
               {/if}
             </div>
@@ -387,15 +392,19 @@
         {#if displayedEntries.hiddenAtBottom > 0}
           <div class="border-border mt-3 flex flex-col items-center gap-2 border-t py-3">
             <p class="text-muted-foreground text-sm">
-              {displayedEntries.hiddenAtBottom} later entries hidden for performance
+              {$_('story.entries.laterHidden', {
+                values: { count: displayedEntries.hiddenAtBottom },
+              })}
             </p>
             <div class="flex flex-row gap-2">
               <Button variant="secondary" size="sm" class="h-7 text-xs" onclick={showMoreBelow}>
-                Show {Math.min(LOAD_MORE_BATCH, displayedEntries.hiddenAtBottom)} more
+                {$_('story.entries.showMore', {
+                  values: { count: Math.min(LOAD_MORE_BATCH, displayedEntries.hiddenAtBottom) },
+                })}
               </Button>
               {#if !settings.uiSettings.showScrollToBottom}
                 <Button variant="secondary" size="sm" class="h-7 text-xs" onclick={scrollToBottom}>
-                  Go to bottom
+                  {$_('story.entries.goToBottom')}
                 </Button>
               {/if}
             </div>

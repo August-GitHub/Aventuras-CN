@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { tagStore } from '$lib/stores/tags.svelte'
   import type { VaultType } from '$lib/types'
   import { Filter, Check, X } from 'lucide-svelte'
@@ -52,7 +53,7 @@
         {...props}
       >
         <Filter class="h-3 w-3" />
-        <span class="hidden sm:inline">Tags</span>
+        <span class="hidden sm:inline">{$_('vault.tags')}</span>
         {#if selectedTags.length > 0}
           <Badge variant="secondary" class="h-5 px-0 text-sm">
             {selectedTags.length}
@@ -62,9 +63,8 @@
     {/snippet}
   </Popover.Trigger>
   <Popover.Content class="w-70 p-0" align="end">
-    <!-- Logic Toggle Header -->
     <div class="flex items-center justify-between border-b px-3 py-2">
-      <span class="text-muted-foreground text-xs font-medium">Filter Logic:</span>
+      <span class="text-muted-foreground text-xs font-medium">{$_('vault.filterLogic')}:</span>
       <div class="bg-muted flex items-center rounded-md p-0.5">
         <button
           class={cn(
@@ -93,9 +93,9 @@
 
     <!-- Command List -->
     <Command.Root>
-      <Command.Input placeholder="Filter tags..." class="h-9" />
+      <Command.Input placeholder={$_('vault.filterTags')} class="h-9" />
       <Command.List class="max-h-[200px]">
-        <Command.Empty>No tags found.</Command.Empty>
+        <Command.Empty>{$_('vault.noTagsFound')}</Command.Empty>
         <Command.Group>
           {#each availableTags as tag, i (i)}
             <Command.Item
@@ -120,7 +120,6 @@
       </Command.List>
     </Command.Root>
 
-    <!-- Clear Footer -->
     {#if selectedTags.length > 0}
       <div class="border-t p-2">
         <Button
@@ -130,7 +129,7 @@
           onclick={clearTags}
         >
           <X class="mr-2 h-3 w-3" />
-          Clear Filters
+          {$_('vault.clearFilters')}
         </Button>
       </div>
     {/if}

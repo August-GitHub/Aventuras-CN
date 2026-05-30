@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import type { VaultScenarioInput } from '$lib/services/ai/sdk/schemas/vault'
   import type { VaultCharacter } from '$lib/types'
   import { characterVault } from '$lib/stores/characterVault.svelte'
@@ -130,7 +131,7 @@
       <Tabs.Content value="general" class="mt-0 space-y-6">
         <div class="space-y-4">
           <div class="space-y-2 {changed('name')}">
-            <Label for="name">Scenario Name</Label>
+            <Label for="name">{$_('scenario.scenarioName')}</Label>
             <Input
               id="name"
               bind:value={data.name}
@@ -140,7 +141,7 @@
           </div>
 
           <div class="space-y-2 {changed('description')}">
-            <Label for="description">Description</Label>
+            <Label for="description">{$_('scenario.description')}</Label>
             <Textarea
               id="description"
               value={data.description ?? ''}
@@ -149,23 +150,23 @@
                 handleInput()
               }}
               rows={2}
-              placeholder="Brief overview shown on the card..."
+              placeholder={$_('scenario.briefOverview')}
               class="resize-none"
             />
           </div>
 
           <div class="space-y-2 {changed('primaryCharacterName')}">
-            <Label for="protagonist">Protagonist Name</Label>
+            <Label for="protagonist">{$_('scenario.protagonistName')}</Label>
             <Input
               id="protagonist"
               bind:value={data.primaryCharacterName}
               oninput={handleInput}
-              placeholder="Protagonist name"
+              placeholder={$_('scenario.protagonist')}
             />
           </div>
 
           <div class="space-y-2 {changed('settingSeed')}">
-            <Label for="seed">Setting Seed</Label>
+            <Label for="seed">{$_('scenario.settingSeed')}</Label>
             <div class="relative">
               <Textarea
                 id="seed"
@@ -173,18 +174,18 @@
                 oninput={handleInput}
                 rows={10}
                 class="min-h-[200px] resize-y font-mono text-sm leading-relaxed"
-                placeholder="Detailed world setting..."
+                placeholder={$_('scenario.detailedWorldSetting')}
               />
               <div
                 class="text-muted-foreground bg-background/80 absolute right-2 bottom-2 rounded px-2 py-0.5 text-xs"
               >
-                Markdown supported
+                {$_('scenario.markdownSupported')}
               </div>
             </div>
           </div>
 
           <div class="space-y-2 {changed('tags')}">
-            <Label>Tags</Label>
+            <Label>{$_('scenario.tags')}</Label>
             <TagInput
               value={data.tags}
               type="scenario"
@@ -192,7 +193,7 @@
                 data.tags = t
                 handleInput()
               }}
-              placeholder="Add tags..."
+              placeholder={$_('common.search')}
             />
           </div>
         </div>
@@ -202,7 +203,9 @@
         <div
           class="bg-background sticky top-0 z-10 mb-4 flex items-center justify-between border-b pt-2 pb-4"
         >
-          <h3 class="text-muted-foreground text-sm font-medium">Supporting Characters</h3>
+          <h3 class="text-muted-foreground text-sm font-medium">
+            {$_('scenario.supportingCharacters')}
+          </h3>
           <div class="flex items-center gap-2">
             <Button
               variant="outline"
@@ -213,11 +216,11 @@
               }}
             >
               <Users class="h-3.5 w-3.5 " />
-              Import
+              {$_('scenario.import')}
             </Button>
             <Button size="sm" onclick={addNpc}>
               <Plus class="h-3.5 w-3.5 " />
-              New NPC
+              {$_('scenario.newNpc')}
             </Button>
           </div>
         </div>
@@ -228,8 +231,8 @@
               class="text-muted-foreground bg-muted/30 flex flex-col items-center justify-center rounded-lg border border-dashed p-8"
             >
               <Users class="mb-2 h-10 w-10 opacity-20" />
-              <p>No NPCs defined yet.</p>
-              <Button variant="link" onclick={addNpc}>Create your first NPC</Button>
+              <p>{$_('scenario.noNpcsYet')}</p>
+              <Button variant="link" onclick={addNpc}>{$_('scenario.createFirstNpc')}</Button>
             </div>
           {:else}
             {#each data.npcs as npc, i (i)}
@@ -248,10 +251,10 @@
                       </div>
                       <div class="flex-1">
                         <div class="text-sm font-medium">
-                          {npc.name || 'Unnamed NPC'}
+                          {npc.name || $_('scenario.unnamedNpc')}
                         </div>
                         <div class="text-muted-foreground text-xs">
-                          {npc.role || 'No role'}
+                          {npc.role || $_('scenario.noRole')}
                         </div>
                       </div>
                     </Collapsible.Trigger>
@@ -269,17 +272,17 @@
                     <div class="bg-muted/10 mt-2 space-y-4 border-t p-4 px-4 pt-0 pb-4">
                       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div class="space-y-2">
-                          <Label class="text-xs">Name</Label>
+                          <Label class="text-xs">{$_('scenario.name')}</Label>
                           <Input bind:value={npc.name} oninput={handleInput} class="h-8" />
                         </div>
                         <div class="space-y-2">
-                          <Label class="text-xs">Role</Label>
+                          <Label class="text-xs">{$_('scenario.role')}</Label>
                           <Input bind:value={npc.role} oninput={handleInput} class="h-8" />
                         </div>
                       </div>
 
                       <div class="space-y-2">
-                        <Label class="text-xs">Description</Label>
+                        <Label class="text-xs">{$_('scenario.description')}</Label>
                         <Textarea
                           bind:value={npc.description}
                           oninput={handleInput}
@@ -290,11 +293,11 @@
 
                       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div class="space-y-2">
-                          <Label class="text-xs">Relationship</Label>
+                          <Label class="text-xs">{$_('scenario.relationship')}</Label>
                           <Input bind:value={npc.relationship} oninput={handleInput} class="h-8" />
                         </div>
                         <div class="space-y-2">
-                          <Label class="text-xs">Traits</Label>
+                          <Label class="text-xs">{$_('scenario.traits')}</Label>
                           <Input
                             value={npc.traits.join(', ')}
                             oninput={(e) => {
@@ -305,7 +308,7 @@
                               handleInput()
                             }}
                             class="h-8"
-                            placeholder="Comma separated..."
+                            placeholder={$_('scenario.commaSeparated')}
                           />
                         </div>
                       </div>
@@ -320,7 +323,7 @@
 
       <Tabs.Content value="opening" class="mt-0 space-y-6">
         <div class="space-y-2 {changed('firstMessage')}">
-          <Label>First Message</Label>
+          <Label>{$_('scenario.firstMessage')}</Label>
           <Textarea
             value={data.firstMessage ?? ''}
             oninput={(e) => {
@@ -329,16 +332,17 @@
             }}
             rows={6}
             class="font-mono text-sm leading-relaxed"
-            placeholder="The opening scene..."
+            placeholder={$_('scenario.theOpeningScene')}
           />
-          <p class="text-muted-foreground text-[0.8rem]">Shown when the story begins.</p>
+          <p class="text-muted-foreground text-[0.8rem]">{$_('scenario.shownWhenStoryBegins')}</p>
         </div>
 
         <div class="space-y-4 {changed('alternateGreetings')}">
           <div class="flex items-center justify-between">
-            <Label>Alternate Greetings</Label>
+            <Label>{$_('scenario.alternateGreetings')}</Label>
             <Button variant="outline" size="sm" onclick={addGreeting}>
-              <Plus class="h-3.5 w-3.5 " /> Add
+              <Plus class="h-3.5 w-3.5 " />
+              {$_('scenario.add')}
             </Button>
           </div>
 
@@ -354,7 +358,7 @@
                 }}
                 rows={3}
                 class="pr-10 font-mono text-sm"
-                placeholder={`Variation ${i + 1}...`}
+                placeholder={$_('scenario.variation', { values: { index: i + 1 } })}
               />
               <Button
                 variant="ghost"
@@ -369,7 +373,7 @@
 
           {#if (data.alternateGreetings ?? []).length === 0}
             <p class="text-muted-foreground py-4 text-center text-sm italic">
-              No variations added.
+              {$_('scenario.noVariationsAdded')}
             </p>
           {/if}
         </div>
@@ -386,13 +390,17 @@
   >
     <ResponsiveModal.Content class="flex h-[500px] flex-col p-0 sm:max-w-md">
       <ResponsiveModal.Header class="border-b px-4 py-3">
-        <h3 class="font-semibold">Import Character</h3>
+        <h3 class="font-semibold">{$_('scenario.importCharacter')}</h3>
       </ResponsiveModal.Header>
 
       <div class="border-b p-4">
         <div class="relative">
           <Search class="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-          <Input bind:value={charSearchQuery} placeholder="Search characters..." class="pl-9" />
+          <Input
+            bind:value={charSearchQuery}
+            placeholder={$_('scenario.searchCharacters')}
+            class="pl-9"
+          />
         </div>
       </div>
 
@@ -400,7 +408,7 @@
         {#if filteredCharacters.length === 0}
           <div class="text-muted-foreground flex h-full flex-col items-center justify-center">
             <Users class="mb-2 h-8 w-8 opacity-50" />
-            <p>No characters found</p>
+            <p>{$_('scenario.noCharactersFound')}</p>
           </div>
         {:else}
           {#each filteredCharacters as char (char.id)}

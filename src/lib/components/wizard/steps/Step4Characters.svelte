@@ -1,5 +1,6 @@
 <script lang="ts">
   import { slide } from 'svelte/transition'
+  import { _ } from 'svelte-i18n'
   import {
     Archive,
     Loader2,

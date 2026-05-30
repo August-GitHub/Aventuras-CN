@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import type { VaultCharacterInput } from '$lib/services/ai/sdk/schemas/vault'
   import { descriptorsToString, stringToDescriptors } from '$lib/utils/visualDescriptors'
   import { X, User, ImageUp, Loader2 } from 'lucide-svelte'
@@ -76,7 +77,7 @@
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      error = 'Please select an image file'
+      error = $_('character.pleaseSelectImage')
       return
     }
 
@@ -91,10 +92,10 @@
       uploadingPortrait = false
     }
     reader.onerror = () => {
-      error = 'Failed to read image file'
+      error = $_('character.failedToReadImage')
       uploadingPortrait = false
     }
-    reader.readAsDataURL(file)
+    reader.readAsDataUrl(file)
     input.value = ''
   }
 
@@ -117,24 +118,24 @@
 
   <!-- Name -->
   <div class="space-y-2 {changed('name')}">
-    <Label for="name">Name *</Label>
+    <Label for="name">{$_('character.name')} *</Label>
     <Input
       id="name"
       type="text"
       bind:value={data.name}
       oninput={handleInput}
-      placeholder="Character name"
+      placeholder={$_('character.characterName')}
     />
   </div>
 
   <!-- Description -->
   <div class="space-y-2 {changed('description')}">
-    <Label for="description">Description</Label>
+    <Label for="description">{$_('character.description')}</Label>
     <Textarea
       id="description"
       bind:value={() => data.description ?? '', (v) => (data.description = v || null)}
       oninput={handleInput}
-      placeholder="Brief description of character"
+      placeholder={$_('character.briefDescription')}
       rows={3}
       class="resize-none"
     />
@@ -142,20 +143,20 @@
 
   <!-- Traits -->
   <div class="space-y-2 {changed('traits')}">
-    <Label for="traits">Traits</Label>
+    <Label for="traits">{$_('character.traits')}</Label>
     <Input
       id="traits"
       type="text"
       bind:value={traitsStr}
       oninput={handleInput}
-      placeholder="Brave, Curious, Stubborn (comma-separated)"
+      placeholder={$_('character.commaSeparatedTraits')}
     />
-    <p class="text-muted-foreground text-[0.8rem]">Comma-separated personality traits</p>
+    <p class="text-muted-foreground text-[0.8rem]">{$_('character.personalityTraits')}</p>
   </div>
 
   <!-- Visual Descriptors -->
   <div class="space-y-2 {changed('visualDescriptors')}">
-    <Label for="visualDescriptors">Visual Descriptors</Label>
+    <Label for="visualDescriptors">{$_('character.visualDescriptors')}</Label>
     <Input
       id="visualDescriptors"
       type="text"
@@ -165,17 +166,16 @@
     />
     {#if visualDescriptorsInvalid}
       <p class="text-[0.8rem] text-amber-500">
-        Use "Category: value" format, e.g. <span class="font-medium">Face: oval, Hair: dark</span>.
-        Categories: Face, Hair, Eyes, Build, Clothing, Accessories, Distinguishing features.
+        {$_('character.useCategoryFormat')}
       </p>
     {:else}
-      <p class="text-muted-foreground text-[0.8rem]">Used for portrait generation</p>
+      <p class="text-muted-foreground text-[0.8rem]">{$_('character.portraitGeneration')}</p>
     {/if}
   </div>
 
   <!-- Portrait -->
   <div class="space-y-2">
-    <Label>Portrait</Label>
+    <Label>{$_('character.portrait')}</Label>
     <div class="flex items-start gap-4">
       {#if data.portrait}
         <div class="group relative">
@@ -211,7 +211,7 @@
           {:else}
             <ImageUp class="mr-2 h-4 w-4" />
           {/if}
-          Upload Image
+          {$_('character.uploadImage')}
           <input
             type="file"
             accept="image/*"
@@ -226,7 +226,7 @@
 
   <!-- Tags -->
   <div class="space-y-2 {changed('tags')}">
-    <Label for="tags">Tags</Label>
+    <Label for="tags">{$_('character.tags')}</Label>
     <TagInput
       value={data.tags}
       type="character"
@@ -234,8 +234,8 @@
         data.tags = newTags
         handleInput()
       }}
-      placeholder="Add tags..."
+      placeholder={$_('common.search')}
     />
-    <p class="text-muted-foreground text-[0.8rem]">For organizing your vault</p>
+    <p class="text-muted-foreground text-[0.8rem]">{$_('character.organizingVault')}</p>
   </div>
 </div>

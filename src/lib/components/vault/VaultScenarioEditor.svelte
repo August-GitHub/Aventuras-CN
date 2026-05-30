@@ -1,14 +1,17 @@
 <script lang="ts">
-  import type { VaultScenario } from '$lib/types'
+  import { _ } from 'svelte-i18n'
   import { scenarioVault } from '$lib/stores/scenarioVault.svelte'
-  import { Save, MapPin, Loader2, Bot } from 'lucide-svelte'
+  import { characterVault } from '$lib/stores/characterVault.svelte'
+  import type { VaultScenario, VaultScenarioNpc } from '$lib/types'
+  import { Loader2, Bot, Trash2, Plus, GripVertical, Copy, Users } from 'lucide-svelte'
   import VaultScenarioFormFields from './VaultScenarioFormFields.svelte'
-  import type { VaultScenarioInput } from '$lib/services/ai/sdk/schemas/vault'
-  import type { FocusedEntity } from '$lib/services/ai/vault/InteractiveVaultService'
-  import { untrack } from 'svelte'
-
-  import * as ResponsiveModal from '$lib/components/ui/responsive-modal'
   import { Button } from '$lib/components/ui/button'
+  import { Input } from '$lib/components/ui/input'
+  import { Label } from '$lib/components/ui/label'
+  import { Textarea } from '$lib/components/ui/textarea'
+  import type { VaultScenarioInput } from '$lib/services/ai/sdk/schemas/vault'
+  import * as ResponsiveModal from '$lib/components/ui/responsive-modal'
+  import type { FocusedEntity } from '$lib/services/ai/vault/InteractiveVaultService'
 
   interface Props {
     scenario: VaultScenario
@@ -81,11 +84,11 @@
           <MapPin class="text-primary h-5 w-5" />
         </div>
         <div>
-          <h2 class="text-lg font-semibold">{isCreating ? 'New Scenario' : 'Edit Scenario'}</h2>
+          <h2 class="text-lg font-semibold">
+            {isCreating ? $_('scenario.newScenario') : $_('scenario.editScenario')}
+          </h2>
           <p class="text-muted-foreground text-sm">
-            {isCreating
-              ? 'Fill in the details to create your scenario.'
-              : 'Modify your scenario settings and characters.'}
+            {isCreating ? $_('scenario.fillDetails') : $_('scenario.modifySettings')}
           </p>
         </div>
       </div>
@@ -120,20 +123,22 @@
               })}
           >
             <Bot class="h-4 w-4" />
-            Ask Assistant
+            {$_('scenario.askAssistant')}
           </Button>
         {:else}
           <div></div>
         {/if}
         <div class="flex items-center gap-2">
-          <Button variant="outline" onclick={onClose} disabled={saving}>Cancel</Button>
+          <Button variant="outline" onclick={onClose} disabled={saving}
+            >{$_('scenario.cancel')}</Button
+          >
           <Button onclick={handleSave} disabled={saving || !formData.name.trim()}>
             {#if saving}
               <Loader2 class=" h-4 w-4 animate-spin" />
             {:else}
               <Save class=" h-4 w-4" />
             {/if}
-            {isCreating ? 'Create Scenario' : 'Save Changes'}
+            {isCreating ? $_('scenario.createScenario') : $_('scenario.saveChanges')}
           </Button>
         </div>
       </div>

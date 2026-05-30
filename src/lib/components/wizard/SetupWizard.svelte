@@ -1,5 +1,6 @@
 <script lang="ts">
   import { WizardStore } from '$lib/stores/wizard/wizard.svelte'
+  import { _ } from 'svelte-i18n'
   import * as ResponsiveModal from '$lib/components/ui/responsive-modal'
   import { Button } from '$lib/components/ui/button'
   import { ChevronLeft, ChevronRight, Play } from 'lucide-svelte'
@@ -87,9 +88,17 @@
     <div class="flex flex-col border-b p-4 pb-4">
       <div class="mb-4 flex items-center justify-between">
         <div>
-          <ResponsiveModal.Title class="text-xl">Create New Story</ResponsiveModal.Title>
+          <ResponsiveModal.Title class="text-xl"
+            >{$_('wizard.createNewStory')}</ResponsiveModal.Title
+          >
           <ResponsiveModal.Description>
-            Step {wizard.currentStep} of {wizard.totalSteps}: {stepTitles[wizard.currentStep - 1]}
+            {$_('wizard.stepOf', {
+              values: {
+                current: wizard.currentStep,
+                total: wizard.totalSteps,
+                title: stepTitles[wizard.currentStep - 1],
+              },
+            })}
           </ResponsiveModal.Description>
         </div>
       </div>
@@ -422,7 +431,7 @@
       {#if wizard.currentStep > 1}
         <Button variant="secondary" class="gap-1 pl-2" onclick={() => wizard.prevStep()}>
           <ChevronLeft class="h-4 w-4" />
-          Back
+          {$_('wizard.back')}
         </Button>
       {:else}
         <div></div>
@@ -442,7 +451,7 @@
               !wizard.character.cardImportedFirstMessage)}
         >
           <Play class="h-4 w-4" />
-          Begin Story
+          {$_('wizard.beginStory')}
         </Button>
       {:else}
         <Button
@@ -451,7 +460,7 @@
           onclick={() => wizard.nextStep()}
           disabled={!wizard.canProceed()}
         >
-          Next
+          {$_('wizard.next')}
           <ChevronRight class="h-4 w-4" />
         </Button>
       {/if}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import type { VaultPendingChange } from '$lib/services/ai/sdk/schemas/vault'
   import type {
     VaultCharacter,
@@ -69,13 +70,13 @@
   const actionConfig = $derived.by(() => {
     switch (change.action) {
       case 'create':
-        return { label: 'Create', icon: Plus, color: 'text-green-400' }
+        return { label: $_('diff.create'), icon: Plus, color: 'text-green-400' }
       case 'update':
-        return { label: 'Update', icon: ArrowRight, color: 'text-blue-400' }
+        return { label: $_('diff.update'), icon: ArrowRight, color: 'text-blue-400' }
       case 'delete':
-        return { label: 'Delete', icon: Trash2, color: 'text-red-400' }
+        return { label: $_('diff.delete'), icon: Trash2, color: 'text-red-400' }
       case 'merge':
-        return { label: 'Merge', icon: GitMerge, color: 'text-purple-400' }
+        return { label: $_('diff.merge'), icon: GitMerge, color: 'text-purple-400' }
     }
   })
 
@@ -292,7 +293,7 @@
       {:else if isRejected}
         <div class="flex items-center gap-1 text-xs font-medium text-red-400">
           <XCircle class="h-3 w-3" />
-          Rejected
+          {$_('diff.rejected')}
         </div>
       {:else}
         {#if onEdit}
@@ -301,7 +302,7 @@
             onclick={onEdit}
           >
             <Pencil class="h-3 w-3" />
-            Edit
+            {$_('diff.edit')}
           </button>
         {/if}
         <button
@@ -309,14 +310,14 @@
           onclick={onReject}
         >
           <X class="h-3 w-3" />
-          Reject
+          {$_('diff.reject')}
         </button>
         <button
           class="flex items-center gap-1 rounded-lg bg-emerald-500/15 px-2.5 py-1.5 text-xs font-medium whitespace-nowrap text-emerald-400 transition-colors hover:bg-emerald-500/25"
           onclick={onApprove}
         >
           <Check class="h-3 w-3" />
-          Approve
+          {$_('diff.approve')}
         </button>
       {/if}
     </div>
@@ -328,7 +329,8 @@
       <!-- Create: Show new entity data -->
       <div class="rounded-lg border border-emerald-500/20 bg-emerald-500/8 p-2.5">
         <div class="mb-1.5 text-[10px] font-bold tracking-wider text-emerald-400 uppercase">
-          New {entityConfig.label}
+          {$_('diff.new')}
+          {entityConfig.label}
         </div>
         <div
           class="text-surface-200 font-mono text-xs leading-relaxed break-words whitespace-pre-wrap"
@@ -341,7 +343,7 @@
       <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
         <div class="rounded-lg border border-red-500/20 bg-red-500/8 p-2.5">
           <div class="mb-1.5 text-[10px] font-bold tracking-wider text-red-400 uppercase">
-            Before
+            {$_('diff.before')}
           </div>
           <div
             class="text-surface-400 font-mono text-xs leading-relaxed break-words whitespace-pre-wrap"
@@ -351,7 +353,7 @@
         </div>
         <div class="rounded-lg border border-emerald-500/20 bg-emerald-500/8 p-2.5">
           <div class="mb-1.5 text-[10px] font-bold tracking-wider text-emerald-400 uppercase">
-            After
+            {$_('diff.after')}
           </div>
           <div
             class="text-surface-200 font-mono text-xs leading-relaxed break-words whitespace-pre-wrap"
@@ -364,7 +366,8 @@
       <!-- Delete: Show entity being removed -->
       <div class="rounded-lg border border-red-500/20 bg-red-500/8 p-2.5">
         <div class="mb-1.5 text-[10px] font-bold tracking-wider text-red-400 uppercase">
-          {entityConfig.label} to Delete
+          {entityConfig.label}
+          {$_('diff.toDelete')}
         </div>
         <div
           class="text-surface-400 font-mono text-xs leading-relaxed break-words whitespace-pre-wrap line-through opacity-70"
@@ -377,13 +380,13 @@
       <div class="space-y-3">
         <div class="rounded-lg border border-red-500/20 bg-red-500/8 p-2.5">
           <div class="mb-1.5 text-[10px] font-bold tracking-wider text-red-400 uppercase">
-            Entries to Merge ({previousEntries?.length ?? 0})
+            {$_('diff.entriesToMerge')} ({previousEntries?.length ?? 0})
           </div>
           <div class="space-y-1.5">
             {#each previousEntries ?? [] as entry, i (i)}
               <div class="bg-surface-800 rounded-md p-2">
                 <div class="text-surface-400 mb-1 text-[10px] font-semibold">
-                  Entry {i + 1}: {entry.name}
+                  {$_('diff.entry', { values: { index: i + 1, name: entry.name } })}
                 </div>
                 <div
                   class="text-surface-300 font-mono text-xs leading-relaxed break-words whitespace-pre-wrap"
@@ -401,7 +404,7 @@
 
         <div class="rounded-lg border border-emerald-500/20 bg-emerald-500/8 p-2.5">
           <div class="mb-1.5 text-[10px] font-bold tracking-wider text-emerald-400 uppercase">
-            Merged Entry
+            {$_('diff.mergedEntry')}
           </div>
           <div
             class="text-surface-200 font-mono text-xs leading-relaxed break-words whitespace-pre-wrap"

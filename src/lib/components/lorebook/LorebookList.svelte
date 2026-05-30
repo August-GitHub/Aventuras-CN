@@ -2,6 +2,7 @@
   import type { Entry, EntryType } from '$lib/types'
   import { ui } from '$lib/stores/ui.svelte'
   import { story } from '$lib/stores/story.svelte'
+  import { _ } from 'svelte-i18n'
   import {
     Search,
     Plus,
@@ -55,11 +56,11 @@
   ]
   const sortOptions: Array<{
     value: 'name' | 'type' | 'updated'
-    label: string
+    labelKey: string
   }> = [
-    { value: 'name', label: 'Name' },
-    { value: 'type', label: 'Type' },
-    { value: 'updated', label: 'Recently Updated' },
+    { value: 'name', labelKey: 'lorebook.name' },
+    { value: 'type', labelKey: 'lorebook.type' },
+    { value: 'updated', labelKey: 'lorebook.recentlyUpdated' },
   ]
 
   // Lore management active state - disable editing actions
@@ -128,10 +129,10 @@
     try {
       await story.deleteLorebookEntries(ids)
       ui.clearBulkSelection()
-      ui.showToast(`Deleted ${ids.length} entries`, 'info')
+      ui.showToast($_('lorebook.entriesDeleted', { values: { count: ids.length } }), 'info')
     } catch (error) {
       console.error('[LorebookList] Failed to delete entries:', error)
-      ui.showToast(error instanceof Error ? error.message : 'Failed to delete entries', 'error')
+      ui.showToast(error instanceof Error ? error.message : $_('lorebook.deleteFailed'), 'error')
     } finally {
       isDeleting = false
       confirmingBulkDelete = false
@@ -159,9 +160,9 @@
       ui.clearBulkSelection()
       ui.selectLorebookEntry(null)
       deleteAllDialogOpen = false
-      ui.showToast(`Deleted all ${ids.length} entries`, 'info')
+      ui.showToast($_('lorebook.entriesDeleted', { values: { count: ids.length } }), 'info')
     } catch (error) {
-      ui.showToast(error instanceof Error ? error.message : 'Failed to delete entries', 'error')
+      ui.showToast(error instanceof Error ? error.message : $_('lorebook.deleteFailed'), 'error')
     } finally {
       isDeleting = false
     }
@@ -232,7 +233,10 @@
               <Button {...props} variant="outline" class="w-full justify-between font-normal">
                 <span class="flex items-center gap-2">
                   <ArrowUpDown class="text-muted-foreground h-4 w-4" />
-                  {sortOptions.find((s) => s.value === ui.lorebookSortBy)?.label}
+                  {$_(
+                    sortOptions.find((s) => s.value === ui.lorebookSortBy)?.labelKey ??
+                      'lorebook.name',
+                  )}
                 </span>
               </Button>
             {/snippet}
@@ -246,7 +250,7 @@
             >
               {#each sortOptions as option (option.value)}
                 <DropdownMenuRadioItem value={option.value}>
-                  {option.label}
+                  {$_(option.labelKey)}
                 </DropdownMenuRadioItem>
               {/each}
             </DropdownMenuRadioGroup>

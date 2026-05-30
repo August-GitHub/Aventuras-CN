@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import type { VaultLorebook, VaultLorebookEntry, EntryType } from '$lib/types'
   import type { VaultPendingChange } from '$lib/services/ai/sdk/schemas/vault'
   import type { FocusedEntity } from '$lib/services/ai/vault/InteractiveVaultService'
@@ -639,7 +640,9 @@
     <div
       class="border-surface-700 bg-surface-900 relative flex flex-shrink-0 items-center justify-center border-b px-6 py-3"
     >
-      <h2 class="text-surface-100 text-sm font-semibold tracking-tight">Edit Lorebook</h2>
+      <h2 class="text-surface-100 text-sm font-semibold tracking-tight">
+        {$_('lorebook.editLorebook')}
+      </h2>
       {#if error}
         <div
           class="absolute top-full left-0 w-full border-b border-red-500/20 bg-red-500/8 py-1 text-center text-xs text-red-400 backdrop-blur"
@@ -657,7 +660,7 @@
         <div class="flex h-6 w-6 items-center justify-center rounded-md bg-cyan-500/15">
           <List class="h-3 w-3 text-cyan-400" />
         </div>
-        <span class="text-surface-200 text-xs font-semibold">Lorebook Editor</span>
+        <span class="text-surface-200 text-xs font-semibold">{$_('lorebook.lorebookEditor')}</span>
       </div>
       <Button
         variant="ghost"
@@ -819,7 +822,8 @@
                 />
               </div>
               <Button class="h-8 w-full rounded-lg text-xs" onclick={handleAddEntry}>
-                <Plus class="h-3.5 w-3.5" /> Add Entry
+                <Plus class="h-3.5 w-3.5" />
+                {$_('lorebook.newEntry')}
               </Button>
             </div>
 
@@ -1079,8 +1083,10 @@
                 <div class="bg-surface-800 mb-3 rounded-2xl p-5">
                   <Search class="h-6 w-6 opacity-40" />
                 </div>
-                <p class="text-surface-400 text-sm font-medium">Select an entry to edit</p>
-                <p class="mt-1 text-xs">Or click "Add Entry" to create one</p>
+                <p class="text-surface-400 text-sm font-medium">
+                  {$_('lorebook.selectEntryToEdit')}
+                </p>
+                <p class="mt-1 text-xs">{$_('lorebook.orClickAddEntry')}</p>
               </div>
             {/if}
           </div>

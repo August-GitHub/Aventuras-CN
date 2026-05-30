@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import type { VaultPendingChange } from '$lib/services/ai/sdk/schemas/vault'
   import {
     GitMerge,
@@ -59,7 +60,7 @@
   const typeConfig = {
     merge: {
       icon: GitMerge,
-      label: 'MERGE',
+      label: $_('pending.merge'),
       borderColor: 'border-l-amber-500',
       bgColor: 'bg-amber-500/5',
       bgHover: 'hover:bg-amber-500/10',
@@ -68,7 +69,7 @@
     },
     create: {
       icon: Plus,
-      label: 'NEW',
+      label: $_('pending.create'),
       borderColor: 'border-l-emerald-500',
       bgColor: 'bg-emerald-500/5',
       bgHover: 'hover:bg-emerald-500/10',
@@ -77,7 +78,7 @@
     },
     edit: {
       icon: Pencil,
-      label: 'EDIT',
+      label: $_('pending.edit'),
       borderColor: 'border-l-blue-500',
       bgColor: 'bg-blue-500/5',
       bgHover: 'hover:bg-blue-500/10',
@@ -86,7 +87,7 @@
     },
     delete: {
       icon: Trash2,
-      label: 'DELETE',
+      label: $_('pending.delete'),
       borderColor: 'border-l-red-500',
       bgColor: 'bg-red-500/5',
       bgHover: 'hover:bg-red-500/10',
@@ -111,7 +112,7 @@
             <ChevronUp class="h-3 w-3 text-amber-400" />
           {/if}
         </div>
-        <span class="text-surface-200 text-xs font-semibold">Pending</span>
+        <span class="text-surface-200 text-xs font-semibold">{$_('pending.pending')}</span>
         <span
           class="rounded-full bg-amber-500/15 px-1.5 py-0.5 text-[10px] font-bold text-amber-400"
         >
@@ -129,7 +130,7 @@
           }}
         >
           <CheckCheck class="h-3 w-3" />
-          Approve All
+          {$_('pending.approveAll')}
         </Button>
       {/if}
     </button>

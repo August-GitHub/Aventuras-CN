@@ -11,6 +11,7 @@
     ChevronRight,
   } from 'lucide-svelte'
   import { ui } from '$lib/stores/ui.svelte'
+  import { _ } from 'svelte-i18n'
   import { Checkbox } from '$lib/components/ui/checkbox'
   import { cn } from '$lib/utils/cn'
 
@@ -44,7 +45,7 @@
   const injectionLabels: Record<string, string> = {
     always: 'Always',
     keyword: 'Auto',
-    relevant: 'Auto', // Same as keyword - both use keywords + AI
+    relevant: 'Auto',
     never: 'Manual',
   }
 
@@ -95,7 +96,7 @@
         <span class="capitalize">{entry.type}</span>
         {#if keywordCount > 0}
           <span class="opacity-50">|</span>
-          <span>{keywordCount} keyword{keywordCount !== 1 ? 's' : ''}</span>
+          <span>{$_('lorebook.keywordPlural', { values: { count: keywordCount } })}</span>
         {/if}
         <span class="opacity-50">|</span>
         <span class="capitalize">{injectionLabels[entry.injection.mode]}</span>

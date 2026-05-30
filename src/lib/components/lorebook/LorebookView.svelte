@@ -5,6 +5,7 @@
   import { lorebookVault } from '$lib/stores/lorebookVault.svelte'
   import { LorebookImportExport } from '$lib/services/lorebookImportExport'
   import { onMount } from 'svelte'
+  import { _ } from 'svelte-i18n'
   import LorebookList from './LorebookList.svelte'
   import LorebookDetail from './LorebookDetail.svelte'
   import LorebookEntryForm from './LorebookEntryForm.svelte'
@@ -108,11 +109,11 @@
       const name = `${story.currentStory.title} Lorebook`
       await lorebookVault.saveFromStory(name, vaultEntries, story.currentStory.id)
       ui.showToast(
-        `Saved ${vaultEntries.length} entr${vaultEntries.length === 1 ? 'y' : 'ies'} to vault as "${name}"`,
+        $_('lorebook.savedToVault', { values: { count: vaultEntries.length, name } }),
         'info',
       )
     } catch (error) {
-      ui.showToast(error instanceof Error ? error.message : 'Failed to save to vault', 'error')
+      ui.showToast($_('lorebook.failedToSaveToVault'), 'error')
     }
   }
 
@@ -135,15 +136,15 @@
           {#if ui.loreManagementProgress}
             <Loader2 class="h-4 w-4 animate-spin" />
           {/if}
-          <AlertTitle class="mb-0">AI Lore Management Active</AlertTitle>
+          <AlertTitle class="mb-0">{$_('lorebook.aiLoreManagementActive')}</AlertTitle>
         </div>
         <AlertDescription class="text-muted-foreground mt-1 flex items-center gap-2">
           <span class="truncate">
-            {ui.loreManagementProgress || 'Reviewing story content...'}
+            {$_('lorebook.reviewingContent')}
           </span>
           {#if ui.loreManagementChanges > 0}
             <span class="bg-primary/20 text-primary rounded-full px-1.5 py-0.5 text-xs">
-              {ui.loreManagementChanges} changes
+              {$_('lorebook.changes', { values: { count: ui.loreManagementChanges } })}
             </span>
           {/if}
         </AlertDescription>
@@ -163,7 +164,7 @@
             onclick={() => ui.setActivePanel('story')}
           >
             <ArrowLeft class="h-3.5 w-3.5" />
-            <span>Back to Story</span>
+            <span>{$_('lorebook.backToStory')}</span>
           </Button>
         </div>
 
@@ -195,7 +196,7 @@
               <div class="bg-primary/10 text-primary rounded-lg p-2">
                 <Plus class="h-5 w-5" />
               </div>
-              <h2 class="text-foreground font-semibold">New Entry</h2>
+              <h2 class="text-foreground font-semibold">{$_('lorebook.newEntry')}</h2>
             </div>
             <div class="flex-1 overflow-y-auto p-4">
               <LorebookEntryForm onSave={handleSaveNew} onCancel={handleCancelNew} />
@@ -208,8 +209,8 @@
           <div class="flex flex-1 items-center justify-center p-8">
             <EmptyState
               icon={BookOpen}
-              title="Select an Entry"
-              description="Choose an entry from the list to view or edit its details, or create a new one."
+              title={$_('lorebook.selectEntry')}
+              description={$_('lorebook.selectEntryDescription')}
             />
           </div>
         {/if}

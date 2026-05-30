@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { tick } from 'svelte'
   import { ui } from '$lib/stores/ui.svelte'
   import { story } from '$lib/stores/story.svelte'
@@ -135,11 +136,11 @@
     free: PenLine,
   }
   const actionLabels: Record<ActionType, string> = {
-    do: 'Do',
-    say: 'Say',
-    think: 'Think',
-    story: 'Story',
-    free: 'Free',
+    do: $_('actionInput.actionTypes.do'),
+    say: $_('actionInput.actionTypes.say'),
+    think: $_('actionInput.actionTypes.think'),
+    story: $_('actionInput.actionTypes.story'),
+    free: $_('actionInput.actionTypes.free'),
   }
   const actionBorderColors: Record<ActionType, string> = {
     do: 'border-l-emerald-500',
@@ -398,17 +399,17 @@
           settings.experimentalFeatures.notificationPreview && responseText.length > 0
             ? responseText.slice(0, 120).replace(/[<>]/g, '') +
               (responseText.length > 120 ? '…' : '')
-            : 'Tap to return to your story.'
+            : $_('actionInput.notification.tapToReturn')
         sendNotification({
-          title: 'Story generation complete',
+          title: $_('actionInput.notification.generationComplete'),
           body: previewText,
           largeBody: previewText,
         })
       } else {
         sendNotification({
-          title: 'Story generation failed',
-          body: 'Tap to return and retry.',
-          largeBody: 'Tap to return and retry.',
+          title: $_('actionInput.notification.generationFailed'),
+          body: $_('actionInput.notification.tapToRetry'),
+          largeBody: $_('actionInput.notification.tapToRetry'),
         })
       }
     } catch (e) {
@@ -724,7 +725,7 @@
       if (stopRequested) return
 
       if (!fullResponse.trim()) {
-        const errorMessage = 'The AI returned an empty response after 3 attempts. Please try again.'
+        const errorMessage = $_('actionInput.error.emptyResponse')
         const errorEntry = await story.addEntry('system', errorMessage)
         ui.setGenerationError({
           message: errorMessage,
@@ -1191,7 +1192,7 @@
       class="flex items-center justify-between gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-3"
     >
       <div class="flex items-center gap-2 text-sm text-red-400">
-        <span>Generation failed. Would you like to try again?</span>
+        <span>{$_('actionInput.error.generationFailed')}</span>
       </div>
       <div class="flex items-center gap-2">
         <button
@@ -1261,7 +1262,7 @@
             disabled={!inputValue.trim() || blockGeneration}
             class="text-accent-400 hover:text-accent-300 hover:bg-accent-500/10 flex h-11 w-11 flex-shrink-0 -translate-y-0.5 items-center justify-center rounded-lg p-0 transition-all active:scale-95 disabled:opacity-50 sm:translate-y-0"
             title={blockGeneration
-              ? 'AI configuration incomplete — check Settings'
+              ? $_('actionInput.error.configIncomplete')
               : `Send direction (${sendKeyHint})`}><Send class="h-6 w-6" /></button
           >{/if}
       </div>
@@ -1303,14 +1304,14 @@
             use:autoResize={inputValue}
             onkeydown={handleKeydown}
             placeholder={actionType === 'story'
-              ? 'Describe what happens...'
+              ? $_('actionInput.placeholders.story')
               : actionType === 'say'
-                ? 'What do you say?'
+                ? $_('actionInput.placeholders.say')
                 : actionType === 'think'
-                  ? 'What are you thinking?'
+                  ? $_('actionInput.placeholders.think')
                   : actionType === 'free'
-                    ? 'Write anything...'
-                    : 'What do you do?'}
+                    ? $_('actionInput.placeholders.free')
+                    : $_('actionInput.placeholders.do')}
             class="text-surface-200 placeholder-surface-500 max-h-[160px] min-h-[24px] w-full resize-none border-none bg-transparent px-2 text-base leading-relaxed focus:ring-0 focus:outline-none sm:min-h-[24px]"
             rows="1"
           ></textarea>
@@ -1333,7 +1334,7 @@
               actionType
             ]} -translate-y-0.5 sm:translate-y-0"
             title={blockGeneration
-              ? 'AI configuration incomplete — check Settings'
+              ? $_('actionInput.error.configIncomplete')
               : `Send (${sendKeyHint})`}><Send class="h-6 w-6" /></button
           >{/if}
       </div>

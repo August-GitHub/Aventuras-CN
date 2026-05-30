@@ -8,6 +8,7 @@
   import RuntimeVariableCard from './RuntimeVariableCard.svelte'
   import { Button } from '$lib/components/ui/button'
   import { Plus, Activity, AlertTriangle } from 'lucide-svelte'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     packId: string
@@ -25,11 +26,11 @@
 
   const ENTITY_TYPE_ORDER: RuntimeEntityType[] = ['character', 'location', 'item', 'story_beat']
 
-  const ENTITY_TYPE_LABELS: Record<RuntimeEntityType, string> = {
-    character: 'Characters',
-    location: 'Locations',
-    item: 'Items',
-    story_beat: 'Story Beats',
+  const ENTITY_TYPE_LABELS: Record<RuntimeEntityType, () => string> = {
+    character: () => $_('vault.promptPacks.characters'),
+    location: () => $_('vault.promptPacks.locations'),
+    item: () => $_('vault.promptPacks.items'),
+    story_beat: () => $_('vault.promptPacks.storyBeats'),
   }
 
   // Group variables by entity type
@@ -209,27 +210,27 @@
 <div class="flex h-full flex-col overflow-hidden">
   <!-- Header -->
   <div class="flex items-center justify-between border-b px-4 py-3">
-    <h3 class="text-sm font-semibold">Runtime Variables</h3>
+    <h3 class="text-sm font-semibold">{$_('vault.promptPacks.runtimeVariables')}</h3>
     <Button variant="outline" size="sm" class="h-7 gap-1 text-xs" onclick={handleAddVariable}>
       <Plus class="h-3 w-3" />
-      Add Variable
+      {$_('vault.promptPacks.addVariable')}
     </Button>
   </div>
 
   <!-- Variable List -->
   <div class="flex-1 overflow-y-auto p-4">
     {#if runtimeVariables.length === 0}
-      <!-- Empty state -->
       <div class="flex flex-col items-center justify-center py-12 text-center">
         <Activity class="text-muted-foreground mb-3 h-10 w-10 opacity-50" />
-        <p class="text-muted-foreground text-sm font-medium">No runtime variables defined</p>
+        <p class="text-muted-foreground text-sm font-medium">
+          {$_('vault.promptPacks.noRuntimeVariables')}
+        </p>
         <p class="text-muted-foreground mt-1 max-w-sm text-xs">
-          Define variables that the LLM will populate on characters, locations, items, and story
-          beats. For example, a "mood" variable for characters or "danger_level" for locations.
+          {$_('vault.promptPacks.runtimeVariablesHelp')}
         </p>
         <Button variant="outline" size="sm" class="mt-4 gap-1" onclick={handleAddVariable}>
           <Plus class="h-3.5 w-3.5" />
-          Add Variable
+          {$_('vault.promptPacks.addVariable')}
         </Button>
       </div>
     {:else}
@@ -239,22 +240,22 @@
           <div>
             <div class="mb-2 flex items-center gap-2">
               <h4 class="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
-                {ENTITY_TYPE_LABELS[entityType]}
+                {ENTITY_TYPE_LABELS[entityType]()}
               </h4>
               <span class="text-muted-foreground text-xs">
                 ({grouped[entityType].length})
               </span>
             </div>
 
-            <!-- Soft warning for 10+ variables -->
             {#if entityTypeCounts[entityType] >= 10}
               <div
                 class="text-muted-foreground mb-2 flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs"
               >
                 <AlertTriangle class="h-3 w-3 shrink-0" />
                 <span>
-                  10+ variables for {ENTITY_TYPE_LABELS[entityType].toLowerCase()} may increase extraction
-                  cost and reduce accuracy.
+                  {$_('vault.promptPacks.variableWarning', {
+                    values: { entity: ENTITY_TYPE_LABELS[entityType]().toLowerCase() },
+                  })}
                 </span>
               </div>
             {/if}

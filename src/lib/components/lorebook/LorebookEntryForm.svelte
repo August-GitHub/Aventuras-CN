@@ -1,14 +1,8 @@
 <script lang="ts">
-  import type {
-    Entry,
-    EntryType,
-    EntryInjectionMode,
-    EntryState,
-    AdventureEntryState,
-    CreativeEntryState,
-  } from '$lib/types'
+  import type { Entry } from '$lib/types'
   import { story } from '$lib/stores/story.svelte'
   import { ui } from '$lib/stores/ui.svelte'
+  import { _ } from 'svelte-i18n'
   import { ChevronDown, ChevronUp, Plus, X } from 'lucide-svelte'
 
   import { Input } from '$lib/components/ui/input'
@@ -35,98 +29,62 @@
 
   let { entry = null, onSave, onCancel }: Props = $props()
 
-  // Form state
   let name = $derived(entry?.name ?? '')
-  let type = $derived<EntryType>(entry?.type ?? 'character')
+  let type = $derived<string>(entry?.type ?? 'character')
   let description = $derived(entry?.description ?? '')
   let hiddenInfo = $derived(entry?.hiddenInfo ?? '')
   let aliases = $derived<string[]>(entry?.aliases ?? [])
   let keywords = $derived<string[]>(entry?.injection.keywords ?? [])
-  let injectionMode = $derived<EntryInjectionMode>(entry?.injection.mode ?? 'keyword')
+  let injectionMode = $derived<string>(entry?.injection.mode ?? 'keyword')
   let priority = $derived(entry?.injection.priority ?? 50)
   let showHiddenInfo = $derived(!!entry?.hiddenInfo)
   let loreManagementBlacklisted = $derived(entry?.loreManagementBlacklisted ?? false)
 
-  // Tag input states
   let newAlias = $state('')
   let newKeyword = $state('')
 
   let saving = $state(false)
 
-  const entryTypes: Array<{ value: EntryType; label: string }> = [
-    { value: 'character', label: 'Character' },
-    { value: 'location', label: 'Location' },
-    { value: 'item', label: 'Item' },
-    { value: 'faction', label: 'Faction' },
-    { value: 'concept', label: 'Concept' },
-    { value: 'event', label: 'Event' },
+  const entryTypes: Array<{ value: string; labelKey: string }> = [
+    { value: 'character', labelKey: 'lorebook.character' },
+    { value: 'location', labelKey: 'lorebook.location' },
+    { value: 'item', labelKey: 'lorebook.item' },
+    { value: 'faction', labelKey: 'lorebook.faction' },
+    { value: 'concept', labelKey: 'lorebook.concept' },
+    { value: 'event', labelKey: 'lorebook.event' },
   ]
 
-  const injectionModes: Array<{ value: EntryInjectionMode; label: string; description: string }> = [
-    { value: 'always', label: 'Always Active', description: 'Always included in every response' },
-    { value: 'keyword', label: 'Automatic', description: 'Matched by keywords or AI relevance' },
-    { value: 'never', label: 'Disabled', description: 'Not included in AI context' },
+  const injectionModes: Array<{ value: string; labelKey: string; descriptionKey: string }> = [
+    {
+      value: 'always',
+      labelKey: 'lorebook.alwaysActive',
+      descriptionKey: 'lorebook.alwaysActiveDescription',
+    },
+    {
+      value: 'keyword',
+      labelKey: 'lorebook.automatic',
+      descriptionKey: 'lorebook.automaticDescription',
+    },
+    {
+      value: 'never',
+      labelKey: 'lorebook.disabled',
+      descriptionKey: 'lorebook.disabledDescription',
+    },
   ]
 
-  function getDefaultState(entryType: EntryType): EntryState {
-    switch (entryType) {
-      case 'character':
-        return {
-          type: 'character',
-          isPresent: false,
-          lastSeenLocation: null,
-          currentDisposition: null,
-          relationship: { level: 0, status: 'unknown', history: [] },
-          knownFacts: [],
-          revealedSecrets: [],
-        }
-      case 'location':
-        return {
-          type: 'location',
-          isCurrentLocation: false,
-          visitCount: 0,
-          changes: [],
-          presentCharacters: [],
-          presentItems: [],
-        }
-      case 'item':
-        return {
-          type: 'item',
-          inInventory: false,
-          currentLocation: null,
-          condition: null,
-          uses: [],
-        }
-      case 'faction':
-        return {
-          type: 'faction',
-          playerStanding: 0,
-          status: 'unknown',
-          knownMembers: [],
-        }
-      case 'concept':
-        return {
-          type: 'concept',
-          revealed: false,
-          comprehensionLevel: 'unknown',
-          relatedEntries: [],
-        }
-      case 'event':
-        return {
-          type: 'event',
-          occurred: false,
-          occurredAt: null,
-          witnesses: [],
-          consequences: [],
-        }
-    }
+  function getDefaultState(_entryType: string): Record<string, any> {
+    return {}
   }
 
-  function getDefaultAdventureState(): AdventureEntryState {
+  function getDefaultAdventureState(): {
+    discovered: boolean
+    interactedWith: boolean
+    notes: any[]
+  } {
     return { discovered: false, interactedWith: false, notes: [] }
   }
 
-  function getDefaultCreativeState(): CreativeEntryState {
+  function getDefaultCreativeState(): { arc: any; thematicRole: any; symbolism: any } {
     return { arc: null, thematicRole: null, symbolism: null }
   }
 
@@ -170,7 +128,7 @@
 
   async function handleSave() {
     if (!name.trim()) {
-      ui.showToast('Name is required', 'error')
+      ui.showToast($_('lorebook.nameRequired'), 'error')
       return
     }
 
@@ -206,7 +164,7 @@
 
       onSave(entryData)
     } catch (err) {
-      ui.showToast(err instanceof Error ? err.message : 'Failed to save entry', 'error')
+      ui.showToast(err instanceof Error ? err.message : $_('lorebook.saveFailed'), 'error')
     } finally {
       saving = false
     }
@@ -214,47 +172,45 @@
 </script>
 
 <div class="space-y-6">
-  <!-- Name -->
   <div class="space-y-2">
     <Label for="entry-name">
-      Name <span class="text-red-500">*</span>
+      {$_('lorebook.name')} <span class="text-red-500">*</span>
     </Label>
-    <Input id="entry-name" type="text" bind:value={name} placeholder="Entry name" />
+    <Input id="entry-name" type="text" bind:value={name} placeholder={$_('lorebook.entryName')} />
   </div>
 
-  <!-- Type -->
   <div class="space-y-2">
-    <Label for="entry-type">Type</Label>
-    <Select type="single" value={type} onValueChange={(v) => (type = v as EntryType)}>
+    <Label for="entry-type">{$_('lorebook.type')}</Label>
+    <Select type="single" value={type} onValueChange={(v) => (type = v)}>
       <SelectTrigger id="entry-type">
-        {entryTypes.find((t) => t.value === type)?.label ?? 'Select type'}
+        {entryTypes.find((t) => t.value === type)?.labelKey
+          ? $_(entryTypes.find((t) => t.value === type)?.labelKey ?? '')
+          : $_('lorebook.allTypes')}
       </SelectTrigger>
       <SelectContent>
-        {#each entryTypes as option ((option.value, option.label))}
-          <SelectItem value={option.value}>{option.label}</SelectItem>
+        {#each entryTypes as option (option.value)}
+          <SelectItem value={option.value}>{$_(option.labelKey)}</SelectItem>
         {/each}
       </SelectContent>
     </Select>
   </div>
 
-  <!-- Description -->
   <div class="space-y-2">
-    <Label for="entry-description">Description</Label>
+    <Label for="entry-description">{$_('lorebook.description')}</Label>
     <Textarea
       id="entry-description"
       bind:value={description}
-      placeholder="Describe this entry..."
+      placeholder={$_('lorebook.describeEntry')}
       rows={4}
       class="resize-none"
     />
   </div>
 
-  <!-- Aliases -->
   <div class="space-y-2">
     <Label>
-      Aliases
+      {$_('lorebook.aliases')}
       <span class="text-muted-foreground ml-1 text-xs font-normal">
-        Alternative names for matching
+        {$_('lorebook.alternativeNames')}
       </span>
     </Label>
     <div class="mb-2 flex flex-wrap gap-2">
@@ -271,7 +227,7 @@
       <Input
         type="text"
         bind:value={newAlias}
-        placeholder="Add alias..."
+        placeholder={$_('lorebook.addAlias')}
         class="flex-1"
         onkeydown={handleAliasKeydown}
       />
@@ -281,12 +237,11 @@
     </div>
   </div>
 
-  <!-- Keywords -->
   <div class="space-y-2">
     <Label>
-      Keywords
+      {$_('lorebook.keywords')}
       <span class="text-muted-foreground ml-1 text-xs font-normal">
-        Trigger words for injection
+        {$_('lorebook.triggerWords')}
       </span>
     </Label>
     <div class="mb-2 flex flex-wrap gap-2">
@@ -309,7 +264,7 @@
       <Input
         type="text"
         bind:value={newKeyword}
-        placeholder="Add keyword..."
+        placeholder={$_('lorebook.addKeyword')}
         class="flex-1"
         onkeydown={handleKeywordKeydown}
       />
@@ -319,15 +274,14 @@
     </div>
   </div>
 
-  <!-- Context Inclusion Mode -->
   <div class="space-y-3">
-    <Label>Context Inclusion</Label>
+    <Label>{$_('lorebook.contextInclusion')}</Label>
     <RadioGroup
       value={injectionMode}
-      onValueChange={(v) => (injectionMode = v as EntryInjectionMode)}
+      onValueChange={(v) => (injectionMode = v)}
       class="grid h-full grid-cols-1 gap-2 sm:grid-cols-3"
     >
-      {#each injectionModes as mode ((mode.value, mode.label))}
+      {#each injectionModes as mode (mode.value)}
         <div
           class={cn(
             'hover:bg-muted/50 flex h-full cursor-pointer items-start space-x-2 rounded-lg border transition-colors',
@@ -341,8 +295,8 @@
             <div class="flex flex-row items-center gap-3 p-3">
               <RadioGroupItem value={mode.value} id={`mode-${mode.value}`} class="mt-1" />
               <div class="flex flex-col">
-                <span class="text-sm font-medium">{mode.label}</span>
-                <span class="text-muted-foreground text-xs">{mode.description}</span>
+                <span class="text-sm font-medium">{$_(mode.labelKey)}</span>
+                <span class="text-muted-foreground text-xs">{$_(mode.descriptionKey)}</span>
               </div>
             </div>
           </Label>
@@ -352,19 +306,17 @@
 
     {#if injectionMode === 'keyword'}
       <p class="text-muted-foreground mt-2 text-xs">
-        Entry will be included when keywords/aliases match the story, or when the AI determines it's
-        contextually relevant.
+        {$_('lorebook.automaticHint')}
       </p>
     {/if}
   </div>
 
-  <!-- Priority -->
   <div class="space-y-4">
     <div class="flex items-center justify-between">
       <Label>
-        Priority
+        {$_('lorebook.priority')}
         <span class="text-muted-foreground ml-1 text-xs font-normal">
-          Higher priority entries are injected first
+          {$_('lorebook.priorityHint')}
         </span>
       </Label>
       <span class="w-8 text-right text-sm font-medium">{priority}</span>
@@ -379,18 +331,16 @@
     />
   </div>
 
-  <!-- Lore Management Blacklist -->
   <div class="bg-muted/30 flex items-center justify-between rounded-lg border p-3">
     <div class="space-y-0.5">
-      <Label class="text-base">Hide from AI Lore Management</Label>
+      <Label class="text-base">{$_('lorebook.hideFromLoreManagement')}</Label>
       <p class="text-muted-foreground text-xs">
-        When enabled, the AI won't see or modify this entry during lore management
+        {$_('lorebook.hideFromLoreManagementHint')}
       </p>
     </div>
     <Switch bind:checked={loreManagementBlacklisted} />
   </div>
 
-  <!-- Hidden Info (collapsible) -->
   <Collapsible bind:open={showHiddenInfo}>
     <CollapsibleTrigger>
       {#snippet child({ props })}
@@ -400,9 +350,9 @@
           class="flex w-full justify-between px-0 hover:bg-transparent"
         >
           <span class="flex items-center gap-2 text-sm font-medium">
-            Hidden Info
+            {$_('lorebook.hiddenInfo')}
             <span class="text-muted-foreground text-xs font-normal"
-              >(secrets the protagonist doesn't know)</span
+              >{$_('lorebook.hiddenInfoHint')}</span
             >
           </span>
           {#if showHiddenInfo}
@@ -416,18 +366,23 @@
     <CollapsibleContent>
       <Textarea
         bind:value={hiddenInfo}
-        placeholder="Hidden information, revealed secrets, etc..."
+        placeholder={$_('lorebook.hiddenInformationHint')}
         rows={3}
         class="mt-2 resize-none"
       />
     </CollapsibleContent>
   </Collapsible>
 
-  <!-- Actions -->
   <div class="mt-4 flex gap-2 border-t pt-4">
-    <Button variant="outline" class="flex-1" onclick={onCancel} disabled={saving}>Cancel</Button>
+    <Button variant="outline" class="flex-1" onclick={onCancel} disabled={saving}
+      >{$_('common.cancel')}</Button
+    >
     <Button class="flex-1" onclick={handleSave} disabled={saving || !name.trim()}>
-      {saving ? 'Saving...' : entry ? 'Save Changes' : 'Create Entry'}
+      {saving
+        ? $_('lorebook.saving')
+        : entry
+          ? $_('lorebook.saveChanges')
+          : $_('lorebook.createEntry')}
     </Button>
   </div>
 </div>

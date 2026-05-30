@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { LorebookImportExport } from '$lib/services/lorebookImportExport'
   import { Download, FileJson, FileText, Loader2 } from 'lucide-svelte'
   import type { VaultLorebook, VaultCharacter, VaultScenario } from '$lib/types'
@@ -68,7 +69,9 @@
     <ResponsiveModal.Header class="border-b px-6 py-4">
       <div class="flex items-center gap-2">
         <Download class="text-primary h-5 w-5" />
-        <ResponsiveModal.Title>Export {entityLabel}</ResponsiveModal.Title>
+        <ResponsiveModal.Title
+          >{$_('export.title', { values: { entity: entityLabel } })}</ResponsiveModal.Title
+        >
       </div>
     </ResponsiveModal.Header>
 
@@ -77,14 +80,16 @@
       <div class="bg-muted/50 rounded-lg border p-3">
         <div class="text-foreground font-medium">{entity.name}</div>
         {#if entityType === 'lorebook'}
-          <div class="text-muted-foreground text-xs">{entryCount} entries</div>
+          <div class="text-muted-foreground text-xs">
+            {$_('export.entries', { values: { count: entryCount } })}
+          </div>
         {/if}
       </div>
 
       <!-- Format selection (only for lorebooks) -->
       {#if entityType === 'lorebook'}
         <div class="space-y-3">
-          <Label>Export format</Label>
+          <Label>{$_('export.exportFormat')}</Label>
           <RadioGroup
             value={selectedFormat}
             onValueChange={(v) => (selectedFormat = v as ExportFormat)}
@@ -131,14 +136,15 @@
     </div>
 
     <ResponsiveModal.Footer class="mt-auto border-t px-6 py-4">
-      <Button variant="outline" onclick={onClose} disabled={exporting}>Cancel</Button>
+      <Button variant="outline" onclick={onClose} disabled={exporting}>{$_('export.cancel')}</Button
+      >
       <Button onclick={handleExport} disabled={exporting} class="gap-2">
         {#if exporting}
           <Loader2 class="h-4 w-4 animate-spin" />
-          Exporting...
+          {$_('export.exporting')}
         {:else}
           <Download class="h-4 w-4" />
-          Export
+          {$_('export.export')}
         {/if}
       </Button>
     </ResponsiveModal.Footer>

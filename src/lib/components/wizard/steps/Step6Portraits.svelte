@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { User, Loader2, X, Wand2, ImageUp, AlertCircle } from 'lucide-svelte'
   import { normalizeImageDataUrl } from '$lib/utils/image'
   import type { GeneratedCharacter, GeneratedProtagonist } from '$lib/services/ai/sdk'

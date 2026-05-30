@@ -11,6 +11,7 @@
   import { Switch } from '$lib/components/ui/switch'
   import { Badge } from '$lib/components/ui/badge'
   import { RotateCcw, Search, ChevronDown } from 'lucide-svelte'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     open: boolean
@@ -289,23 +290,25 @@
   <ResponsiveModal.Content class="p-0 sm:max-w-2xl">
     <ResponsiveModal.Header class="border-b px-6 py-4">
       <ResponsiveModal.Title class="flex items-center gap-2">
-        Test Variables
+        {$_('vault.promptPacks.testVariables')}
         {#if overrideCount > 0}
           <Badge variant="default" class="text-[10px]"
-            >{overrideCount} override{overrideCount === 1 ? '' : 's'}</Badge
+            >{overrideCount}
+            {overrideCount === 1
+              ? $_('vault.promptPacks.override')
+              : $_('vault.promptPacks.overrides')}</Badge
           >
         {/if}
       </ResponsiveModal.Title>
       <ResponsiveModal.Description>
-        Override variable values to preview how templates render.
+        {$_('vault.promptPacks.testVariablesHelp')}
       </ResponsiveModal.Description>
     </ResponsiveModal.Header>
 
-    <!-- Search bar -->
     <div class="border-b px-6 py-2.5">
       <Input
         leftIcon={Search}
-        placeholder="Filter variables..."
+        placeholder={$_('vault.promptPacks.filterVariables')}
         class="h-8 text-xs"
         bind:value={searchQuery}
       />
@@ -324,7 +327,7 @@
                     ? ''
                     : '-rotate-90'}"
                 />
-                <span class="text-sm font-medium">System</span>
+                <span class="text-sm font-medium">{$_('vault.promptPacks.system')}</span>
                 <Badge variant="default" class="text-[10px]">{filteredSystem.length}</Badge>
               </div>
             </Collapsible.Trigger>
@@ -348,7 +351,7 @@
                     ? ''
                     : '-rotate-90'}"
                 />
-                <span class="text-sm font-medium">Custom</span>
+                <span class="text-sm font-medium">{$_('vault.promptPacks.custom')}</span>
                 <Badge variant="default" class="text-[10px]">{filteredCustom.length}</Badge>
               </div>
             </Collapsible.Trigger>
@@ -400,11 +403,13 @@
       <div class="flex w-full items-center justify-between gap-2">
         <Button variant="outline" size="sm" class="gap-1.5" onclick={() => (draft = {})}>
           <RotateCcw class="h-3.5 w-3.5" />
-          Clear All
+          {$_('vault.promptPacks.clearAll')}
         </Button>
         <div class="flex gap-2">
-          <Button variant="outline" size="sm" onclick={() => onOpenChange(false)}>Cancel</Button>
-          <Button size="sm" onclick={handleApply}>Apply</Button>
+          <Button variant="outline" size="sm" onclick={() => onOpenChange(false)}
+            >{$_('common.cancel')}</Button
+          >
+          <Button size="sm" onclick={handleApply}>{$_('vault.promptPacks.apply')}</Button>
         </div>
       </div>
     </ResponsiveModal.Footer>

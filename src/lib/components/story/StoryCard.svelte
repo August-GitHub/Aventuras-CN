@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { Trash2, Clock } from 'lucide-svelte'
   import { Button } from '$lib/components/ui/button'
   import * as Card from '$lib/components/ui/card'
@@ -77,13 +78,13 @@
           {s.description}
         </p>
       {:else}
-        <p class="text-muted-foreground text-sm italic">No description</p>
+        <p class="text-muted-foreground text-sm italic">{$_('storyCard.noDescription')}</p>
       {/if}
     </Card.Content>
     <Card.Footer class="text-muted-foreground mt-auto pt-0 text-xs">
       <div class="flex items-center gap-1">
         <Clock class="h-3 w-3" />
-        <span>Updated {formatDate(s.updatedAt)}</span>
+        <span>{$_('storyCard.updated', { values: { date: formatDate(s.updatedAt) } })}</span>
       </div>
     </Card.Footer>
   </Card.Root>

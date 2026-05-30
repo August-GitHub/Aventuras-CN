@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { characterVault } from '$lib/stores/characterVault.svelte'
   import { lorebookVault } from '$lib/stores/lorebookVault.svelte'
   import { scenarioVault } from '$lib/stores/scenarioVault.svelte'
@@ -146,47 +147,47 @@
   const sections: VaultSectionConfig[] = [
     {
       id: 'characters',
-      label: 'Characters',
+      label: $_('vault.characters'),
       icon: Users,
       type: 'character',
       store: characterVault,
-      singularLabel: 'Character',
+      singularLabel: $_('diff.character'),
       emptyIcon: Users,
-      emptyTitle: 'No characters in vault yet',
-      emptyDesc: 'Create your first character to get started.',
-      createLabel: 'New Character',
+      emptyTitle: $_('vault.noCharactersYet'),
+      emptyDesc: $_('vault.createFirstCharacter'),
+      createLabel: $_('vault.newCharacter'),
       createAction: openCreateCharForm,
-      importLabel: 'Import Card',
+      importLabel: $_('vault.importCard'),
       importAction: handleImportCard,
     },
     {
       id: 'lorebooks',
-      label: 'Lorebooks',
+      label: $_('vault.lorebooks'),
       icon: Book,
       type: 'lorebook',
       store: lorebookVault,
-      singularLabel: 'Lorebook',
+      singularLabel: $_('diff.lorebook'),
       emptyIcon: Book,
-      emptyTitle: 'No lorebooks in vault yet',
-      emptyDesc: 'Create a new lorebook or import one from a file.',
-      createLabel: 'New Lorebook',
+      emptyTitle: $_('vault.noLorebooksYet'),
+      emptyDesc: $_('vault.createOrImportLorebook'),
+      createLabel: $_('vault.newLorebook'),
       createAction: handleCreateLorebook,
-      importLabel: 'Import Lorebook',
+      importLabel: $_('vault.importLorebook'),
       importAction: handleImportLorebook,
     },
     {
       id: 'scenarios',
-      label: 'Scenarios',
+      label: $_('vault.scenarios'),
       icon: MapPin,
       type: 'scenario',
       store: scenarioVault,
-      singularLabel: 'Scenario',
+      singularLabel: $_('diff.scenario'),
       emptyIcon: MapPin,
-      emptyTitle: 'No scenarios in vault yet',
-      emptyDesc: 'Import character cards to extract scenario settings.',
-      createLabel: 'New Scenario',
+      emptyTitle: $_('vault.noScenariosYet'),
+      emptyDesc: $_('vault.importCharactersForScenarios'),
+      createLabel: $_('vault.newScenario'),
       createAction: handleCreateScenario,
-      importLabel: 'Import Card',
+      importLabel: $_('vault.importCard'),
       importAction: handleImportScenario,
     },
   ]
@@ -393,11 +394,11 @@
         importConflictPack ?? undefined,
       )
       if (newPackId) {
-        ui.showToast('Pack imported successfully', 'info')
+        ui.showToast($_('vault.packImported'), 'info')
       }
     } catch (e) {
       console.error('Import failed:', e)
-      ui.showToast('Import failed', 'error')
+      ui.showToast($_('vault.importFailed'), 'error')
     } finally {
       importDialogOpen = false
       importValidation = null
@@ -428,13 +429,13 @@
           size="icon"
           class="text-muted-foreground hover:text-foreground -ml-2 h-9 w-9"
           onclick={() => guardPromptNavigation(() => ui.setActivePanel('library'))}
-          title="Back to Library"
+          title={$_('vault.backToLibrary')}
         >
           <ChevronLeft class="h-5 w-5" />
         </Button>
         <div class="flex items-center gap-2">
           <Archive class="text-muted-foreground h-5 w-5" />
-          <h2 class="text-lg font-semibold tracking-tight">Vault</h2>
+          <h2 class="text-lg font-semibold tracking-tight">{$_('vault.title')}</h2>
         </div>
       </div>
 
@@ -444,7 +445,7 @@
       >
         <Button
           icon={Bot}
-          label="Vault Assistant"
+          label={$_('vault.assistant')}
           variant="outline"
           size="sm"
           class="h-9"
@@ -454,7 +455,7 @@
         {#if activeTab === 'prompts' && promptsViewState.mode === 'browsing'}
           <Button
             icon={Download}
-            label="Import"
+            label={$_('common.import')}
             variant="outline"
             size="sm"
             class="h-9"
@@ -463,7 +464,7 @@
 
           <Button
             icon={Plus}
-            label="New Pack"
+            label={$_('vault.newPack')}
             size="sm"
             class="h-9"
             onclick={() => (showCreatePackDialog = true)}
@@ -471,7 +472,7 @@
         {:else if activeTab !== 'prompts'}
           <Button
             icon={Tags}
-            label="Tags"
+            label={$_('vault.tags')}
             variant="outline"
             size="sm"
             class="h-9"
@@ -482,7 +483,7 @@
             {#if activeTab === section.id}
               <Button
                 icon={Globe}
-                label="Browse Online"
+                label={$_('vault.browseOnline')}
                 variant="outline"
                 size="sm"
                 class="h-9"
@@ -534,7 +535,7 @@
         {/each}
         <TabsTrigger value="prompts" class="flex items-center gap-2">
           <FileCode class="h-4 w-4" />
-          <span class="hidden sm:inline">Prompts</span>
+          <span class="hidden sm:inline">{$_('vault.prompts')}</span>
         </TabsTrigger>
       </TabsList>
     </div>
@@ -549,7 +550,7 @@
       <Input
         type="text"
         bind:value={searchInput}
-        placeholder={`Search ${activeTab}...`}
+        placeholder={$_('vault.searchPlaceholder', { values: { type: activeTab } })}
         class="bg-muted/40 flex-1"
         leftIcon={SearchIcon}
       />
@@ -567,7 +568,7 @@
 
         <Button
           icon={Star}
-          label="Favorites"
+          label={$_('vault.favorites')}
           variant="outline"
           size="default"
           class={cn(
@@ -610,10 +611,12 @@
                 <EmptyState
                   icon={section.emptyIcon}
                   title={searchQuery || showFavoritesOnly
-                    ? `No ${section.label.toLowerCase()} match your filters`
+                    ? $_('vault.noItemsMatchFilters', {
+                        values: { items: section.label.toLowerCase() },
+                      })
                     : section.emptyTitle}
                   description={searchQuery || showFavoritesOnly
-                    ? 'Try adjusting your search terms or filters.'
+                    ? $_('vault.tryAdjustingSearch')
                     : section.emptyDesc}
                 >
                   {#if !searchQuery && !showFavoritesOnly}
@@ -626,7 +629,7 @@
                       {/if}
                       <Button variant="outline" onclick={() => openBrowseOnline(section.type)}>
                         <Globe class="h-4 w-4" />
-                        Browse Online
+                        {$_('vault.browseOnline')}
                       </Button>
                     </div>
                   {/if}
@@ -650,16 +653,23 @@
                         const result = await section.store.duplicate(item.id)
                         if (!result) {
                           ui.showToast(
-                            `Original ${section.singularLabel.toLowerCase()} not found`,
+                            $_('vault.originalNotFound', {
+                              values: { item: section.singularLabel },
+                            }),
                             'error',
                           )
                           return
                         }
-                        ui.showToast(`${section.singularLabel} duplicated`, 'info')
+                        ui.showToast(
+                          `${section.singularLabel}${$_('vault.duplicated', { values: { item: '' } })}`,
+                          'info',
+                        )
                       } catch (e) {
                         console.error('Duplicate failed:', e)
                         ui.showToast(
-                          `Failed to duplicate ${section.singularLabel.toLowerCase()}`,
+                          $_('vault.failedToDuplicate', {
+                            values: { item: section.singularLabel },
+                          }),
                           'error',
                         )
                       }

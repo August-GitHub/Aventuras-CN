@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import type { RuntimeVariable } from '$lib/services/packs/types'
   import { Input } from '$lib/components/ui/input'
   import * as Select from '$lib/components/ui/select'

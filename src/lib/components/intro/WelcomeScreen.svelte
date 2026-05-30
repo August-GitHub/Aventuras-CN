@@ -1,5 +1,6 @@
 <script lang="ts">
   import { settings, type ProviderPreset } from '$lib/stores/settings.svelte'
+  import { _ } from 'svelte-i18n'
   import {
     Check,
     ExternalLink,
@@ -43,7 +44,7 @@
     {
       id: 'openrouter' as ProviderPreset,
       name: 'OpenRouter',
-      description: 'Access multiple models via one API.',
+      description: $_('wizard.accessModels'),
       icon: Globe,
       signupUrl: 'https://openrouter.ai/keys',
       keyPrefix: 'sk-or-',
@@ -54,12 +55,12 @@
     {
       id: 'nanogpt' as ProviderPreset,
       name: 'NanoGPT',
-      description: 'Affordable access to models like Deepseek.',
+      description: $_('wizard.affordableAccess'),
       icon: Zap,
       signupUrl: 'https://nano-gpt.com/api',
       keyPrefix: 'sk-nano-',
       requiresKey: true,
-      note: 'Reasoning models are auto-detected',
+      note: $_('wizard.reasoningModelsAutoDetected'),
       color:
         'border-yellow-500/20 hover:border-yellow-500/50 bg-yellow-500/5 hover:bg-yellow-500/10',
       iconColor: 'text-yellow-500',
@@ -67,12 +68,12 @@
     {
       id: 'openai-compatible' as ProviderPreset,
       name: 'Custom / Self-Hosted',
-      description: 'Configure your own OpenAI-compatible endpoint.',
+      description: $_('wizard.configureOwnEndpoint'),
       icon: Server,
       signupUrl: '',
       keyPrefix: '',
       requiresKey: false,
-      note: 'Configure endpoint in settings later.',
+      note: $_('wizard.configureEndpointLater'),
       color:
         'border-purple-500/20 hover:border-purple-500/50 bg-purple-500/5 hover:bg-purple-500/10',
       iconColor: 'text-purple-500',
@@ -108,7 +109,7 @@
     if (!providerInfo) return
 
     if (providerInfo.requiresKey && !apiKey.trim()) {
-      error = 'Please enter your API key'
+      error = $_('wizard.pleaseEnterApiKey')
       return
     }
 
@@ -120,7 +121,7 @@
       onComplete()
     } catch (e) {
       console.error('Failed to initialize with provider:', e)
-      error = e instanceof Error ? e.message : 'Failed to initialize. Please try again.'
+      error = e instanceof Error ? e.message : $_('wizard.failedToInitialize')
     } finally {
       isSubmitting = false
     }
@@ -138,15 +139,16 @@
   out:fade={{ duration: 300 }}
 >
   <div class="mb-8 space-y-2">
-    <h1 class="text-foreground text-4xl font-bold tracking-tight">Welcome to Aventuras</h1>
+    <h1 class="text-foreground text-4xl font-bold tracking-tight">{$_('wizard.welcomeTitle')}</h1>
     <p class="text-muted-foreground text-lg">
       {#if step === 'interface'}
-        Customize your reading environment
+        {$_('wizard.customizeEnvironment')}
       {:else if step === 'select'}
-        Choose your AI provider to get started
+        {$_('wizard.chooseProvider')}
       {:else}
-        {@const p = getSelectedProviderInfo()}
-        Configure {p?.name ?? 'Provider'}
+        {$_('wizard.configureProvider', {
+          values: { p: getSelectedProviderInfo()?.name ?? 'Provider' },
+        })}
       {/if}
     </p>
   </div>
@@ -164,7 +166,7 @@
             <div class="space-y-3">
               <Label class="flex items-center gap-2 text-base">
                 <Palette size={18} class="text-primary" />
-                Theme
+                {$_('settings.theme')}
               </Label>
               <Select.Root
                 type="single"
@@ -187,7 +189,7 @@
             <div class="space-y-3">
               <Label class="flex items-center gap-2 text-base">
                 <Type size={18} class="text-primary" />
-                Font Size
+                {$_('settings.fontSize')}
               </Label>
               <div class="grid grid-cols-3 gap-2">
                 {#each ['small', 'medium', 'large'] as size (size)}
@@ -221,7 +223,7 @@
                   transition:slide={{ duration: 200, axis: 'y' }}
                 >
                   <div class="space-y-2">
-                    <Label for="lang-select" class="text-sm">Target Language</Label>
+                    <Label for="lang-select" class="text-sm">{$_('wizard.targetLanguage')}</Label>
                     <Select.Root
                       type="single"
                       value={settings.translationSettings.targetLanguage}
@@ -245,7 +247,7 @@
 
                   <div class="flex items-center justify-between pt-2">
                     <Label class="text-muted-foreground text-sm font-normal"
-                      >Translate my input</Label
+                      >{$_('wizard.translateMyInput')}</Label
                     >
                     <Switch
                       checked={settings.translationSettings.translateUserInput}
@@ -258,7 +260,7 @@
 
                   <div class="flex items-center justify-between">
                     <Label class="text-muted-foreground text-sm font-normal"
-                      >Translate World State</Label
+                      >{$_('wizard.translateWorldState')}</Label
                     >
                     <Switch
                       checked={settings.translationSettings.translateWorldState}
@@ -274,7 +276,8 @@
           </Card.Content>
           <Card.Footer>
             <Button class="w-full" size="lg" onclick={goToSelect}>
-              Next Step <ArrowRight class="ml-2 h-4 w-4" />
+              {$_('wizard.nextStep')}
+              <ArrowRight class="ml-2 h-4 w-4" />
             </Button>
           </Card.Footer>
         </Card.Root>
@@ -312,7 +315,8 @@
             onclick={() => (step = 'interface')}
             class="text-muted-foreground hover:text-foreground"
           >
-            <ArrowLeft size={16} class="mr-2" /> Back to Customization
+            <ArrowLeft size={16} class="mr-2" />
+            {$_('wizard.backToCustomization')}
           </Button>
         </div>
       </div>
@@ -333,7 +337,7 @@
                 </Button>
                 <div class="flex items-center gap-3">
                   <provider.icon size={24} class={provider.iconColor} />
-                  <Card.Title>Setup</Card.Title>
+                  <Card.Title>{$_('wizard.setup')}</Card.Title>
                 </div>
               </div>
             </Card.Header>
@@ -341,7 +345,7 @@
               {#if provider.requiresKey}
                 <div class="space-y-2">
                   <div class="flex items-center justify-between">
-                    <Label for="api-key">API Key</Label>
+                    <Label for="api-key">{$_('wizard.apiKey')}</Label>
                     {#if provider.signupUrl}
                       <a
                         href={provider.signupUrl}
@@ -349,7 +353,8 @@
                         rel="noopener noreferrer"
                         class="text-primary flex items-center gap-1 text-xs hover:underline"
                       >
-                        Get a key <ExternalLink size={10} />
+                        {$_('wizard.getAKey')}
+                        <ExternalLink size={10} />
                       </a>
                     {/if}
                   </div>
@@ -359,7 +364,7 @@
                       type={showApiKey ? 'text' : 'password'}
                       placeholder={provider.keyPrefix
                         ? `${provider.keyPrefix}...`
-                        : 'Enter your API key'}
+                        : $_('wizard.enterApiKey')}
                       bind:value={apiKey}
                       onkeydown={handleKeyDown}
                       autofocus
@@ -374,7 +379,7 @@
 
               {#if provider.note}
                 <div class="bg-muted text-muted-foreground rounded-lg p-3 text-xs">
-                  <span class="text-primary font-semibold">Note:</span>
+                  <span class="text-primary font-semibold">{$_('wizard.note')}</span>
                   {provider.note}
                 </div>
               {/if}
@@ -397,10 +402,10 @@
                   <div
                     class="border-primary-foreground/30 border-t-primary-foreground mr-2 h-4 w-4 animate-spin rounded-full border-2"
                   ></div>
-                  Setting up...
+                  {$_('wizard.settingUp')}
                 {:else}
                   <Check class="mr-2 h-4 w-4" />
-                  Get Started
+                  {$_('wizard.getStarted')}
                 {/if}
               </Button>
             </Card.Content>

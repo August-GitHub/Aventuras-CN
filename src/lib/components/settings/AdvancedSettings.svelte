@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { settings } from '$lib/stores/settings.svelte'
   import {
     ChevronDown,
@@ -48,14 +49,14 @@
       <div class="space-y-0.5">
         <div class="flex items-center gap-2">
           <Code2 class="text-muted-foreground h-4 w-4" />
-          <Label>Manual Request Mode</Label>
+          <Label>{$_('settings.manualRequestMode')}</Label>
         </div>
         <p class="text-muted-foreground text-xs">
-          Edit full request body parameters for advanced models.
+          {$_('settings.editFullRequestBody')}
         </p>
         {#if settings.advancedRequestSettings.manualMode}
           <p class="pt-1 text-xs font-medium text-amber-500">
-            Manual mode active. Temperature and max token controls are locked.
+            {$_('settings.manualModeActive')}
           </p>
         {/if}
       </div>
@@ -70,12 +71,12 @@
       <div class="space-y-0.5">
         <div class="flex items-center gap-2">
           <Bug class="text-muted-foreground h-4 w-4" />
-          <Label>Debug Mode</Label>
+          <Label>{$_('settings.debugMode')}</Label>
         </div>
-        <p class="text-muted-foreground text-xs">Log API requests and responses for debugging.</p>
+        <p class="text-muted-foreground text-xs">{$_('settings.logApiRequests')}</p>
         {#if settings.uiSettings.debugMode}
           <p class="pt-1 text-xs font-medium text-amber-500">
-            Logs are session-only and not persisted.
+            {$_('settings.logsSessionOnly')}
           </p>
         {/if}
       </div>
@@ -98,8 +99,10 @@
               <FolderOpen class="h-4 w-4 text-green-500" />
             </div>
             <div class="flex-1">
-              <Label class="leading-none font-medium">Lorebook Import</Label>
-              <p class="text-muted-foreground mt-1 text-xs">Batch size and concurrency</p>
+              <Label class="leading-none font-medium">{$_('settings.lorebookImport')}</Label>
+              <p class="text-muted-foreground mt-1 text-xs">
+                {$_('settings.batchSizeConcurrency')}
+              </p>
             </div>
           </Collapsible.Trigger>
           <div class="flex shrink-0 items-center gap-1">
@@ -108,7 +111,7 @@
               size="icon"
               class="h-8 w-8"
               onclick={() => settings.resetLorebookClassifierSpecificSettings()}
-              title="Reset to default"
+              title={$_('settings.resetToDefault')}
             >
               <RotateCcw class="h-3.5 w-3.5" />
             </Button>

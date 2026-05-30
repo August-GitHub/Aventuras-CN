@@ -1,4 +1,5 @@
 <script lang="ts" generics="T">
+  import { _ } from 'svelte-i18n'
   import { Search } from 'lucide-svelte'
   import { ScrollArea } from '$lib/components/ui/scroll-area'
   import { Skeleton } from '$lib/components/ui/skeleton'
@@ -29,10 +30,10 @@
   let {
     items,
     isLoading = false,
-    searchPlaceholder = 'Search...',
+    searchPlaceholder = $_('browser.search'),
     emptyIcon,
     emptyTitle,
-    emptyDescription = 'No items found in vault',
+    emptyDescription = $_('browser.noItemsInVault'),
     onNavigateToVault,
     filterItem,
     sortItems,

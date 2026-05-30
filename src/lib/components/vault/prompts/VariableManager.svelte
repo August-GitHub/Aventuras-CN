@@ -4,6 +4,7 @@
   import VariableCard from './VariableCard.svelte'
   import { Button } from '$lib/components/ui/button'
   import { Plus, Variable } from 'lucide-svelte'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     packId: string
@@ -73,30 +74,29 @@
 <div class="flex h-full flex-col overflow-hidden">
   <!-- Header -->
   <div class="flex items-center justify-between border-b px-4 py-3">
-    <h3 class="text-sm font-semibold">Custom Variables</h3>
+    <h3 class="text-sm font-semibold">{$_('vault.promptPacks.customVariables')}</h3>
     <Button variant="outline" size="sm" class="h-7 gap-1 text-xs" onclick={handleAddVariable}>
       <Plus class="h-3 w-3" />
-      Add Variable
+      {$_('vault.promptPacks.addVariable')}
     </Button>
   </div>
 
   <!-- Variable List -->
   <div class="flex-1 overflow-y-auto p-4">
     {#if variables.length === 0}
-      <!-- Empty state -->
       <div class="flex flex-col items-center justify-center py-12 text-center">
         <Variable class="text-muted-foreground mb-3 h-10 w-10 opacity-50" />
         <p class="text-muted-foreground text-sm font-medium">
-          No custom variables defined for this pack.
+          {$_('vault.promptPacks.noCustomVariables')}
         </p>
         <p class="text-muted-foreground mt-1 max-w-sm text-xs">
-          Custom variables let you add configurable values to your templates. Use <code
-            class="bg-muted rounded px-1 py-0.5 font-mono">{`{{ variable_name }}`}</code
-          > syntax in templates.
+          {$_('vault.promptPacks.customVariablesHelp', {
+            values: { syntax: '{`{{ variable_name }}`}' },
+          })}
         </p>
         <Button variant="outline" size="sm" class="mt-4 gap-1" onclick={handleAddVariable}>
           <Plus class="h-3.5 w-3.5" />
-          Add Variable
+          {$_('vault.promptPacks.addVariable')}
         </Button>
       </div>
     {:else}

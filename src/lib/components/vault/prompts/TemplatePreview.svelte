@@ -4,6 +4,7 @@
   import type { CustomVariable } from '$lib/services/packs/types'
   import type { TemplateContext } from '$lib/services/templates/types'
   import { AlertTriangle } from 'lucide-svelte'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     content: string
@@ -66,7 +67,7 @@
       const result = templateEngine.render(currentContent, context)
 
       if (result === null) {
-        previewError = 'Template could not be rendered. Check for syntax errors.'
+        previewError = $_('vault.promptPacks.cannotRenderTemplate')
         previewOutput = ''
       } else {
         previewOutput = result
@@ -81,7 +82,9 @@
 <div class="flex h-full flex-col overflow-hidden">
   {#if !hideHeader}
     <div class="border-b px-4 py-2">
-      <h4 class="text-muted-foreground text-xs font-medium tracking-wide uppercase">Preview</h4>
+      <h4 class="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+        {$_('vault.promptPacks.preview')}
+      </h4>
     </div>
   {/if}
 
@@ -96,7 +99,7 @@
         class="font-mono text-sm leading-relaxed break-words whitespace-pre-wrap text-[hsl(var(--foreground)/0.9)]">{previewOutput}</pre>
     {:else}
       <p class="text-muted-foreground text-sm italic">
-        Start typing in the editor to see a preview...
+        {$_('vault.promptPacks.startTyping')}
       </p>
     {/if}
   </div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { settings } from '$lib/stores/settings.svelte'
   import { ui } from '$lib/stores/ui.svelte'
   import { AlertTriangle, Settings } from 'lucide-svelte'

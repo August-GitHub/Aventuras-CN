@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import MainNarrative from '../MainNarrative.svelte'
   import AgentProfiles from '../AgentProfiles.svelte'
   import { settings } from '$lib/stores/settings.svelte'
@@ -38,17 +39,17 @@
   <!-- Global API Settings -->
   <Card>
     <CardHeader>
-      <CardTitle>Global API Settings</CardTitle>
-      <CardDescription>Settings that apply to all API requests</CardDescription>
+      <CardTitle>{$_('settings.globalApiSettings')}</CardTitle>
+      <CardDescription>{$_('settings.settingsApplyToAllRequests')}</CardDescription>
     </CardHeader>
     <CardContent class="space-y-4">
       <!-- Request Timeout -->
       <div class="space-y-4">
         <div class="flex items-center justify-between">
           <div class="space-y-1">
-            <Label>Request Timeout</Label>
+            <Label>{$_('settings.requestTimeout')}</Label>
             <p class="text-muted-foreground text-xs">
-              Maximum time to wait for any LLM response (applies to all services)
+              {$_('settings.maxTimeoutDescription')}
             </p>
           </div>
           <span class="text-muted-foreground text-xs font-medium">

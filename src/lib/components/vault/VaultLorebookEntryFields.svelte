@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import type { VaultLorebookEntry } from '$lib/types'
   import { Input } from '$lib/components/ui/input'
   import { Textarea } from '$lib/components/ui/textarea'
@@ -41,12 +42,17 @@
 
 <div class="space-y-6">
   <div class="space-y-2 {changed('name')}">
-    <Label for="entry-name">Entry Name</Label>
-    <Input id="entry-name" bind:value={data.name} oninput={handleInput} placeholder="Entry Name" />
+    <Label for="entry-name">{$_('lorebook.entryName')}</Label>
+    <Input
+      id="entry-name"
+      bind:value={data.name}
+      oninput={handleInput}
+      placeholder={$_('lorebook.entryName')}
+    />
   </div>
 
   <div class="space-y-2 {changed('type')}">
-    <Label>Entry Type</Label>
+    <Label>{$_('lorebook.entryType')}</Label>
     <Select
       type="single"
       value={data.type}

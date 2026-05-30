@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy, untrack } from 'svelte'
+  import { _ } from 'svelte-i18n'
   import { createDebouncedSave } from '$lib/utils/debounce'
   import { settings } from '$lib/stores/settings.svelte'
   import { Label } from '$lib/components/ui/label'
@@ -855,11 +856,11 @@
       <Tabs.Content value="profiles" class="space-y-4">
         <div class="flex items-center justify-between">
           <p class="text-muted-foreground text-sm">
-            Image profiles configure which provider and API key to use for image generation.
+            {$_('settings.imageProfilesConfigure')}
           </p>
           <Button size="sm" onclick={startNewProfile}>
             <Plus class="mr-1 h-3 w-3" />
-            Add Profile
+            {$_('settings.addProfile')}
           </Button>
         </div>
 
@@ -870,14 +871,16 @@
               {@render profileForm()}
               {#if needsWorkflow}
                 <p class="text-destructive pt-2 text-xs">
-                  Upload and confirm a workflow before saving.
+                  {$_('settings.uploadAndConfirmWorkflow')}
                 </p>
               {/if}
               <div class="flex gap-2 pt-2">
-                <Button variant="outline" onclick={resetEditState} class="flex-1">Cancel</Button>
+                <Button variant="outline" onclick={resetEditState} class="flex-1"
+                  >{$_('settings.cancel')}</Button
+                >
                 <Button onclick={handleSaveProfile} disabled={!canSaveProfile} class="flex-1">
                   <Check class="h-4 w-4" />
-                  Create Profile
+                  {$_('settings.createProfile')}
                 </Button>
               </div>
             </CardContent>
@@ -887,10 +890,9 @@
         {#if settings.imageProfiles.length === 0 && !isNewProfile}
           <Alert.Root>
             <Info class="h-4 w-4" />
-            <Alert.Title>No Image Profiles</Alert.Title>
+            <Alert.Title>{$_('settings.noImageProfiles')}</Alert.Title>
             <Alert.Description class="text-xs">
-              Create an image profile to start generating images. You can have multiple profiles for
-              different providers or use cases (e.g., portraits vs backgrounds).
+              {$_('settings.createImageProfileToStart')}
             </Alert.Description>
           </Alert.Root>
         {:else}
@@ -914,7 +916,9 @@
                           {providerTypes.find((p) => p.value === profile.providerType)?.label ||
                             profile.providerType}
                           {profile.model ? ` · ${profile.model}` : ''}
-                          {profile.apiKey ? ' · Key configured' : ' · No API key'}
+                          {profile.apiKey
+                            ? ` · ${$_('settings.keyConfigured')}`
+                            : ` · ${$_('settings.noApiKey')}`}
                         </p>
                       </div>
                     </Collapsible.Trigger>
@@ -944,19 +948,21 @@
             <div class="space-y-3">
               <Alert.Root>
                 <Info class="h-4 w-4" />
-                <Alert.Title>Story Image Profile Selection</Alert.Title>
+                <Alert.Title>{$_('settings.storyImageProfileSelection')}</Alert.Title>
                 <Alert.Description class="text-xs">
                   <ul class="mt-2 list-inside list-disc space-y-1">
                     <li>
-                      <strong>Reference Profile</strong>: Used when "Portrait Mode" is enabled in
-                      your current story. Generates images based on the character portraits.
+                      <strong>{$_('settings.referenceProfile')}</strong>: {$_(
+                        'settings.referenceProfileDescription',
+                      )}
                     </li>
                     <li>
-                      <strong>Regular Image Profile</strong>: Used when "Portrait Mode" is disabled
-                      in your current story.
+                      <strong>{$_('settings.regularImageProfile')}</strong>: {$_(
+                        'settings.regularProfileDescription',
+                      )}
                     </li>
                   </ul>
-                  <p class="mt-2">Models are configured in each profile on the Profiles tab.</p>
+                  <p class="mt-2">{$_('settings.modelsConfiguredInProfiles')}</p>
                 </Alert.Description>
               </Alert.Root>
             </div>
@@ -965,7 +971,7 @@
               <!-- Standard Image Configuration -->
               <div class="space-y-4">
                 <div class="space-y-2">
-                  <Label>Regular Image Profile</Label>
+                  <Label>{$_('settings.regularImageProfile')}</Label>
                   <Autocomplete
                     items={settings.imageProfiles}
                     selected={getSelectedImageProfile('standard')}
@@ -973,13 +979,13 @@
                     itemLabel={(p: ImageProfile) =>
                       `${p.name} (${providerTypes.find((t) => t.value === p.providerType)?.label || p.providerType}${p.model ? ` · ${p.model}` : ''})`}
                     itemValue={(p: ImageProfile) => p.id}
-                    placeholder="Select an image profile"
+                    placeholder={$_('settings.testProfile')}
                   />
                 </div>
 
                 {#if settings.systemServicesSettings.imageGeneration.profileId}
                   <div class="space-y-2">
-                    <Label>Regular Image Size</Label>
+                    <Label>{$_('settings.regularImageSize')}</Label>
                     <Autocomplete
                       items={standardSizes}
                       selected={standardSizes.find(
@@ -1004,7 +1010,7 @@
                       }}
                       itemLabel={(s: { label: string }) => s.label}
                       itemValue={(s: { value: string }) => s.value}
-                      placeholder="Select size"
+                      placeholder={$_('settings.selectSize')}
                     />
                   </div>
                 {/if}
@@ -1013,7 +1019,7 @@
               <!-- Reference Image Configuration -->
               <div class="space-y-4">
                 <div class="space-y-2">
-                  <Label>Reference (Img2Img) Profile</Label>
+                  <Label>{$_('settings.referenceImg2ImgProfile')}</Label>
                   <Autocomplete
                     items={settings.imageProfiles}
                     selected={getSelectedImageProfile('reference')}
@@ -1021,13 +1027,13 @@
                     itemLabel={(p: ImageProfile) =>
                       `${p.name} (${providerTypes.find((t) => t.value === p.providerType)?.label || p.providerType}${p.model ? ` · ${p.model}` : ''})`}
                     itemValue={(p: ImageProfile) => p.id}
-                    placeholder="Select an image profile"
+                    placeholder={$_('settings.testProfile')}
                   />
                 </div>
 
                 {#if settings.systemServicesSettings.imageGeneration.referenceProfileId || settings.systemServicesSettings.imageGeneration.profileId}
                   <div class="space-y-2">
-                    <Label>Reference Image Size</Label>
+                    <Label>{$_('settings.referenceImageSize')}</Label>
                     <Autocomplete
                       items={referenceSizes}
                       selected={referenceSizes.find(
@@ -1053,7 +1059,7 @@
                       }}
                       itemLabel={(s: { label: string }) => s.label}
                       itemValue={(s: { value: string }) => s.value}
-                      placeholder="Select size"
+                      placeholder={$_('settings.selectSize')}
                     />
                   </div>
                 {/if}
@@ -1063,7 +1069,7 @@
 
           <!-- Image Style -->
           <div class="space-y-2">
-            <Label>Story Image Style</Label>
+            <Label>{$_('settings.storyImageStyle')}</Label>
             <Autocomplete
               items={imageStyles}
               selected={imageStyles.find(
@@ -1077,20 +1083,24 @@
               }}
               itemLabel={(s: { label: string }) => s.label}
               itemValue={(s: { value: string }) => s.value}
-              placeholder="Select style"
+              placeholder={$_('settings.storyImageStyle')}
             />
             <p class="text-muted-foreground mt-1 text-xs">
-              Visual style for generated story images. Edit styles in the Prompts tab.
+              {$_('settings.visualStyleForStory')}
             </p>
           </div>
 
           <!-- Max Images Per Message -->
           <div class="space-y-2">
             <Label>
-              Max Images Per Message: {settings.systemServicesSettings.imageGeneration
-                .maxImagesPerMessage === 0
-                ? 'Unlimited'
-                : settings.systemServicesSettings.imageGeneration.maxImagesPerMessage}
+              {$_('settings.maxImagesPerMessage', {
+                values: {
+                  value:
+                    settings.systemServicesSettings.imageGeneration.maxImagesPerMessage === 0
+                      ? $_('settings.unlimited')
+                      : settings.systemServicesSettings.imageGeneration.maxImagesPerMessage,
+                },
+              })}
             </Label>
             <Slider
               type="multiple"
@@ -1111,7 +1121,7 @@
       <Tabs.Content value="characters" class="space-y-6">
         <section class="space-y-4">
           <div class="space-y-2">
-            <Label>Character Portrait Profile</Label>
+            <Label>{$_('settings.characterPortraitProfile')}</Label>
             <Autocomplete
               items={settings.imageProfiles}
               selected={getSelectedImageProfile('portrait')}
@@ -1119,16 +1129,16 @@
               itemLabel={(p: ImageProfile) =>
                 `${p.name} (${providerTypes.find((t) => t.value === p.providerType)?.label || p.providerType}${p.model ? ` · ${p.model}` : ''})`}
               itemValue={(p: ImageProfile) => p.id}
-              placeholder="Select an image profile"
+              placeholder={$_('settings.testProfile')}
             />
             <p class="text-muted-foreground mt-1 text-xs">
-              Profile used for generating character portraits. Model is configured in the profile.
+              {$_('settings.profileUsedForGenerating')}
             </p>
           </div>
 
           {#if settings.systemServicesSettings.imageGeneration.portraitProfileId || settings.systemServicesSettings.imageGeneration.profileId}
             <div class="space-y-2">
-              <Label>Character Portrait Size</Label>
+              <Label>{$_('settings.characterPortraitSize')}</Label>
               <Autocomplete
                 items={portraitSizes}
                 selected={portraitSizes.find(
@@ -1159,7 +1169,7 @@
           {/if}
 
           <div class="space-y-2">
-            <Label>Character Portrait Style</Label>
+            <Label>{$_('settings.characterPortraitStyle')}</Label>
             <Autocomplete
               items={imageStyles}
               selected={imageStyles.find(
@@ -1173,10 +1183,10 @@
               }}
               itemLabel={(s: { label: string }) => s.label}
               itemValue={(s: { value: string }) => s.value}
-              placeholder="Select style"
+              placeholder={$_('settings.characterPortraitStyle')}
             />
             <p class="text-muted-foreground mt-1 text-xs">
-              Visual style for character portraits. Edit styles in the Prompts tab.
+              {$_('settings.visualStyleForPortraits')}
             </p>
           </div>
         </section>
@@ -1186,7 +1196,7 @@
       <Tabs.Content value="backgrounds" class="space-y-6">
         <section class="space-y-4">
           <div class="space-y-2">
-            <Label>Background Profile</Label>
+            <Label>{$_('settings.backgroundProfile')}</Label>
             <Autocomplete
               items={settings.imageProfiles}
               selected={getSelectedImageProfile('background')}
@@ -1194,15 +1204,15 @@
               itemLabel={(p: ImageProfile) =>
                 `${p.name} (${providerTypes.find((t) => t.value === p.providerType)?.label || p.providerType}${p.model ? ` · ${p.model}` : ''})`}
               itemValue={(p: ImageProfile) => p.id}
-              placeholder="Select an image profile"
+              placeholder={$_('settings.testProfile')}
             />
             <p class="text-muted-foreground mt-1 text-xs">
-              Profile used for generating background scenes. Model is configured in the profile.
+              {$_('settings.profileUsedForBackgrounds')}
             </p>
           </div>
 
           <div class="space-y-2">
-            <Label>Background Size</Label>
+            <Label>{$_('settings.backgroundSize')}</Label>
             <Autocomplete
               items={bgSupportedSizes}
               selected={bgSupportedSizes.find(
@@ -1246,7 +1256,7 @@
               max={20}
               step={1}
             />
-            <p class="text-muted-foreground mt-1 text-xs">Blur amount for the background image.</p>
+            <p class="text-muted-foreground mt-1 text-xs">{$_('settings.blurAmount')}</p>
           </div>
         </section>
       </Tabs.Content>
@@ -1255,7 +1265,7 @@
         <Tabs.Content value="testing" class="space-y-6">
           <section class="space-y-4">
             <div class="space-y-2">
-              <Label>Test Profile</Label>
+              <Label>{$_('settings.testProfile')}</Label>
               <Autocomplete
                 items={settings.imageProfiles}
                 selected={settings.imageProfiles.find((p) => p.id === testProfileId)}
@@ -1263,17 +1273,21 @@
                 itemLabel={(p: ImageProfile) =>
                   `${p.name} (${providerTypes.find((t) => t.value === p.providerType)?.label || p.providerType}${p.model ? ` · ${p.model}` : ''})`}
                 itemValue={(p: ImageProfile) => p.id}
-                placeholder="Select a profile to test"
+                placeholder={$_('settings.selectProfile')}
               />
             </div>
 
             <div class="space-y-2">
-              <Label>Prompt</Label>
-              <Textarea bind:value={testPrompt} placeholder="Enter a test prompt..." rows={4} />
+              <Label>{$_('settings.prompt')}</Label>
+              <Textarea
+                bind:value={testPrompt}
+                placeholder={$_('settings.enterTestPrompt')}
+                rows={4}
+              />
             </div>
 
             <div class="space-y-2">
-              <Label>Size</Label>
+              <Label>{$_('settings.size')}</Label>
               <Autocomplete
                 items={testingSizes}
                 selected={testingSizes.find((s) => s.value === testSize) || {
@@ -1285,7 +1299,7 @@
                 onCustomSelect={(v) => (testSize = v)}
                 itemLabel={(s: { label: string }) => s.label}
                 itemValue={(s: { value: string }) => s.value}
-                placeholder="Select size"
+                placeholder={$_('settings.selectSize')}
               />
             </div>
 
@@ -1296,22 +1310,22 @@
             >
               {#if isGeneratingTestImage}
                 <RotateCcw class="mr-2 h-4 w-4 animate-spin" />
-                Generating...
+                {$_('settings.generating')}
               {:else}
-                Generate Test Image
+                {$_('settings.generateTestImage')}
               {/if}
             </Button>
 
             {#if testError}
               <Alert.Root variant="destructive">
-                <Alert.Title>Generation Error</Alert.Title>
+                <Alert.Title>{$_('settings.generationError')}</Alert.Title>
                 <Alert.Description>{testError}</Alert.Description>
               </Alert.Root>
             {/if}
 
             {#if testImageResult}
               <div class="mt-4 space-y-2">
-                <Label>Result Image</Label>
+                <Label>{$_('settings.resultImage')}</Label>
                 <div class="overflow-hidden rounded-lg border bg-black/5">
                   <img
                     src="data:image/png;base64,{testImageResult}"
@@ -1331,8 +1345,8 @@
 {#snippet profileForm()}
   <div class="space-y-4">
     <div class="space-y-2">
-      <Label>Name</Label>
-      <Input bind:value={profileName} placeholder="e.g., NanoGPT Images" />
+      <Label>{$_('settings.name')}</Label>
+      <Input bind:value={profileName} placeholder={$_('settings.name')} />
     </div>
 
     <div class="space-y-2">

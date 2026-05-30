@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
+  import { _ } from 'svelte-i18n'
   import { createDebouncedSave } from '$lib/utils/debounce'
   import { settings } from '$lib/stores/settings.svelte'
   import type { APIProfile, ProviderType, TextModel } from '$lib/types'
@@ -305,12 +306,12 @@
   <div>
     <div class="flex items-center justify-between">
       <div>
-        <h3 class="text-lg font-semibold">API Profiles</h3>
-        <p class="text-muted-foreground text-sm">Setup your API endpoints</p>
+        <h3 class="text-lg font-semibold">{$_('settings.apiProfiles')}</h3>
+        <p class="text-muted-foreground text-sm">{$_('settings.setupEndpoints')}</p>
       </div>
       <Button onclick={startNewProfile}>
         <Plus class="h-4 w-4" />
-        Add Profile
+        {$_('settings.addProfile')}
       </Button>
     </div>
   </div>
@@ -348,7 +349,9 @@
         >
           {#snippet footer()}
             <div class="flex gap-2 pt-2">
-              <Button variant="outline" onclick={cancelEdit} class="flex-1">Cancel</Button>
+              <Button variant="outline" onclick={cancelEdit} class="flex-1"
+                >{$_('settings.cancel')}</Button
+              >
               <Button
                 onclick={handleSave}
                 disabled={!formName.trim() ||
@@ -392,7 +395,7 @@
                       title="Used when agent profiles don't specify an API profile"
                     >
                       <Star class="mr-1 h-3 w-3" />
-                      Fallback
+                      {$_('settings.fallback')}
                     </Badge>
                   {/if}
                 </div>
@@ -402,7 +405,7 @@
                   </Badge>
                   <Badge variant="outline" class="text-muted-foreground text-xs">
                     {settings.getProfileModels(profile.id).length}
-                    models
+                    {$_('settings.models')}
                   </Badge>
                 </div>
               </div>
@@ -419,7 +422,7 @@
                     class="shrink-0 text-xs md:hidden"
                     title="Used when agent profiles don't specify an API profile"
                   >
-                    Fallback
+                    {$_('settings.fallback')}
                   </Badge>
                 {/if}
                 {#if settings.apiSettings.profiles.length > 1 && profile.id !== settings.apiSettings.defaultProfileId}
@@ -482,13 +485,13 @@
           >
             <KeyIcon class="text-muted-foreground h-6 w-6" />
           </div>
-          <h4 class="mb-2 font-medium">No API profiles yet</h4>
+          <h4 class="mb-2 font-medium">{$_('settings.noApiProfilesYet')}</h4>
           <p class="text-muted-foreground mb-4 text-sm">
-            Add an API profile to connect to your LLM provider
+            {$_('settings.addApiProfileToConnect')}
           </p>
           <Button onclick={startNewProfile}>
-            <Plus class=" h-4 w-4" />
-            Add Your First Profile
+            <Plus class="h-4 w-4" />
+            {$_('settings.addYourFirstProfile')}
           </Button>
         </CardContent>
       </Card>

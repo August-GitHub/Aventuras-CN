@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { story } from '$lib/stores/story.svelte'
   import { settings } from '$lib/stores/settings.svelte'
   import { ui } from '$lib/stores/ui.svelte'
@@ -290,7 +291,7 @@
     try {
       const label = previousRelationshipLabel.trim()
       if (!label || label.toLowerCase() === 'self') {
-        swapError = 'Enter a custom label for the previous protagonist.'
+        swapError = $_('character.protagonistSwapError')
         return
       }
       await story.setProtagonist(character.id, label)
@@ -476,13 +477,13 @@
 <div class="flex flex-col gap-1 pb-12">
   <!-- Header -->
   <div class="mb-2 flex items-center justify-between">
-    <h3 class="text-foreground text-xl font-bold tracking-tight">Characters</h3>
+    <h3 class="text-foreground text-xl font-bold tracking-tight">{$_('character.panelTitle')}</h3>
     <Button
       variant="text"
       size="icon"
       class="text-muted-foreground hover:text-foreground h-6 w-6"
       onclick={() => (showAddForm = !showAddForm)}
-      title="Add character"
+      title={$_('character.addCharacter')}
     >
       <Plus class="h-6! w-6!" />
     </Button>
@@ -492,25 +493,32 @@
   {#if showAddForm}
     <div class="border-border bg-card rounded-lg border p-3 shadow-sm">
       <div class="space-y-3">
-        <Input type="text" bind:value={newName} placeholder="Name" class="h-8 text-sm" />
+        <Input
+          type="text"
+          bind:value={newName}
+          placeholder={$_('common.name')}
+          class="h-8 text-sm"
+        />
         <Input
           type="text"
           bind:value={newRelationship}
-          placeholder="Relationship (ally, enemy...)"
+          placeholder={$_('character.relationship')}
           class="h-8 text-sm"
         />
         <Textarea
           bind:value={newDescription}
-          placeholder="Description (optional)"
+          placeholder={$_('common.description')}
           class="min-h-15 resize-none text-sm"
           rows={2}
         />
       </div>
       <div class="mt-3 flex justify-end gap-2">
         <Button variant="text" size="sm" class="h-7" onclick={() => (showAddForm = false)}>
-          Cancel
+          {$_('common.cancel')}
         </Button>
-        <Button size="sm" class="h-7" onclick={addCharacter} disabled={!newName.trim()}>Add</Button>
+        <Button size="sm" class="h-7" onclick={addCharacter} disabled={!newName.trim()}>
+          {$_('common.add')}
+        </Button>
       </div>
     </div>
   {/if}
@@ -523,14 +531,14 @@
       <div class="bg-muted mb-3 rounded-full p-3">
         <UserPlus class="text-muted-foreground h-6 w-6" />
       </div>
-      <p class="text-muted-foreground text-sm">No characters yet</p>
+      <p class="text-muted-foreground text-sm">{$_('character.noCharacters')}</p>
       <Button
         variant="link"
         class="text-primary mt-1 h-auto p-0 text-xs"
         onclick={() => (showAddForm = true)}
       >
         <Plus class="mr-1.5 h-3.5 w-3.5" />
-        Add your first character
+        {$_('character.addFirst')}
       </Button>
     </div>
   {:else}
@@ -556,7 +564,7 @@
             <div class="space-y-3">
               <div class="mb-2 flex items-center justify-between">
                 <h4 class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-                  Editing {character.name}
+                  {$_('character.editing', { values: { name: character.name } })}
                 </h4>
                 <Button variant="text" size="icon" class="h-6 w-6" onclick={cancelEdit}
                   ><X class="h-4 w-4" /></Button
@@ -565,15 +573,20 @@
 
               <div class="grid grid-cols-2 gap-3">
                 <div class="col-span-2 space-y-1 sm:col-span-1">
-                  <Label class="text-xs">Name</Label>
-                  <Input type="text" bind:value={editName} placeholder="Name" class="h-8 text-sm" />
+                  <Label class="text-xs">{$_('common.name')}</Label>
+                  <Input
+                    type="text"
+                    bind:value={editName}
+                    placeholder={$_('common.name')}
+                    class="h-8 text-sm"
+                  />
                 </div>
                 <div class="col-span-2 space-y-1 sm:col-span-1">
-                  <Label class="text-xs">Relationship</Label>
+                  <Label class="text-xs">{$_('character.relationship')}</Label>
                   <Input
                     type="text"
                     bind:value={editRelationship}
-                    placeholder={isProtagonist ? 'Protagonist' : 'Relationship'}
+                    placeholder={isProtagonist ? $_('character.you') : $_('character.relationship')}
                     class="h-8 text-sm"
                     disabled={isProtagonist}
                   />
@@ -581,7 +594,7 @@
               </div>
 
               <div class="space-y-1">
-                <Label class="text-xs">Status</Label>
+                <Label class="text-xs">{$_('character.status')}</Label>
                 <ToggleGroup.Root
                   type="single"
                   value={editStatus}
@@ -594,47 +607,44 @@
                     value="active"
                     class="h-7 flex-1 text-xs data-[state=on]:bg-green-500/10 data-[state=on]:text-green-600"
                   >
-                    <!-- <User class="h-3 w-3" /> -->
-                    Active
+                    {$_('character.active')}
                   </ToggleGroup.Item>
                   <ToggleGroup.Item
                     value="inactive"
                     class="data-[state=on]:bg-muted data-[state=on]:text-foreground h-7 flex-1 text-xs"
                   >
-                    <!-- <UserX class="h-3 w-3" /> -->
-                    Inactive
+                    {$_('character.inactive')}
                   </ToggleGroup.Item>
                   <ToggleGroup.Item
                     value="deceased"
                     class="data-[state=on]:bg-destructive/10 data-[state=on]:text-destructive h-7 flex-1 text-xs"
                   >
-                    <!-- <Skull class="h-3 w-3" /> -->
-                    Deceased
+                    {$_('character.deceased')}
                   </ToggleGroup.Item>
                 </ToggleGroup.Root>
               </div>
 
               <div class="space-y-1">
-                <Label class="text-xs">Traits & Appearance</Label>
+                <Label class="text-xs">{$_('character.traitsAppearance')}</Label>
                 <Input
                   type="text"
                   bind:value={editTraits}
-                  placeholder="Traits (comma separated)"
+                  placeholder={$_('character.traitsPlaceholder')}
                   class="mb-2 h-8 text-xs"
                 />
                 <Input
                   type="text"
                   bind:value={editVisualDescriptors}
-                  placeholder="Appearance (comma separated)"
+                  placeholder={$_('character.appearancePlaceholder')}
                   class="h-8 text-xs"
                 />
               </div>
 
               <div class="space-y-1">
-                <Label class="text-xs">Description</Label>
+                <Label class="text-xs">{$_('common.description')}</Label>
                 <Textarea
                   bind:value={editDescription}
-                  placeholder="Description"
+                  placeholder={$_('common.description')}
                   class="min-h-[60px] resize-none text-xs"
                 />
               </div>
@@ -657,7 +667,7 @@
                 <div
                   class="text-muted-foreground mb-2 flex items-center justify-between text-xs font-medium"
                 >
-                  <span>Portrait</span>
+                  <span>{$_('character.portrait')}</span>
                   {#if editPortrait}
                     <Button
                       variant="destructive"
@@ -665,7 +675,7 @@
                       class="h-5 px-1.5 text-xs"
                       onclick={removePortrait}
                     >
-                      Remove
+                      {$_('character.remove')}
                     </Button>
                   {/if}
                 </div>
@@ -692,10 +702,10 @@
                     >
                       {#if uploadingPortraitId === character.id}
                         <Loader2 class="h-3.5 w-3.5 animate-spin" />
-                        <span>Uploading...</span>
+                        <span>{$_('character.uploading')}</span>
                       {:else}
                         <ImageUp class="h-3.5 w-3.5" />
-                        <span>Upload</span>
+                        <span>{$_('character.upload')}</span>
                       {/if}
                       <input
                         type="file"
@@ -719,10 +729,10 @@
                     >
                       {#if generatingPortraitId === character.id}
                         <Loader2 class="h-3.5 w-3.5 animate-spin" />
-                        <span>Generating...</span>
+                        <span>{$_('character.generating')}</span>
                       {:else}
                         <Wand2 class="h-3.5 w-3.5" />
-                        <span>Generate</span>
+                        <span>{$_('character.generate')}</span>
                       {/if}
                     </Button>
                   </div>
@@ -734,7 +744,7 @@
 
               <div class="border-border flex justify-end gap-2 border-t pt-2">
                 <Button variant="text" size="sm" class="h-7 text-xs" onclick={cancelEdit}>
-                  Cancel
+                  {$_('common.cancel')}
                 </Button>
                 <Button
                   size="sm"
@@ -743,7 +753,7 @@
                   disabled={!editName.trim()}
                 >
                   <Save class="mr-1.5 h-3.5 w-3.5" />
-                  Save Changes
+                  {$_('character.saveChanges')}
                 </Button>
               </div>
             </div>
@@ -820,7 +830,7 @@
                     class="h-4 w-fit px-1.5 py-0 text-[10px] tracking-wide uppercase"
                   >
                     <Star class="mr-0.5 h-2.5 w-2.5" />
-                    You
+                    {$_('character.you')}
                   </Badge>
                 {:else if character.relationship || character.translatedRelationship}
                   <Badge
@@ -854,7 +864,7 @@
                     onclick={() => confirmSwap(character)}
                     disabled={!previousRelationshipLabel.trim()}
                   >
-                    Swap
+                    {$_('character.swap')}
                   </Button>
                   <Button variant="ghost" size="sm" class="h-7 px-2 text-xs" onclick={cancelSwap}>
                     <X class="h-3.5 w-3.5" />
@@ -902,7 +912,7 @@
                           descriptorsExpanded && 'rotate-180',
                         )}
                       />
-                      <span class="font-medium">Appearance</span>
+                      <span class="font-medium">{$_('character.appearance')}</span>
                     </button>
                     {#if descriptorsExpanded}
                       <div class="flex flex-col gap-1">
@@ -959,7 +969,7 @@
                     size="icon"
                     class="text-muted-foreground hover:text-foreground h-6 w-6"
                     onclick={() => toggleCollapse(character.id)}
-                    title={isCollapsed ? 'Show details' : 'Hide details'}
+                    title={isCollapsed ? $_('character.showDetails') : $_('character.hideDetails')}
                   >
                     <ChevronDown
                       class={cn(
@@ -982,7 +992,7 @@
                     size="icon"
                     class="text-muted-foreground h-6 w-6 hover:text-amber-500"
                     onclick={() => beginSwap(character)}
-                    title="Make protagonist"
+                    title={$_('character.makeProtagonist')}
                   >
                     <Star class="h-3.5 w-3.5" />
                   </Button>
@@ -992,7 +1002,7 @@
                   size="icon"
                   class="text-muted-foreground hover:text-foreground h-6 w-6"
                   onclick={() => startEdit(character)}
-                  title="Edit"
+                  title={$_('common.edit')}
                 >
                   <Pencil class="h-3.5 w-3.5" />
                 </Button>
@@ -1006,7 +1016,7 @@
                       : 'text-muted-foreground hover:text-primary',
                   )}
                   onclick={() => saveCharacterToVault(character)}
-                  title="Save to vault"
+                  title={$_('character.saveToVault')}
                 >
                   <Archive class="h-3.5 w-3.5" />
                 </Button>

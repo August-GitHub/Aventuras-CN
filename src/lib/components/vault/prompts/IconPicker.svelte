@@ -3,6 +3,7 @@
   import { Button } from '$lib/components/ui/button'
   import { Input } from '$lib/components/ui/input'
   import { cn } from '$lib/utils/cn'
+  import { _ } from 'svelte-i18n'
   import {
     Icon,
     Heart,
@@ -135,26 +136,28 @@
           <selectedIcon.component class="h-3.5 w-3.5" />
           <span class="text-muted-foreground">{selectedIcon.name}</span>
         {:else}
-          <span class="text-muted-foreground">No icon</span>
+          <span class="text-muted-foreground">{$_('vault.promptPacks.noIcon')}</span>
         {/if}
       </Button>
     {/snippet}
   </Popover.Trigger>
   <Popover.Content class="w-64 p-2" align="start">
-    <Input bind:value={search} placeholder="Search icons..." class="mb-2 h-8 text-xs" />
+    <Input
+      bind:value={search}
+      placeholder={$_('vault.promptPacks.searchIcons')}
+      class="mb-2 h-8 text-xs"
+    />
 
-    <!-- Clear option -->
     {#if value}
       <button
         type="button"
         class="text-muted-foreground hover:bg-muted hover:text-foreground mb-1 w-full rounded-md px-2 py-1.5 text-left text-xs transition-colors"
         onclick={() => handleSelect(undefined)}
       >
-        Clear icon
+        {$_('vault.promptPacks.clearIcon')}
       </button>
     {/if}
 
-    <!-- Icon grid -->
     <div class="grid max-h-48 grid-cols-6 gap-0.5 overflow-y-auto">
       {#each filtered as icon (icon.name)}
         <button
@@ -174,7 +177,9 @@
     </div>
 
     {#if filtered.length === 0}
-      <p class="text-muted-foreground py-4 text-center text-xs">No icons found</p>
+      <p class="text-muted-foreground py-4 text-center text-xs">
+        {$_('vault.promptPacks.noIconsFound')}
+      </p>
     {/if}
   </Popover.Content>
 </Popover.Root>

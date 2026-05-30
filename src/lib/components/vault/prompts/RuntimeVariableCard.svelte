@@ -27,6 +27,7 @@
     Check,
     Pin,
   } from 'lucide-svelte'
+  import { _ } from 'svelte-i18n'
 
   // Icon map for rendering selected icon in collapsed state
   import {
@@ -196,25 +197,25 @@
 
   let nameError = $derived(
     editName.length === 0
-      ? 'Variable name is required'
+      ? $_('vault.promptPacks.variableNameRequired')
       : !VARIABLE_NAME_REGEX.test(editName)
-        ? 'Lowercase letters, numbers, and underscores only (e.g. my_variable)'
+        ? $_('vault.promptPacks.variableNameHelp')
         : null,
   )
 
-  const TYPE_LABELS: Record<RuntimeVariableType, string> = {
-    text: 'Text',
-    number: 'Number',
-    enum: 'Enum',
+  const TYPE_LABELS: Record<RuntimeVariableType, () => string> = {
+    text: () => $_('vault.promptPacks.text'),
+    number: () => $_('vault.promptPacks.number'),
+    enum: () => $_('vault.promptPacks.enum'),
   }
 
   const VARIABLE_TYPES: RuntimeVariableType[] = ['text', 'number', 'enum']
 
-  const ENTITY_TYPE_LABELS: Record<RuntimeEntityType, string> = {
-    character: 'Character',
-    location: 'Location',
-    item: 'Item',
-    story_beat: 'Story Beat',
+  const ENTITY_TYPE_LABELS: Record<RuntimeEntityType, () => string> = {
+    character: () => $_('vault.promptPacks.character'),
+    location: () => $_('vault.promptPacks.location'),
+    item: () => $_('vault.promptPacks.item'),
+    story_beat: () => $_('vault.promptPacks.storyBeat'),
   }
 
   const ENTITY_TYPES: RuntimeEntityType[] = ['character', 'location', 'item', 'story_beat']
@@ -434,9 +435,8 @@
   {#if expanded}
     <Separator />
     <div class="space-y-4 px-4 py-4">
-      <!-- Variable Name -->
       <div class="space-y-1.5">
-        <Label>Variable Name</Label>
+        <Label>{$_('vault.promptPacks.variableName')}</Label>
         <Input
           value={editName}
           oninput={handleNameInput}
@@ -449,34 +449,32 @@
         {/if}
       </div>
 
-      <!-- Entity Type -->
       <div class="space-y-1.5">
-        <Label>Entity Type</Label>
+        <Label>{$_('vault.promptPacks.entityType')}</Label>
         <Select.Root type="single" value={editEntityType} onValueChange={handleEntityTypeChange}>
           <Select.Trigger class="h-9 w-full">
-            {ENTITY_TYPE_LABELS[editEntityType]}
+            {ENTITY_TYPE_LABELS[editEntityType]()}
           </Select.Trigger>
           <Select.Content>
             {#each ENTITY_TYPES as etype (etype)}
-              <Select.Item value={etype} label={ENTITY_TYPE_LABELS[etype]}>
-                {ENTITY_TYPE_LABELS[etype]}
+              <Select.Item value={etype} label={ENTITY_TYPE_LABELS[etype]()}>
+                {ENTITY_TYPE_LABELS[etype]()}
               </Select.Item>
             {/each}
           </Select.Content>
         </Select.Root>
       </div>
 
-      <!-- Variable Type -->
       <div class="space-y-1.5">
-        <Label>Variable Type</Label>
+        <Label>{$_('vault.promptPacks.variableType')}</Label>
         <Select.Root type="single" value={editType} onValueChange={handleTypeChange}>
           <Select.Trigger class="h-9 w-full">
-            {TYPE_LABELS[editType]}
+            {TYPE_LABELS[editType]()}
           </Select.Trigger>
           <Select.Content>
             {#each VARIABLE_TYPES as vtype (vtype)}
-              <Select.Item value={vtype} label={TYPE_LABELS[vtype]}>
-                {TYPE_LABELS[vtype]}
+              <Select.Item value={vtype} label={TYPE_LABELS[vtype]()}>
+                {TYPE_LABELS[vtype]()}
               </Select.Item>
             {/each}
           </Select.Content>
@@ -489,7 +487,7 @@
             <AlertTriangle class="text-destructive mt-0.5 h-3.5 w-3.5 shrink-0" />
             <div class="flex-1 space-y-1.5">
               <p class="text-destructive text-xs">
-                Changing type will clear all existing values for this variable. Continue?
+                {$_('vault.promptPacks.changingTypeWarning')}
               </p>
               <div class="flex gap-2">
                 <Button
@@ -498,7 +496,7 @@
                   class="h-6 px-2 text-xs"
                   onclick={confirmTypeChange}
                 >
-                  Confirm
+                  {$_('common.confirm')}
                 </Button>
                 <Button
                   variant="ghost"
@@ -506,7 +504,7 @@
                   class="h-6 px-2 text-xs"
                   onclick={cancelTypeChange}
                 >
-                  Cancel
+                  {$_('common.cancel')}
                 </Button>
               </div>
             </div>
@@ -514,21 +512,19 @@
         {/if}
       </div>
 
-      <!-- Description -->
       <div class="space-y-1.5">
-        <Label>Description</Label>
+        <Label>{$_('vault.promptPacks.description')}</Label>
         <Textarea
           bind:value={editDescription}
           onblur={handleFieldBlur}
-          placeholder="Guidance for the LLM about what this variable represents"
+          placeholder={$_('vault.promptPacks.descriptionHelp')}
           rows={2}
         />
       </div>
 
-      <!-- Panel Label & Color -->
       <div class="space-y-1.5">
-        <Label>Panel Label</Label>
-        <p class="text-muted-foreground text-xs">What to show as the label on entity panels</p>
+        <Label>{$_('vault.promptPacks.panelLabel')}</Label>
+        <p class="text-muted-foreground text-xs">{$_('vault.promptPacks.panelLabelHelp')}</p>
         <div class="flex gap-2">
           <Button
             variant={editIcon ? 'outline' : 'default'}
@@ -539,7 +535,7 @@
               emitUpdate()
             }}
           >
-            Display Name
+            {$_('vault.promptPacks.displayNameOption')}
           </Button>
           <Button
             variant={editIcon ? 'default' : 'outline'}
@@ -552,7 +548,7 @@
               }
             }}
           >
-            Icon
+            {$_('vault.promptPacks.iconOption')}
           </Button>
         </div>
         {#if editIcon}
@@ -570,18 +566,17 @@
         {/if}
 
         <div class="mt-2">
-          <Label>Color</Label>
+          <Label>{$_('vault.promptPacks.color')}</Label>
           <div class="mt-1">
             <ColorPicker value={editColor} onChange={handleColorChange} />
           </div>
         </div>
       </div>
 
-      <!-- Default Value -->
       <div class="space-y-1.5">
-        <Label>Default Value</Label>
+        <Label>{$_('vault.promptPacks.defaultValue')}</Label>
         <p class="text-muted-foreground text-xs">
-          If set, the variable is optional for the LLM to fill
+          {$_('vault.promptPacks.defaultValue')} (optional)
         </p>
         {#if editType === 'text'}
           <Input
@@ -607,7 +602,8 @@
               }}
             >
               <Select.Trigger class="h-9 w-full">
-                {editEnumOptions.find((o) => o.value === editDefault)?.label || 'Select default'}
+                {editEnumOptions.find((o) => o.value === editDefault)?.label ||
+                  $_('vault.promptPacks.selectDefault')}
               </Select.Trigger>
               <Select.Content>
                 {#each editEnumOptions as opt (opt.value)}
@@ -620,39 +616,39 @@
               </Select.Content>
             </Select.Root>
           {:else}
-            <p class="text-muted-foreground text-xs">Add enum options first</p>
+            <p class="text-muted-foreground text-xs">
+              {$_('vault.promptPacks.addEnumOptionsFirst')}
+            </p>
           {/if}
         {/if}
       </div>
 
-      <!-- Min/Max for number type -->
       {#if editType === 'number'}
         <div class="flex gap-4">
           <div class="flex-1 space-y-1.5">
-            <Label>Min Value</Label>
+            <Label>{$_('vault.promptPacks.minValue')}</Label>
             <Input
               type="number"
               bind:value={editMinValue}
               onblur={handleFieldBlur}
-              placeholder="No minimum"
+              placeholder={$_('vault.promptPacks.noMinimum')}
             />
           </div>
           <div class="flex-1 space-y-1.5">
-            <Label>Max Value</Label>
+            <Label>{$_('vault.promptPacks.maxValue')}</Label>
             <Input
               type="number"
               bind:value={editMaxValue}
               onblur={handleFieldBlur}
-              placeholder="No maximum"
+              placeholder={$_('vault.promptPacks.noMaximum')}
             />
           </div>
         </div>
       {/if}
 
-      <!-- Enum Options Editor -->
       {#if editType === 'enum'}
         <div class="space-y-2">
-          <Label>Enum Options</Label>
+          <Label>{$_('vault.promptPacks.enumOptions')}</Label>
           <div class="space-y-2">
             {#each editEnumOptions as opt, i (i)}
               <div class="flex items-center gap-2">
@@ -703,17 +699,16 @@
           </div>
           <Button variant="outline" size="sm" class="h-7 gap-1 text-xs" onclick={addEnumOption}>
             <Plus class="h-3 w-3" />
-            Add Option
+            {$_('vault.promptPacks.addOption')}
           </Button>
         </div>
       {/if}
 
-      <!-- Pinned -->
       <div class="flex items-center justify-between">
         <div class="space-y-0.5">
-          <Label>Pinned</Label>
+          <Label>{$_('vault.promptPacks.pinned')}</Label>
           <p class="text-muted-foreground text-xs">
-            Always visible on entity panels, even when collapsed
+            {$_('vault.promptPacks.pinnedHelp')}
           </p>
         </div>
         <Button
@@ -726,26 +721,29 @@
           }}
         >
           <Pin class="h-3 w-3" />
-          {editPinned ? 'Pinned' : 'Unpinned'}
+          {editPinned
+            ? $_('vault.promptPacks.pinnedButton')
+            : $_('vault.promptPacks.unpinnedButton')}
         </Button>
       </div>
 
       <Separator />
 
-      <!-- Footer: Save + Delete -->
       <div class="flex items-center justify-between">
         <div>
           {#if showDeleteConfirm}
             <div class="flex items-center gap-2">
               <span class="text-destructive text-xs">
-                Delete this variable?
+                {$_('vault.promptPacks.deleteVariableConfirm')}
                 {#if entityTypeWarningCount > 0}
                   ({entityTypeWarningCount}
-                  {entityTypeWarningCount === 1 ? 'entity has' : 'entities have'} values)
+                  {entityTypeWarningCount === 1
+                    ? $_('vault.promptPacks.entityHasValue')
+                    : $_('vault.promptPacks.entitiesHaveValues')} values)
                 {/if}
               </span>
               <Button variant="destructive" size="sm" class="h-7 text-xs" onclick={onDelete}>
-                Confirm
+                {$_('common.confirm')}
               </Button>
               <Button
                 variant="ghost"
@@ -753,7 +751,7 @@
                 class="h-7 text-xs"
                 onclick={() => (showDeleteConfirm = false)}
               >
-                Cancel
+                {$_('common.cancel')}
               </Button>
             </div>
           {:else}
@@ -764,7 +762,7 @@
               onclick={() => (showDeleteConfirm = true)}
             >
               <Trash2 class="h-3 w-3" />
-              Delete
+              {$_('common.delete')}
             </Button>
           {/if}
         </div>
@@ -772,7 +770,7 @@
         {#if saveFlash}
           <span class="text-muted-foreground flex items-center gap-1 text-xs">
             <Check class="h-3 w-3" />
-            Saved
+            {$_('vault.promptPacks.saved')}
           </span>
         {:else}
           <Button
@@ -782,7 +780,7 @@
             onclick={handleSave}
           >
             <Save class="h-3 w-3" />
-            Save
+            {$_('vault.promptPacks.save')}
           </Button>
         {/if}
       </div>

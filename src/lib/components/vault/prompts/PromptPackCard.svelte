@@ -5,6 +5,7 @@
   import { Button } from '$lib/components/ui/button'
   import { Download, Trash2, Lock } from 'lucide-svelte'
   import { stripToPlainText } from '$lib/utils/markdown'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     pack: PresetPack
@@ -30,7 +31,9 @@
           <div class="flex flex-wrap items-center gap-2">
             <h3 class="truncate font-semibold">{pack.name}</h3>
             {#if usageCount > 0}
-              <Badge variant="outline" class="border-green-500/50 text-green-500">Active</Badge>
+              <Badge variant="outline" class="border-green-500/50 text-green-500"
+                >{$_('vault.promptPacks.active')}</Badge
+              >
             {/if}
           </div>
           <p class="text-muted-foreground mt-1 line-clamp-2 text-sm">
@@ -47,7 +50,7 @@
                 e.stopPropagation()
                 onExport?.()
               }}
-              title="Export pack"
+              title={$_('vault.promptPacks.exportPack')}
             >
               <Download class="h-4 w-4" />
             </Button>
@@ -61,7 +64,7 @@
                 e.stopPropagation()
                 onDelete?.()
               }}
-              title="Delete pack"
+              title={$_('vault.promptPacks.deletePack')}
             >
               <Trash2 class="h-4 w-4" />
             </Button>
@@ -70,12 +73,14 @@
       </div>
       <div class="text-muted-foreground mt-auto flex items-center gap-3 pt-3 text-xs">
         {#if pack.isDefault}
-          <span class="flex items-center gap-1"><Lock class="h-3 w-3" />Built-in</span>
+          <span class="flex items-center gap-1"
+            ><Lock class="h-3 w-3" />{$_('vault.promptPacks.builtIn')}</span
+          >
         {:else}
-          <span>{modifiedCount} modified</span>
+          <span>{modifiedCount} {$_('vault.promptPacks.modified')}</span>
         {/if}
         <span class="text-muted-foreground/50">|</span>
-        <span>{pack.author ?? 'Custom'}</span>
+        <span>{pack.author ?? $_('vault.promptPacks.custom')}</span>
       </div>
     </CardContent>
   </Card>

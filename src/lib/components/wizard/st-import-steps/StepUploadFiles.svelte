@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { Upload, ImageIcon, Check, X, MessageSquare, User, AlertCircle } from 'lucide-svelte'
   import * as Card from '$lib/components/ui/card'
   import * as Alert from '$lib/components/ui/alert'

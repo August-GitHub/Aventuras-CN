@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { grammarService, type GrammarIssue } from '$lib/services/grammar'
   import { settings } from '$lib/stores/settings.svelte'
   import { ui } from '$lib/stores/ui.svelte'
@@ -67,20 +68,19 @@
   async function handleAddToDictionary(issue: GrammarIssue) {
     const result = await grammarService.addWord(issue.problemText)
     if (result === 'added') {
-      // Re-lint to remove the issue
       issues = await grammarService.lint(text)
       expandedIssue = null
       return
     }
 
     if (result === 'exists') {
-      ui.showToast('Word is already in your custom dictionary', 'warning')
+      ui.showToast($_('grammar.wordAlreadyExists'), 'warning')
       issues = await grammarService.lint(text)
       expandedIssue = null
       return
     }
 
-    ui.showToast('Only single words can be added to the dictionary', 'warning')
+    ui.showToast($_('grammar.singleWordOnly'), 'warning')
   }
 
   function handleDismiss(index: number) {
@@ -155,7 +155,7 @@
                   >
                     <Check class="h-3 w-3 shrink-0" />
                     <span class="max-w-[120px] truncate sm:max-w-none"
-                      >{suggestion || '(remove)'}</span
+                      >{suggestion || $_('grammar.remove')}</span
                     >
                   </button>
                 {/each}
@@ -163,15 +163,15 @@
                   <button
                     class="bg-surface-700 border-surface-600 text-surface-300 hover:bg-surface-600 active:bg-surface-500 flex min-h-[32px] items-center gap-1 rounded border px-2 py-1.5 text-[11px] transition-colors sm:text-xs"
                     onclick={() => handleAddToDictionary(issue)}
-                    title="Add to dictionary"
+                    title={$_('grammar.addToDictionary')}
                   >
                     <Plus class="h-3 w-3 shrink-0" />
-                    <span class="whitespace-nowrap">Add to dictionary</span>
+                    <span class="whitespace-nowrap">{$_('grammar.addToDictionary')}</span>
                   </button>
                 {/if}
               </div>
             {:else}
-              <p class="text-xs text-yellow-400/60 italic">No suggestions available</p>
+              <p class="text-xs text-yellow-400/60 italic">{$_('grammar.noSuggestions')}</p>
             {/if}
           </div>
         {/if}

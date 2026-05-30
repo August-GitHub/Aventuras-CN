@@ -4,6 +4,7 @@
   import { ScrollArea } from '$lib/components/ui/scroll-area'
   import { ChevronRight, Variable, Settings, Activity } from 'lucide-svelte'
   import { cn } from '$lib/utils/cn'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     selectedTemplateId: string | null
@@ -45,7 +46,7 @@
         onclick={onShowSettings}
       >
         <Settings class="h-4 w-4" />
-        Pack Settings
+        {$_('vault.promptPacks.packSettings')}
       </button>
     </div>
 
@@ -97,7 +98,7 @@
         onclick={onToggleVariables}
       >
         <Variable class="h-4 w-4" />
-        Variables
+        {$_('vault.promptPacks.variables')}
       </button>
       <button
         type="button"
@@ -110,7 +111,7 @@
         onclick={onToggleRuntimeVars}
       >
         <Activity class="h-4 w-4" />
-        Runtime Vars
+        {$_('vault.promptPacks.runtimeVars')}
       </button>
     </div>
   </div>

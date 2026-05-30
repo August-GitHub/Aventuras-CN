@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { story } from '$lib/stores/story.svelte'
   import { ui } from '$lib/stores/ui.svelte'
   import {
@@ -196,13 +197,13 @@
 <div class="flex flex-col gap-1 pb-12">
   <!-- Header -->
   <div class="mb-2 flex items-center justify-between">
-    <h3 class="text-foreground text-xl font-bold tracking-tight">Inventory</h3>
+    <h3 class="text-foreground text-xl font-bold tracking-tight">{$_('inventory.panelTitle')}</h3>
     <Button
       variant="text"
       size="icon"
       class="text-muted-foreground hover:text-foreground h-6 w-6"
       onclick={() => (showAddForm = !showAddForm)}
-      title="Add item"
+      title={$_('inventory.addItem')}
     >
       <Plus class="h-6! w-6!" />
     </Button>
@@ -211,25 +212,32 @@
   {#if showAddForm}
     <div class="border-border bg-card mb-2 rounded-lg border p-3 shadow-sm">
       <div class="space-y-3">
-        <Input type="text" bind:value={newName} placeholder="Item name" class="h-8 text-sm" />
+        <Input
+          type="text"
+          bind:value={newName}
+          placeholder={$_('inventory.itemName')}
+          class="h-8 text-sm"
+        />
         <Textarea
           bind:value={newDescription}
-          placeholder="Description (optional)"
+          placeholder={$_('common.description')}
           class="min-h-15 resize-none text-sm"
           rows={2}
         />
         <div class="flex items-center justify-end gap-3">
           <div class="flex items-center gap-2">
-            <Label class="text-muted-foreground text-xs">Quantity</Label>
+            <Label class="text-muted-foreground text-xs">{$_('inventory.quantity')}</Label>
             <Input type="number" bind:value={newQuantity} min="1" class="h-8 w-20 text-sm" />
           </div>
         </div>
       </div>
       <div class="mt-3 flex justify-end gap-2">
         <Button variant="text" size="sm" class="h-7" onclick={() => (showAddForm = false)}>
-          Cancel
+          {$_('common.cancel')}
         </Button>
-        <Button size="sm" class="h-7" onclick={addItem} disabled={!newName.trim()}>Add</Button>
+        <Button size="sm" class="h-7" onclick={addItem} disabled={!newName.trim()}>
+          {$_('common.add')}
+        </Button>
       </div>
     </div>
   {/if}
@@ -238,7 +246,7 @@
   {#if story.equippedItems.length > 0}
     <div class="mb-4 space-y-2">
       <h4 class="text-muted-foreground pl-1 text-xs font-semibold tracking-wider uppercase">
-        Equipped
+        {$_('inventory.equipped')}
       </h4>
       {#each story.equippedItems as item (item.id)}
         {@const isCollapsed = ui.isEntityCollapsed(item.id)}
@@ -482,7 +490,7 @@
     <div class="space-y-2">
       {#if story.equippedItems.length > 0}
         <h4 class="text-muted-foreground mt-4 pl-1 text-xs font-semibold tracking-wider uppercase">
-          Backpack
+          {$_('inventory.backpack')}
         </h4>
       {/if}
       {#each story.inventoryItems.filter((item) => !item.equipped) as item (item.id)}
@@ -722,14 +730,14 @@
       <div class="bg-muted mb-3 rounded-full p-3">
         <Package class="text-muted-foreground h-6 w-6" />
       </div>
-      <p class="text-muted-foreground text-sm">Empty inventory</p>
+      <p class="text-muted-foreground text-sm">{$_('inventory.noItems')}</p>
       <Button
         variant="text"
         class="text-primary mt-1 h-auto p-0 text-xs"
         onclick={() => (showAddForm = true)}
       >
         <Plus class="h-3.5 w-3.5" />
-        Add first item
+        {$_('inventory.addFirst')}
       </Button>
     </div>
   {/if}
@@ -738,7 +746,7 @@
   {#if worldItems.length > 0}
     <div class="mt-4 space-y-2">
       <h4 class="text-muted-foreground pl-1 text-xs font-semibold tracking-wider uppercase">
-        World Items
+        {$_('inventory.worldItems')}
       </h4>
       {#each worldItems as item (item.id)}
         {@const isCollapsed = ui.isEntityCollapsed(item.id)}

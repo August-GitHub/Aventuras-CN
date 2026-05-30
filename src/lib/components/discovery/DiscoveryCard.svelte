@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import type { DiscoveryCard } from '$lib/services/discovery'
   import { Download, Check, Eye } from 'lucide-svelte'
   import { Card, CardContent } from '$lib/components/ui/card'

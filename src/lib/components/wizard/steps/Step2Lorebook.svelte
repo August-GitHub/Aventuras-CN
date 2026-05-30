@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Archive, Loader2, FileJson, ChevronRight, AlertCircle, X, BookOpen } from 'lucide-svelte'
+  import { _ } from 'svelte-i18n'
   import UniversalVaultBrowser from '$lib/components/vault/UniversalVaultBrowser.svelte'
   import type { EntryType, VaultLorebook } from '$lib/types'
   import type { ImportedLorebookItem } from '../wizardTypes'
@@ -59,10 +60,10 @@
     <div class="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-md">
       <Archive class="text-primary h-4 w-4" />
     </div>
-    <h3 class="text-lg font-medium">Vault Lorebooks</h3>
+    <h3 class="text-lg font-medium">{$_('stepLorebook.vaultLorebooks')}</h3>
   </div>
   <p class="text-muted-foreground text-sm">
-    Select lorebooks from your vault to populate your world with characters, locations, and lore.
+    {$_('stepLorebook.selectLorebooksVault')}
   </p>
 </div>
 

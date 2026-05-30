@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { isTouchDevice } from '$lib/utils/swipe'
   import { Textarea } from '$lib/components/ui/textarea'
   import { Button } from '$lib/components/ui/button'
@@ -51,7 +52,7 @@
       bind:value={inputValue}
       bind:ref={textareaRef}
       onkeydown={handleKeyDown}
-      placeholder="Ask me to create characters, organize lorebooks, set up scenarios..."
+      placeholder={$_('assistant.placeholder')}
       rows={2}
       class="border-surface-700 bg-surface-800 placeholder:text-surface-500 min-h-[2.5rem] resize-none rounded-xl text-sm"
       disabled={disabled || isGenerating}
@@ -64,7 +65,7 @@
       )}
       onclick={handleSend}
       disabled={!inputValue.trim() || disabled || isGenerating}
-      title="Send message"
+      title={$_('assistant.sendMessage')}
     >
       {#if isGenerating}
         <Loader2 class="h-5 w-5 animate-spin" />
@@ -74,8 +75,6 @@
     </Button>
   </div>
   <div class="text-surface-500 mt-1.5 hidden text-center text-[10px] md:block">
-    {isTouchDevice()
-      ? 'Shift+Enter to send, Enter for new line'
-      : 'Enter to send, Shift+Enter for new line'}
+    {isTouchDevice() ? $_('assistant.shiftEnterToSend') : $_('assistant.enterToSend')}
   </div>
 </div>
