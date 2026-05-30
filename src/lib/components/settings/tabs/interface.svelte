@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { _ } from 'svelte-i18n'
   import { settings, STORY_WIDTH_OPTIONS } from '$lib/stores/settings.svelte'
   import { ui } from '$lib/stores/ui.svelte'
   import { database } from '$lib/services/database'
@@ -130,12 +131,12 @@
     try {
       const info = await updaterService.checkForUpdates()
       if (info.available) {
-        updateMessage = `Update available: v${info.version}`
+        updateMessage = $_('interface.updateAvailable', { values: { version: info.version } })
       } else {
-        updateMessage = "You're up to date!"
+        updateMessage = $_('interface.upToDate')
       }
     } catch (error) {
-      updateMessage = 'Failed to check for updates'
+      updateMessage = $_('interface.updateCheckFailed')
       console.error('[Interface] Update check failed:', error)
     } finally {
       isCheckingUpdates = false
@@ -143,23 +144,23 @@
   }
 
   const fontSizes = [
-    { value: 'small', label: 'Small' },
-    { value: 'medium', label: 'Medium' },
-    { value: 'large', label: 'Large' },
+    { value: 'small', labelKey: 'settings.small' },
+    { value: 'medium', labelKey: 'settings.medium' },
+    { value: 'large', labelKey: 'settings.large' },
   ] as const
 </script>
 
 <div class="space-y-4">
   <!-- Theme Selection -->
   <div>
-    <Label class="mb-2 block">Theme</Label>
+    <Label class="mb-2 block">{$_('interface.theme')}</Label>
     <Select.Root
       type="single"
       value={settings.uiSettings.theme}
       onValueChange={(v) => settings.setTheme(v)}
     >
       <Select.Trigger class="h-10 w-full">
-        {THEMES.find((t) => t.id === settings.uiSettings.theme)?.label ?? 'Select theme'}
+        {THEMES.find((t) => t.id === settings.uiSettings.theme)?.label ?? $_('common.select')}
       </Select.Trigger>
       <Select.Content>
         {#each THEMES as theme (theme.id)}
@@ -176,19 +177,21 @@
 
   <!-- Font Size -->
   <div>
-    <Label class="mb-2 block">Font Size</Label>
+    <Label class="mb-2 block">{$_('interface.fontSize')}</Label>
     <Select.Root
       type="single"
       value={settings.uiSettings.fontSize}
       onValueChange={(v) => settings.setFontSize(v as 'small' | 'medium' | 'large')}
     >
       <Select.Trigger class="h-10 w-full">
-        {fontSizes.find((s) => s.value === settings.uiSettings.fontSize)?.label ?? 'Select size'}
+        {fontSizes.find((s) => s.value === settings.uiSettings.fontSize)?.labelKey
+          ? $_(fontSizes.find((s) => s.value === settings.uiSettings.fontSize)?.labelKey ?? '')
+          : $_('common.select')}
       </Select.Trigger>
       <Select.Content>
         {#each fontSizes as size (size.value)}
-          <Select.Item value={size.value} label={size.label}>
-            {size.label}
+          <Select.Item value={size.value} label={$_(size.labelKey)}>
+            {$_(size.labelKey)}
           </Select.Item>
         {/each}
       </Select.Content>
@@ -198,13 +201,13 @@
   <!-- Story Content Width -->
   <div class="space-y-2">
     <div class="flex items-center justify-between">
-      <Label>Story Content Width</Label>
+      <Label>{$_('interface.storyContentWidth')}</Label>
       <span class="text-muted-foreground text-sm">
         {STORY_WIDTH_OPTIONS[storyWidthIndex]?.label ?? 'Default'}
       </span>
     </div>
     <p class="text-muted-foreground text-xs">
-      Max width of the story area — applies to text and inline images
+      {$_('interface.storyContentWidthDescription')}
     </p>
     <Slider
       type="single"
@@ -223,9 +226,9 @@
   <!-- Word Count Toggle -->
   <div class="flex items-center justify-between">
     <div>
-      <Label>Word Count</Label>
+      <Label>{$_('interface.wordCount')}</Label>
       <p class="text-muted-foreground text-xs">
-        Display current story word count in the status bar
+        {$_('interface.wordCountDescription')}
       </p>
     </div>
     <Switch
@@ -240,8 +243,8 @@
   <!-- Spellcheck Toggle -->
   <div class="flex items-center justify-between">
     <div>
-      <Label>Spellcheck</Label>
-      <p class="text-muted-foreground text-xs">Grammar and spelling suggestions while typing</p>
+      <Label>{$_('interface.spellcheck')}</Label>
+      <p class="text-muted-foreground text-xs">{$_('interface.spellcheckDescription')}</p>
     </div>
     <Switch
       checked={settings.uiSettings.spellcheckEnabled}
@@ -253,9 +256,9 @@
   <div class="space-y-3 rounded-lg border p-3">
     <div class="flex flex-wrap items-start justify-between gap-2">
       <div>
-        <Label>Custom Dictionary</Label>
+        <Label>{$_('interface.customDictionary')}</Label>
         <p class="text-muted-foreground text-xs">
-          Permanently ignore these spellings ({customDictionaryWords.length} words)
+          {$_('interface.customDictionaryDescription')}
         </p>
       </div>
       <Button
@@ -265,13 +268,13 @@
         disabled={customDictionaryBusy || customDictionaryWords.length === 0}
       >
         <Trash2 class="mr-1.5 h-3.5 w-3.5" />
-        Clear all
+        {$_('common.clearAll')}
       </Button>
     </div>
 
     <div class="flex gap-2">
       <Input
-        placeholder="Add custom word..."
+        placeholder={$_('interface.addCustomWord')}
         bind:value={customDictionaryInput}
         onkeydown={handleCustomDictionaryInputKeydown}
       />
@@ -280,16 +283,16 @@
         size="icon"
         onclick={handleAddCustomWord}
         disabled={customDictionaryBusy || !customDictionaryInput.trim()}
-        title="Add custom word"
+        title={$_('interface.addCustomWordTitle')}
       >
         <Plus class="h-4 w-4" />
       </Button>
     </div>
 
     {#if loadingCustomDictionary}
-      <p class="text-muted-foreground text-xs">Loading dictionary...</p>
+      <p class="text-muted-foreground text-xs">{$_('interface.loadingDictionary')}</p>
     {:else if customDictionaryWords.length === 0}
-      <p class="text-muted-foreground text-xs">No custom words saved yet.</p>
+      <p class="text-muted-foreground text-xs">{$_('interface.noCustomWords')}</p>
     {:else}
       <ScrollArea class="h-24 w-full rounded-md border">
         <div class="flex flex-wrap gap-1 p-2">
@@ -299,7 +302,7 @@
               <button
                 class="hover:text-destructive text-muted-foreground p-0 transition-colors"
                 onclick={() => handleRemoveCustomWord(word)}
-                title="Remove word"
+                title={$_('interface.removeWord')}
                 disabled={customDictionaryBusy}
               >
                 <X class="h-3 w-3" />
@@ -314,9 +317,9 @@
   <!-- Suggestions Toggle -->
   <div class="flex items-center justify-between">
     <div>
-      <Label>Suggestions</Label>
+      <Label>{$_('interface.suggestions')}</Label>
       <p class="text-muted-foreground text-xs">
-        Show AI-generated action choices and plot suggestions
+        {$_('interface.suggestionsDescription')}
       </p>
     </div>
     <Switch
@@ -328,8 +331,8 @@
   <!-- Action Prefixes Toggle -->
   <div class="flex items-center justify-between">
     <div>
-      <Label>Action Prefixes</Label>
-      <p class="text-muted-foreground text-xs">Show Do/Say/Think buttons for input</p>
+      <Label>{$_('interface.actionPrefixes')}</Label>
+      <p class="text-muted-foreground text-xs">{$_('interface.actionPrefixesDescription')}</p>
     </div>
     <Switch
       checked={!settings.uiSettings.disableActionPrefixes}
@@ -340,8 +343,8 @@
   <!-- Show Reasoning Toggle -->
   <div class="flex items-center justify-between">
     <div>
-      <Label>Reasoning Block</Label>
-      <p class="text-muted-foreground text-xs">Show thought process display</p>
+      <Label>{$_('interface.reasoningBlock')}</Label>
+      <p class="text-muted-foreground text-xs">{$_('interface.reasoningBlockDescription')}</p>
     </div>
     <Switch
       checked={settings.uiSettings.showReasoning}
@@ -352,9 +355,9 @@
   <!-- Auto Scroll Toggle -->
   <div class="flex items-center justify-between">
     <div>
-      <Label>Auto Scroll</Label>
+      <Label>{$_('interface.autoScroll')}</Label>
       <p class="text-muted-foreground text-xs">
-        Automatically scroll to the latest message during generation
+        {$_('interface.autoScrollDescription')}
       </p>
     </div>
     <Switch
@@ -366,9 +369,9 @@
   <!-- Scroll to Top Toggle -->
   <div class="flex items-center justify-between">
     <div>
-      <Label>Floating Scroll to Top Button</Label>
+      <Label>{$_('interface.floatingScrollToTop')}</Label>
       <p class="text-muted-foreground text-xs">
-        Show a floating button to jump to the first story entry
+        {$_('interface.floatingScrollToTopDescription')}
       </p>
     </div>
     <Switch
@@ -380,9 +383,9 @@
   <!-- Scroll to Bottom Toggle -->
   <div class="flex items-center justify-between">
     <div>
-      <Label>Floating Scroll to Bottom Button</Label>
+      <Label>{$_('interface.floatingScrollToBottom')}</Label>
       <p class="text-muted-foreground text-xs">
-        Show a floating button to jump to the latest story entry
+        {$_('interface.floatingScrollToBottomDescription')}
       </p>
     </div>
     <Switch
@@ -395,15 +398,14 @@
   <div class="space-y-3">
     <div class="flex items-center gap-2">
       <Languages class="text-muted-foreground h-4 w-4" />
-      <Label class="text-base font-medium">Translation</Label>
+      <Label class="text-base font-medium">{$_('interface.translation')}</Label>
     </div>
 
     <div class="flex items-center justify-between">
       <div>
-        <Label>Enable Translation</Label>
+        <Label>{$_('interface.enableTranslation')}</Label>
         <p class="text-muted-foreground text-xs">
-          Translate AI responses to your language while keeping English prompts for optimal LLM
-          performance
+          {$_('interface.enableTranslationDescription')}
         </p>
       </div>
       <Switch
@@ -418,7 +420,7 @@
     {#if settings.translationSettings.enabled}
       <!-- Target Language -->
       <div>
-        <Label class="mb-2 block">Target Language</Label>
+        <Label class="mb-2 block">{$_('interface.targetLanguage')}</Label>
         <Select.Root
           type="single"
           value={settings.translationSettings.targetLanguage}
@@ -430,7 +432,7 @@
           <Select.Trigger class="h-10 w-full">
             {getSupportedLanguages().find(
               (l) => l.code === settings.translationSettings.targetLanguage,
-            )?.name ?? 'Select language'}
+            )?.name ?? $_('tts.selectLanguage')}
           </Select.Trigger>
           <Select.Content class="max-h-60">
             {#each getSupportedLanguages() as lang (lang.code)}
@@ -440,15 +442,15 @@
             {/each}
           </Select.Content>
         </Select.Root>
-        <p class="text-muted-foreground mt-1 text-xs">Language for translated content display</p>
+        <p class="text-muted-foreground mt-1 text-xs">{$_('tts.selectLanguage')}</p>
       </div>
 
       <!-- Translate Narration -->
       <div class="flex items-center justify-between">
         <div>
-          <Label>Translate Narration</Label>
+          <Label>{$_('interface.translateNarration')}</Label>
           <p class="text-muted-foreground text-xs">
-            Translate AI-generated story content after generation
+            {$_('interface.translateNarrationDescription')}
           </p>
         </div>
         <Switch
@@ -463,9 +465,9 @@
       <!-- Translate User Input -->
       <div class="flex items-center justify-between">
         <div>
-          <Label>Translate User Input</Label>
+          <Label>{$_('interface.translateUserInput')}</Label>
           <p class="text-muted-foreground text-xs">
-            Translate your input to English before sending to the AI
+            {$_('interface.translateUserInputDescription')}
           </p>
         </div>
         <Switch
@@ -480,9 +482,9 @@
       <!-- Translate World State -->
       <div class="flex items-center justify-between">
         <div>
-          <Label>Translate World State</Label>
+          <Label>{$_('interface.translateWorldState')}</Label>
           <p class="text-muted-foreground text-xs">
-            Translate character names, locations, and items in the UI
+            {$_('interface.translateWorldStateDescription')}
           </p>
         </div>
         <Switch
@@ -500,7 +502,7 @@
 
   <!-- Updates Section -->
   <div class="space-y-4">
-    <Label class="text-base font-medium">Updates</Label>
+    <Label class="text-base font-medium">{$_('interface.updates')}</Label>
 
     <!-- Check for Updates Button -->
     <div class="flex items-center gap-2">
@@ -512,10 +514,10 @@
       >
         {#if isCheckingUpdates}
           <Loader2 class="mr-2 h-4 w-4 animate-spin" />
-          Checking...
+          {$_('common.checking')}
         {:else}
           <RefreshCw class="mr-2 h-4 w-4" />
-          Check for Updates
+          {$_('interface.checkForUpdates')}
         {/if}
       </Button>
       {#if updateMessage}
@@ -526,9 +528,9 @@
     <!-- Check on Startup Toggle -->
     <div class="flex items-center justify-between">
       <div>
-        <Label>Check on Startup</Label>
+        <Label>{$_('interface.checkOnStartup')}</Label>
         <p class="text-muted-foreground text-xs">
-          Automatically check for updates when the app starts
+          {$_('interface.checkOnStartupDescription')}
         </p>
       </div>
       <Switch
@@ -540,9 +542,9 @@
     <!-- Auto-download Updates Toggle -->
     <div class="flex items-center justify-between">
       <div>
-        <Label>Auto-download Updates</Label>
+        <Label>{$_('interface.autoDownloadUpdates')}</Label>
         <p class="text-muted-foreground text-xs">
-          Automatically download updates in the background
+          {$_('interface.autoDownloadUpdatesDescription')}
         </p>
       </div>
       <Switch
