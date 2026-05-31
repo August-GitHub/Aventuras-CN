@@ -130,11 +130,9 @@ jobs:
           key: gradle-${{ runner.os }}-${{ hashFiles('src-tauri/gen/android/**/*.gradle*', 'src-tauri/gen/android/**/*.gradle.kts') }}
           restore-keys: gradle-${{ runner.os }}-
 
-      - name: Patch RustPlugin (arm64 only, cut x86/armv7/i686)
+      - name: Patch RustPlugin (compile aarch64 only)
         run: |
           PLUGIN="src-tauri/gen/android/buildSrc/src/main/java/com/karelian/aventura/kotlin/RustPlugin.kt"
-          sed -i 's/listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")/listOf("arm64-v8a")/' "$PLUGIN"
-          sed -i 's/listOf("arm64", "arm", "x86", "x86_64")/listOf("arm64")/' "$PLUGIN"
           sed -i 's/listOf("aarch64", "armv7", "i686", "x86_64")/listOf("aarch64")/' "$PLUGIN"
           echo "Patching result:" && grep -n 'listOf.*"' "$PLUGIN"
 
