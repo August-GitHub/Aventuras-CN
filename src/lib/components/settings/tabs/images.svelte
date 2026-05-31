@@ -18,14 +18,12 @@
     generateImage,
     ComfyMode,
     type ImageModelInfo,
-  } from '$lib/services/ai/image'
-  import {
     validateApiWorkflow,
     detectWorkflowFields,
     fetchModelList,
     clearComfyCacheForUrl,
-  } from '$lib/services/ai/image/providers/comfy'
-  import type { ComfyCustomWorkflow } from '$lib/services/ai/image/providers/types'
+    type ComfyCustomWorkflow,
+  } from '$lib/services/ai/image'
   import ImageModelSelect from '$lib/components/settings/ImageModelSelect.svelte'
   import type { ImageProfile, ImageProviderType, APIProfile } from '$lib/types'
   import * as Tabs from '$lib/components/ui/tabs'

@@ -47,6 +47,18 @@ export {
   POLLINATIONS_DEFAULT_MODEL_ID,
   POLLINATIONS_REFERENCE_MODEL_ID,
   IMAGE_STUCK_THRESHOLD_MS,
+  DEFAULT_AVG_PROMPT_TOKENS,
+  DEFAULT_AVG_IMAGE_TOKENS,
 } from './constants'
+
+// ComfyUI provider exports (for advanced configuration)
+export {
+  ComfyMode,
+  validateApiWorkflow,
+  detectWorkflowFields,
+  fetchModelList,
+  clearComfyCacheForUrl,
+} from './providers/comfy'
+
 // Provider types
-export { ComfyMode } from './providers/comfy'
+export type { ComfyCustomWorkflow, ComfySamplerInfo } from './providers/types'

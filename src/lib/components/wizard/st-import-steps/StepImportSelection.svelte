@@ -221,7 +221,8 @@
                 <p class="text-sm font-medium">
                   Embedded Lorebook
                   {#if !hasEmbeddedLorebook}
-                    <Badge variant="outline" class="ml-1 text-xs">{$_('common.notAvailable')}</Badge>
+                    <Badge variant="outline" class="ml-1 text-xs">{$_('common.notAvailable')}</Badge
+                    >
                   {/if}
                 </p>
                 <p class="text-muted-foreground text-xs">

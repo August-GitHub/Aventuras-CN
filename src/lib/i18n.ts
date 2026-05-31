@@ -1,4 +1,4 @@
-import { init, register, locale, isLoading } from 'svelte-i18n'
+import { init, register, locale } from 'svelte-i18n'
 import en from '$locales/en.json'
 import zhCN from '$locales/zh-CN.json'
 

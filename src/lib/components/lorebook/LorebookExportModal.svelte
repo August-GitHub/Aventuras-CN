@@ -107,7 +107,9 @@
       {:else}
         <div class="bg-muted/50 rounded-lg border p-3">
           <div class="text-foreground font-medium">{story.lorebookEntries.length} entries</div>
-          <div class="text-muted-foreground text-xs">{$_('settings.allLorebookEntriesExported')}</div>
+          <div class="text-muted-foreground text-xs">
+            {$_('settings.allLorebookEntriesExported')}
+          </div>
         </div>
       {/if}
 

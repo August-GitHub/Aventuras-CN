@@ -15,7 +15,7 @@
   } from 'lucide-svelte'
   import { fade, blur, slide } from 'svelte/transition'
   import { quintOut } from 'svelte/easing'
-  import { getSupportedLanguages } from '$lib/services/ai/utils/TranslationService'
+  import { getSupportedLanguages } from '$lib/services/ai/utils'
   import { THEMES } from '../../../themes/themes'
 
   import * as Card from '$lib/components/ui/card'

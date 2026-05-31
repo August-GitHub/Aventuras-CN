@@ -112,7 +112,7 @@
         $_('lorebook.savedToVault', { values: { count: vaultEntries.length, name } }),
         'info',
       )
-    } catch (error) {
+    } catch {
       ui.showToast($_('lorebook.failedToSaveToVault'), 'error')
     }
   }

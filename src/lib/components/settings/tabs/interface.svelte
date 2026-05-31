@@ -15,7 +15,7 @@
   import { Badge } from '$lib/components/ui/badge'
   import { ScrollArea } from '$lib/components/ui/scroll-area'
   import { Separator } from '$lib/components/ui/separator'
-  import { getSupportedLanguages } from '$lib/services/ai/utils/TranslationService'
+  import { getSupportedLanguages } from '$lib/services/ai/utils'
   import { updaterService } from '$lib/services/updater'
   import { RefreshCw, Loader2, Languages, Plus, X, Trash2 } from 'lucide-svelte'
 

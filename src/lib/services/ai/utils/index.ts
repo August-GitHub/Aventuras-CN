@@ -8,6 +8,7 @@
 
 export {
   TranslationService,
+  getSupportedLanguages,
   type TranslationResult,
   type UITranslationItem,
 } from './TranslationService'

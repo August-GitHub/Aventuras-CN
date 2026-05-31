@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { ProviderType } from '$lib/types'
-  import { getProviderList } from '$lib/services/ai/sdk/providers/config'
+  import { getProviderList } from '$lib/services/ai/sdk/providers'
   import Autocomplete from '$lib/components/ui/autocomplete/Autocomplete.svelte'
   import { Label } from '$lib/components/ui/label'
 

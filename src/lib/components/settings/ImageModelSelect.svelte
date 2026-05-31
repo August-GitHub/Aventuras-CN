@@ -4,10 +4,7 @@
   import { Button } from '$lib/components/ui/button'
   import { RefreshCw, Loader2, Check, ImagePlus } from 'lucide-svelte'
   import { cn } from '$lib/utils/cn'
-  import {
-    DEFAULT_AVG_PROMPT_TOKENS,
-    DEFAULT_AVG_IMAGE_TOKENS,
-  } from '$lib/services/ai/image/constants'
+  import { DEFAULT_AVG_PROMPT_TOKENS, DEFAULT_AVG_IMAGE_TOKENS } from '$lib/services/ai/image'
 
   interface Props {
     models: ImageModelInfo[]

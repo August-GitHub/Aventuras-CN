@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { _ } from 'svelte-i18n'
   import * as RadioGroup from '$lib/components/ui/radio-group'
   import { Button } from '$lib/components/ui/button'
   import { Label } from '$lib/components/ui/label'

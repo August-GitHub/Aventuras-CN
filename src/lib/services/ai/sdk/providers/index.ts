@@ -6,6 +6,7 @@
 
 export { createModelFromProfile, createProviderFromProfile } from './registry'
 export { fetchModelsFromProvider } from './modelFetcher'
+export { getEffectiveBaseUrl } from './modelPing'
 export {
   PROVIDERS,
   GOOGLE_SAFETY_SETTINGS,

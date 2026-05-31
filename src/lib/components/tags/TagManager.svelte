@@ -73,9 +73,7 @@
   }
 
   async function handleDelete(id: string) {
-    if (
-      confirm($_('confirm.deleteTag'))
-    ) {
+    if (confirm($_('confirm.deleteTag'))) {
       await tagStore.delete(id)
     }
   }

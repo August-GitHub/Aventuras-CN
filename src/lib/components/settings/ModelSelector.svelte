@@ -8,7 +8,7 @@
   import { cn } from '$lib/utils/cn'
   import { modelHealth } from '$lib/stores/modelHealth.svelte'
   import { isPingEligible, shouldShowHealthFor } from '$lib/services/modelHealthOrchestrator'
-  import { getEffectiveBaseUrl } from '$lib/services/ai/sdk/providers/modelPing'
+  import { getEffectiveBaseUrl } from '$lib/services/ai/sdk/providers'
   import HealthIndicator from './HealthIndicator.svelte'
 
   interface Props {

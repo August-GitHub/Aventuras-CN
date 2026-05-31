@@ -311,7 +311,7 @@
       </ScrollArea>
     </div>
 
-    <div class="border-border shrink-0 border-t bg-background p-1 md:hidden">
+    <div class="border-border bg-background shrink-0 border-t p-1 md:hidden">
       <div class="flex justify-center gap-0 overflow-x-auto pb-0.5">
         {#each tabs as tab (tab.id)}
           <Toggle

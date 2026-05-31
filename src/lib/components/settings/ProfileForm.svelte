@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { ProviderType, TextModel } from '$lib/types'
-  import { PROVIDERS, hasDefaultEndpoint } from '$lib/services/ai/sdk/providers/config'
+  import { PROVIDERS, hasDefaultEndpoint } from '$lib/services/ai/sdk/providers'
   import ProviderTypeSelector from './ProviderTypeSelector.svelte'
   import { isMobileDevice } from '$lib/utils/swipe'
 

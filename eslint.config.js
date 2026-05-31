@@ -46,6 +46,7 @@ export default [
       'node_modules/',
       'src-tauri/',
       '.release-pre3-check/',
+      'scripts/',
     ],
   },
   {

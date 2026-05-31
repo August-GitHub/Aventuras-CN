@@ -570,7 +570,8 @@
       >
         <AlertTriangle class="text-destructive mt-0.5 h-4 w-4 shrink-0" />
         <p class="text-destructive text-xs">
-          <strong>{$_('settings.dangerZone')}</strong> {$_('settings.writeQueries')}
+          <strong>{$_('settings.dangerZone')}</strong>
+          {$_('settings.writeQueries')}
         </p>
       </div>
 

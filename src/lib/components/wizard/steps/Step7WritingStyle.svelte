@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { _ } from 'svelte-i18n'
   import WritingStyleFields from '$lib/components/shared/WritingStyleFields.svelte'
   import { ScrollArea } from '$lib/components/ui/scroll-area'
   import type { POV, Tense } from '$lib/types'

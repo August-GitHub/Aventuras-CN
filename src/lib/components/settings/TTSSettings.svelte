@@ -7,7 +7,7 @@
   import * as Select from '$lib/components/ui/select'
   import { Slider } from '$lib/components/ui/slider'
   import { Play, Square, RefreshCw, Loader2 } from 'lucide-svelte'
-  import { GOOGLE_TRANSLATE_LANGUAGES, aiTTSService } from '$lib/services/ai/utils/TTSService'
+  import { GOOGLE_TRANSLATE_LANGUAGES, aiTTSService } from '$lib/services/ai/utils'
 
   const PREVIEW_TEXT =
     'This is a preview of the selected voice. The story narration will sound like this.'
