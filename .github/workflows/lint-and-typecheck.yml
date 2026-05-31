@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - master
+      - beta
       - develop
       - dev
   workflow_dispatch:
