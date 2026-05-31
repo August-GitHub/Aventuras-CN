@@ -21,16 +21,20 @@ beta         → 日常开发和测试
 
 触发 CI 构建，生成 APK 供测试安装。
 
-**格式：`build-{版本号}-{分支名}`**
+**格式：`build-{版本号}-{分支名的最后一段}`**
 
-| 当前分支 | Tag 示例 |
-|----------|----------|
+规则：取当前分支名的最后一段作为 tag 标识。`/` 替换为 `-`。
+
+| 当前分支 | 自动生成 Tag |
+|----------|-------------|
 | `beta` | `build-1.4.0-beta` |
 | `develop` | `build-1.4.0-dev` |
 | `master` | `build-1.4.0-master` |
-| `experiment/xxx` | `build-1.4.0-experiment-xxx` |
+| `feature/new-ui` | `build-1.4.0-new-ui` |
+| `experiment/dark-theme` | `build-1.4.0-dark-theme` |
+| `hotfix/crash` | `build-1.4.0-crash` |
 
-> ⚠️ **Tag 的第二段必须匹配当前分支名**，不要随意起名（如 test、chinese 等），避免误导。
+> ⚠️ **Tag 的第二段从当前分支名自动派生**，不要随意起名（如 test、chinese 等），避免误导。
 
 ### 正式发布 (release-*)
 
@@ -69,8 +73,8 @@ release-2.0.0
 
 构建产物自动命名为：`aventuras-{分支名}-{tag}.apk`
 
-例如在 `beta` 分支打 `build-1.4.0-beta` tag：
-→ 生成 `aventuras-beta-build-1.4.0-beta.apk`
+例如在 `feature/new-ui` 分支打 `build-1.4.0-new-ui` tag：
+→ 生成 `aventuras-feature/new-ui-build-1.4.0-new-ui.apk`
 
 ---
 
