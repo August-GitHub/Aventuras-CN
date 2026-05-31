@@ -45,184 +45,192 @@
     // Classification tasks
     {
       id: 'classifier',
-      label: 'World State',
+      labelKey: 'agentProfiles.worldState',
       icon: Bot,
-      description: 'Extracts entities and world state',
+      descriptionKey: 'agentProfiles.worldStateDesc',
     },
     {
       id: 'lorebookClassifier',
-      label: 'Lorebook Import',
+      labelKey: 'agentProfiles.lorebookImport',
       icon: BookOpen,
-      description: 'Classifies imported entries',
+      descriptionKey: 'agentProfiles.lorebookImportDesc',
     },
     {
       id: 'entryRetrieval',
-      label: 'Entry Retrieval',
+      labelKey: 'agentProfiles.entryRetrieval',
       icon: Search,
-      description: 'Selects relevant lorebook entries',
+      descriptionKey: 'agentProfiles.entryRetrievalDesc',
     },
     {
       id: 'characterCardImport',
-      label: 'Card Import',
+      labelKey: 'agentProfiles.cardImport',
       icon: Download,
-      description: 'Converts character cards',
+      descriptionKey: 'agentProfiles.cardImportDesc',
     },
     // Memory & Context tasks
     {
       id: 'memory',
-      label: 'Memory System',
+      labelKey: 'agentProfiles.memorySystem',
       icon: Brain,
-      description: 'Analyzes chapters and context',
+      descriptionKey: 'agentProfiles.memorySystemDesc',
     },
     {
       id: 'chapterQuery',
-      label: 'Chapter Query',
+      labelKey: 'agentProfiles.chapterQuery',
       icon: Search,
-      description: 'Queries chapter details',
+      descriptionKey: 'agentProfiles.chapterQueryDesc',
     },
     {
       id: 'timelineFill',
-      label: 'Timeline Fill',
+      labelKey: 'agentProfiles.timelineFill',
       icon: Clock,
-      description: 'Fills timeline gaps',
+      descriptionKey: 'agentProfiles.timelineFillDesc',
     },
     // Suggestions tasks
     {
       id: 'suggestions',
-      label: 'Suggestions',
+      labelKey: 'agentProfiles.suggestions',
       icon: Lightbulb,
-      description: 'Generates plot suggestions',
+      descriptionKey: 'agentProfiles.suggestionsDesc',
     },
     {
       id: 'actionChoices',
-      label: 'Action Choices',
+      labelKey: 'agentProfiles.actionChoices',
       icon: ListChecks,
-      description: 'Generates RPG choices',
+      descriptionKey: 'agentProfiles.actionChoicesDesc',
     },
     {
       id: 'styleReviewer',
-      label: 'Style Reviewer',
+      labelKey: 'agentProfiles.styleReviewer',
       icon: Sparkles,
-      description: 'Analyzes prose quality',
+      descriptionKey: 'agentProfiles.styleReviewerDesc',
     },
     {
       id: 'imageGeneration',
-      label: 'Image Gen',
+      labelKey: 'agentProfiles.imageGen',
       icon: Wand2,
-      description: 'Generates image prompts',
+      descriptionKey: 'agentProfiles.imageGenDesc',
     },
     {
       id: 'bgImageGeneration',
-      label: 'BG Image generation analyzer',
+      labelKey: 'agentProfiles.bgImageGeneration',
       icon: Wand2,
-      description: 'Generates background image prompts',
+      descriptionKey: 'agentProfiles.bgImageGenerationDesc',
     },
     // Agentic tasks
     {
       id: 'loreManagement',
-      label: 'Lore Manager',
+      labelKey: 'agentProfiles.loreManager',
       icon: BookOpen,
-      description: 'Autonomous lore maintenance',
+      descriptionKey: 'agentProfiles.loreManagerDesc',
     },
     {
       id: 'agenticRetrieval',
-      label: 'Agentic Retrieval',
+      labelKey: 'agentProfiles.agenticRetrieval',
       icon: Search,
-      description: 'Active context search',
+      descriptionKey: 'agentProfiles.agenticRetrievalDesc',
     },
     {
       id: 'interactiveVault',
-      label: 'Vault Assistant',
+      labelKey: 'agentProfiles.vaultAssistant',
       icon: BookOpen,
-      description: 'AI vault assistant',
+      descriptionKey: 'agentProfiles.vaultAssistantDesc',
     },
     // Wizard tasks
     {
       id: 'wizard:settingExpansion',
-      label: 'Setting Expansion',
+      labelKey: 'agentProfiles.settingExpansion',
       icon: Wand2,
-      description: 'Expands story settings',
+      descriptionKey: 'agentProfiles.settingExpansionDesc',
     },
     {
       id: 'wizard:settingRefinement',
-      label: 'Setting Refinement',
+      labelKey: 'agentProfiles.settingRefinement',
       icon: Wand2,
-      description: 'Refines story settings',
+      descriptionKey: 'agentProfiles.settingRefinementDesc',
     },
     {
       id: 'wizard:protagonistGeneration',
-      label: 'Protagonist Gen',
+      labelKey: 'agentProfiles.protagonistGen',
       icon: Wand2,
-      description: 'Generates protagonists',
+      descriptionKey: 'agentProfiles.protagonistGenDesc',
     },
     {
       id: 'wizard:characterElaboration',
-      label: 'Character Elaboration',
+      labelKey: 'agentProfiles.characterElaboration',
       icon: Wand2,
-      description: 'Elaborates characters',
+      descriptionKey: 'agentProfiles.characterElaborationDesc',
     },
     {
       id: 'wizard:characterRefinement',
-      label: 'Character Refinement',
+      labelKey: 'agentProfiles.characterRefinement',
       icon: Wand2,
-      description: 'Refines characters',
+      descriptionKey: 'agentProfiles.characterRefinementDesc',
     },
     {
       id: 'wizard:supportingCharacters',
-      label: 'Supporting Cast',
+      labelKey: 'agentProfiles.supportingCast',
       icon: Wand2,
-      description: 'Generates NPCs',
+      descriptionKey: 'agentProfiles.supportingCastDesc',
     },
     {
       id: 'wizard:openingGeneration',
-      label: 'Opening Gen',
+      labelKey: 'agentProfiles.openingGen',
       icon: Wand2,
-      description: 'Generates story opening',
+      descriptionKey: 'agentProfiles.openingGenDesc',
     },
     {
       id: 'wizard:openingRefinement',
-      label: 'Opening Refinement',
+      labelKey: 'agentProfiles.openingRefinement',
       icon: Wand2,
-      description: 'Refines story opening',
+      descriptionKey: 'agentProfiles.openingRefinementDesc',
     },
     // Translation tasks
     {
       id: 'translation:narration',
-      label: 'Translate Narration',
+      labelKey: 'agentProfiles.translateNarration',
       icon: Languages,
-      description: 'Translates AI responses',
+      descriptionKey: 'agentProfiles.translateNarrationDesc',
     },
     {
       id: 'translation:input',
-      label: 'Translate Input',
+      labelKey: 'agentProfiles.translateInput',
       icon: Languages,
-      description: 'Translates user input to English',
+      descriptionKey: 'agentProfiles.translateInputDesc',
     },
     {
       id: 'translation:ui',
-      label: 'Translate UI',
+      labelKey: 'agentProfiles.translateUi',
       icon: Languages,
-      description: 'Translates world state elements',
+      descriptionKey: 'agentProfiles.translateUiDesc',
     },
     {
       id: 'translation:suggestions',
-      label: 'Translate Suggestions',
+      labelKey: 'agentProfiles.translateSuggestions',
       icon: Languages,
-      description: 'Translates plot suggestions',
+      descriptionKey: 'agentProfiles.translateSuggestionsDesc',
     },
     {
       id: 'translation:actionChoices',
-      label: 'Translate Choices',
+      labelKey: 'agentProfiles.translateChoices',
       icon: Languages,
-      description: 'Translates action choices',
+      descriptionKey: 'agentProfiles.translateChoicesDesc',
     },
     {
       id: 'translation:wizard',
-      label: 'Translate Wizard',
+      labelKey: 'agentProfiles.translateWizard',
       icon: Languages,
-      description: 'Translates wizard content',
+      descriptionKey: 'agentProfiles.translateWizardDesc',
     },
-  ] as const
+  ]
+
+  const translatedSystemServices = $derived(
+    systemServices.map((s) => ({
+      ...s,
+      label: $_(s.labelKey),
+      description: $_(s.descriptionKey),
+    })),
+  )
 
   // State
   let editingPresetId = $state<string | null>(null)
@@ -272,8 +280,8 @@
 
   // Memoized: compute service-to-profile mapping once per reactive update
   let servicesByProfile = $derived.by(() => {
-    const map = new SvelteMap<string, (typeof systemServices)[number][]>()
-    for (const service of systemServices) {
+    const map = new SvelteMap<string, (typeof translatedSystemServices)[number][]>()
+    for (const service of translatedSystemServices) {
       const key = settings.servicePresetAssignments[service.id] || 'custom'
       let arr = map.get(key)
       if (!arr) {
@@ -323,9 +331,9 @@
     if (!preset) return
 
     const confirmed = await ask(
-      `Delete profile "${preset.name}"? Tasks assigned to it will revert to Unassigned.`,
+      `${$_('settings.deleteProfileConfirm')} "${preset.name}"? ${$_('settings.deleteProfileWarning')}`,
       {
-        title: 'Delete Profile',
+        title: $_('settings.confirmDelete'),
         kind: 'warning',
       },
     )
@@ -349,10 +357,10 @@
   }
 
   async function handleApplyMainToAll() {
-    const confirmed = await ask(
-      'Apply the Main Narrative profile and model to all agent profiles?',
-      { title: 'Apply Main to All', kind: 'warning' },
-    )
+    const confirmed = await ask($_('settings.applyMainToAllConfirm'), {
+      title: $_('settings.applyMainToAllTitle'),
+      kind: 'warning',
+    })
     if (!confirmed) return
 
     const mainProfileId = settings.apiSettings.mainNarrativeProfileId
@@ -635,19 +643,19 @@
                 class="truncate text-xs"
                 class:text-muted-foreground={preset.model}
                 class:text-destructive={!preset.model}
-                title={preset.model || 'Model not configured'}
+                title={preset.model || $_('settings.modelNotConfigured')}
               >
-                {preset.model || 'NEED TO SET MODEL'}
+                {preset.model || $_('settings.needToSetModel')}
               </div>
               {#if !preset.model}
                 <div class="text-destructive mt-0.5 flex items-center gap-1 text-xs">
                   <AlertCircle class="h-3 w-3" />
-                  Click to configure
+                  {$_('settings.clickToConfigure')}
                 </div>
               {:else if preset.profileId && !settings.getProfile(preset.profileId)}
                 <div class="text-destructive mt-0.5 flex items-center gap-1 text-xs">
                   <AlertCircle class="h-3 w-3" />
-                  No API profile
+                  {$_('settings.noApiProfile')}
                 </div>
               {:else}
                 {@const _profileId = preset.profileId || settings.getDefaultProfileIdForProvider()}
@@ -656,7 +664,7 @@
                 {#if _models.length > 0 && !_models.find((m) => m.id === preset.model)}
                   <div class="mt-0.5 flex items-center gap-1 text-xs text-yellow-500">
                     <AlertTriangle class="h-3 w-3" />
-                    Model not in profile
+                    {$_('settings.modelNotInProfile')}
                   </div>
                 {:else if _models.length === 0 && _profile?.fetchedModels.length}
                   <div class="mt-0.5 flex items-center gap-1 text-xs text-red-500">
