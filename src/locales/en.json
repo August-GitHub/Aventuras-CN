@@ -47,6 +47,8 @@
   },
   "settings": {
     "interface": "Interface",
+    "api": "API Connection",
+    "labs": "Experimental",
     "apiConnection": "API Connection",
     "generation": "Generation",
     "images": "Images",

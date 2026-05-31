@@ -47,6 +47,8 @@
   },
   "settings": {
     "interface": "界面",
+    "api": "API 连接",
+    "labs": "实验性功能",
     "apiConnection": "API 连接",
     "generation": "生成",
     "images": "图片",

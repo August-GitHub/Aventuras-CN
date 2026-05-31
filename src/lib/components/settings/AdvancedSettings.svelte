@@ -181,8 +181,8 @@
               <div
                 class="text-muted-foreground flex justify-between text-[10px] font-medium tracking-wider uppercase"
               >
-                <span>Sequential</span>
-                <span>Parallel</span>
+                <span>{$_('settings.sequential')}</span>
+                <span>{$_('settings.parallel')}</span>
               </div>
             </div>
           </div>
@@ -201,8 +201,8 @@
               <BookOpen class="h-4 w-4 text-purple-500" />
             </div>
             <div class="flex-1">
-              <Label class="leading-none font-medium">Lore Management</Label>
-              <p class="text-muted-foreground mt-1 text-xs">Autonomous agent iteration limits</p>
+              <Label class="leading-none font-medium">{$_('settings.loreManagement')}</Label>
+              <p class="text-muted-foreground mt-1 text-xs">{$_('settings.autonomousAgentLimits')}</p>
             </div>
           </Collapsible.Trigger>
           <div class="flex shrink-0 items-center gap-1">
@@ -211,7 +211,7 @@
               size="icon"
               class="h-8 w-8"
               onclick={() => settings.resetLoreManagementSettings()}
-              title="Reset to default"
+              title={$_('settings.resetToDefault')}
             >
               <RotateCcw class="h-3.5 w-3.5" />
             </Button>
@@ -274,8 +274,8 @@
               <Brain class="h-4 w-4 text-cyan-500" />
             </div>
             <div class="flex-1">
-              <Label class="leading-none font-medium">World State Classifier</Label>
-              <p class="text-muted-foreground mt-1 text-xs">Context window management</p>
+              <Label class="leading-none font-medium">{$_('settings.worldStateClassifier')}</Label>
+              <p class="text-muted-foreground mt-1 text-xs">{$_('settings.contextWindowManagement')}</p>
             </div>
           </Collapsible.Trigger>
           <div class="flex shrink-0 items-center gap-1">
@@ -284,7 +284,7 @@
               size="icon"
               class="h-8 w-8"
               onclick={() => settings.resetClassifierSettings()}
-              title="Reset to default"
+              title={$_('settings.resetToDefault')}
             >
               <RotateCcw class="h-3.5 w-3.5" />
             </Button>
@@ -308,10 +308,10 @@
             <!-- Chat History Truncation -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>Chat History Truncation (Words)</Label>
+                <Label>{$_('settings.chatHistoryTruncationWords')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.systemServicesSettings.classifier?.chatHistoryTruncation === 0
-                    ? 'No Limit'
+                    ? $_('settings.noLimit')
                     : (settings.systemServicesSettings.classifier?.chatHistoryTruncation ?? 0)}
                 </span>
               </div>
@@ -329,8 +329,8 @@
               <div
                 class="text-muted-foreground flex justify-between text-[10px] font-medium tracking-wider uppercase"
               >
-                <span>Unlimited</span>
-                <span>500 Words</span>
+                <span>{$_('settings.unlimited')}</span>
+                <span>{$_('settings.words500')}</span>
               </div>
             </div>
           </div>
@@ -349,8 +349,8 @@
               <Search class="h-4 w-4 text-amber-500" />
             </div>
             <div class="flex-1">
-              <Label class="leading-none font-medium">Entry Retrieval</Label>
-              <p class="text-muted-foreground mt-1 text-xs">LLM-based selection settings</p>
+              <Label class="leading-none font-medium">{$_('settings.entryRetrieval')}</Label>
+              <p class="text-muted-foreground mt-1 text-xs">{$_('settings.llmBasedSelection')}</p>
             </div>
           </Collapsible.Trigger>
           <div class="flex shrink-0 items-center gap-1">
@@ -359,7 +359,7 @@
               size="icon"
               class="h-8 w-8"
               onclick={() => settings.resetEntryRetrievalSettings()}
-              title="Reset to default"
+              title={$_('settings.resetToDefault')}
             >
               <RotateCcw class="h-3.5 w-3.5" />
             </Button>
@@ -383,9 +383,9 @@
             <!-- Enable LLM Selection -->
             <div class="flex flex-row items-center justify-between">
               <div class="space-y-0.5">
-                <Label class="text-sm">Enable LLM Selection</Label>
+                <Label class="text-sm">{$_('settings.enableLlmSelection')}</Label>
                 <p class="text-muted-foreground text-xs">
-                  Use LLM to intelligently select lorebook entries
+                  {$_('settings.useLlmToSelectEntries')}
                 </p>
               </div>
               <Switch
@@ -400,10 +400,10 @@
             <!-- Max Tier 3 Entries -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>Max Tier 3 Entries</Label>
+                <Label>{$_('settings.maxTier3Entries')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.systemServicesSettings.entryRetrieval?.maxTier3Entries === 0
-                    ? 'Unlimited'
+                    ? $_('settings.unlimited')
                     : (settings.systemServicesSettings.entryRetrieval?.maxTier3Entries ?? 0)}
                 </span>
               </div>
@@ -421,8 +421,8 @@
               <div
                 class="text-muted-foreground flex justify-between text-[10px] font-medium tracking-wider uppercase"
               >
-                <span>Unlimited</span>
-                <span>20 Entries</span>
+                <span>{$_('settings.unlimited')}</span>
+                <span>{$_('settings.entries20')}</span>
               </div>
             </div>
 
@@ -432,7 +432,7 @@
                 <Label>{$_('settings.maxWordsPerEntry')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.systemServicesSettings.entryRetrieval?.maxWordsPerEntry === 0
-                    ? 'Unlimited'
+                    ? $_('settings.unlimited')
                     : (settings.systemServicesSettings.entryRetrieval?.maxWordsPerEntry ?? 0)}
                 </span>
               </div>
@@ -470,9 +470,9 @@
               <Sparkles class="h-4 w-4 text-pink-500" />
             </div>
             <div class="flex-1">
-              <Label class="leading-none font-medium">Memory Retrieval</Label>
+              <Label class="leading-none font-medium">{$_('settings.memoryRetrieval')}</Label>
               <p class="text-muted-foreground mt-1 text-xs">
-                How past chapters are retrieved for context
+                {$_('settings.howPastChaptersRetrieved')}
               </p>
             </div>
           </Collapsible.Trigger>
@@ -485,7 +485,7 @@
                 settings.resetTimelineFillSettings()
                 settings.resetAgenticRetrievalSpecificSettings()
               }}
-              title="Reset to default"
+              title={$_('settings.resetToDefault')}
             >
               <RotateCcw class="h-3.5 w-3.5" />
             </Button>
@@ -509,9 +509,9 @@
             <!-- Enable Memory Retrieval -->
             <div class="flex flex-row items-center justify-between">
               <div class="space-y-0.5">
-                <Label class="text-sm">Enable Memory Retrieval</Label>
+                <Label class="text-sm">{$_('settings.enableMemoryRetrieval')}</Label>
                 <p class="text-muted-foreground text-xs">
-                  Retrieve context from past chapters during generation
+                  {$_('settings.retrieveContextFromPastChapters')}
                 </p>
               </div>
               <Switch
@@ -539,9 +539,9 @@
                       settings.saveSystemServicesSettings()
                     }}
                   >
-                    <span class="text-sm font-medium">Static</span>
+                    <span class="text-sm font-medium">{$_('settings.static')}</span>
                     <span class="text-muted-foreground text-xs">
-                      Generates questions, then answers them from chapters
+                      {$_('settings.generatesQuestionsAnswers')}
                     </span>
                   </button>
                   <button
@@ -554,9 +554,9 @@
                       settings.saveSystemServicesSettings()
                     }}
                   >
-                    <span class="text-sm font-medium">Agentic</span>
+                    <span class="text-sm font-medium">{$_('settings.agentic')}</span>
                     <span class="text-muted-foreground text-xs">
-                      LLM agent explores chapters and entries with tools
+                      {$_('settings.llmAgentExplores')}
                     </span>
                   </button>
                 </div>
@@ -583,7 +583,7 @@
                     }}
                   />
                   <p class="text-muted-foreground text-xs">
-                    Number of questions generated to query chapter history
+                    {$_('settings.numberOfQuestions')}
                   </p>
                 </div>
               {/if}
@@ -609,7 +609,7 @@
                     }}
                   />
                   <p class="text-muted-foreground text-xs">
-                    Maximum tool-calling rounds for the retrieval agent
+                    {$_('settings.maximumToolCallingRounds')}
                   </p>
                 </div>
               {/if}
@@ -630,9 +630,9 @@
               <Layers class="h-4 w-4 text-blue-500" />
             </div>
             <div class="flex-1">
-              <Label class="leading-none font-medium">Context Window</Label>
+              <Label class="leading-none font-medium">{$_('settings.contextWindow')}</Label>
               <p class="text-muted-foreground mt-1 text-xs">
-                Recent entries included in AI operations
+                {$_('settings.recentEntriesIncluded')}
               </p>
             </div>
           </Collapsible.Trigger>
@@ -642,7 +642,7 @@
               size="icon"
               class="h-8 w-8"
               onclick={() => settings.resetContextWindowSettings()}
-              title="Reset to default"
+              title={$_('settings.resetToDefault')}
             >
               <RotateCcw class="h-3.5 w-3.5" />
             </Button>
@@ -666,7 +666,7 @@
             <!-- Retrieval Context -->
             <div class="space-y-3">
               <div class="flex justify-between">
-                <Label>Retrieval/Classification</Label>
+                <Label>{$_('settings.retrievalClassification')}</Label>
                 <span class="bg-muted rounded px-2 py-0.5 text-xs font-medium">
                   {settings.serviceSpecificSettings.contextWindow?.recentEntriesForRetrieval ?? 5} entries
                 </span>
@@ -684,7 +684,7 @@
                 }}
               />
               <p class="text-muted-foreground text-xs">
-                Entries for retrieval and classification operations
+                {$_('settings.entriesForRetrieval')}
               </p>
             </div>
 
@@ -707,7 +707,7 @@
                   settings.saveServiceSpecificSettings()
                 }}
               />
-              <p class="text-muted-foreground text-xs">Entries for lorebook entry injection</p>
+              <p class="text-muted-foreground text-xs">{$_('settings.entriesForLorebookInjection')}</p>
             </div>
 
             <!-- Action Choices Context -->
@@ -729,7 +729,7 @@
                   settings.saveServiceSpecificSettings()
                 }}
               />
-              <p class="text-muted-foreground text-xs">Entries for generating action choices</p>
+              <p class="text-muted-foreground text-xs">{$_('settings.entriesForActionChoices')}</p>
             </div>
           </div>
         </Collapsible.Content>
@@ -747,8 +747,8 @@
               <ListTree class="h-4 w-4 text-orange-500" />
             </div>
             <div class="flex-1">
-              <Label class="leading-none font-medium">Lorebook Limits</Label>
-              <p class="text-muted-foreground mt-1 text-xs">Max entries injected per operation</p>
+              <Label class="leading-none font-medium">{$_('settings.lorebookLimits')}</Label>
+              <p class="text-muted-foreground mt-1 text-xs">{$_('settings.maxEntriesPerOperation')}</p>
             </div>
           </Collapsible.Trigger>
           <div class="flex shrink-0 items-center gap-1">
@@ -757,7 +757,7 @@
               size="icon"
               class="h-8 w-8"
               onclick={() => settings.resetLorebookLimitsSettings()}
-              title="Reset to default"
+              title={$_('settings.resetToDefault')}
             >
               <RotateCcw class="h-3.5 w-3.5" />
             </Button>
@@ -797,7 +797,7 @@
                   settings.saveServiceSpecificSettings()
                 }}
               />
-              <p class="text-muted-foreground text-xs">Max entries for suggestion generation</p>
+              <p class="text-muted-foreground text-xs">{$_('settings.maxForSuggestions')}</p>
             </div>
 
             <!-- Max for Action Choices -->
@@ -819,7 +819,7 @@
                   settings.saveServiceSpecificSettings()
                 }}
               />
-              <p class="text-muted-foreground text-xs">Max entries for action choice generation</p>
+              <p class="text-muted-foreground text-xs">{$_('settings.maxForActionChoices')}</p>
             </div>
 
             <!-- Max per Tier -->
@@ -841,7 +841,7 @@
                   settings.saveServiceSpecificSettings()
                 }}
               />
-              <p class="text-muted-foreground text-xs">Max entries per injection tier</p>
+              <p class="text-muted-foreground text-xs">{$_('settings.maxPerInjectionTier')}</p>
             </div>
 
             <!-- LLM Threshold -->
@@ -864,7 +864,7 @@
                 }}
               />
               <p class="text-muted-foreground text-xs">
-                Entry count that triggers LLM-based selection
+                {$_('settings.entryCountTriggersLlm')}
               </p>
             </div>
           </div>

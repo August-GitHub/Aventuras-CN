@@ -29,6 +29,7 @@
   import { Textarea } from '$lib/components/ui/textarea'
   import * as Dialog from '$lib/components/ui/dialog'
   import { Toggle } from '$lib/components/ui/toggle'
+  import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group'
 
   import ApiConnectionTab from './tabs/api-connection.svelte'
   import GenerationTab from './tabs/generation.svelte'
@@ -81,7 +82,7 @@
     const touch = e.changedTouches[0]
     const target = e.target as HTMLElement
     const interactiveSelector =
-      'input, textarea, select, [role="slider"], [role="switch"], button, a'
+      'input, textarea, select, [role="slider"], [role="switch"], button, a, [data-radix-toggle-group-item]'
 
     isInteractiveTouch = !!target.closest(interactiveSelector)
     if (isInteractiveTouch) return
@@ -312,15 +313,17 @@
     </div>
 
     <div class="border-border bg-background shrink-0 border-t p-1 md:hidden">
-      <div class="flex justify-center gap-0 overflow-x-auto pb-0.5">
+      <ToggleGroup
+        type="single"
+        value={ui.settingsTab}
+        onValueChange={(v) => {
+          if (v) ui.setSettingsTab(v)
+        }}
+        class="flex justify-center gap-0 overflow-x-auto pb-0.5"
+      >
         {#each tabs as tab (tab.id)}
-          <Toggle
-            pressed={ui.settingsTab === tab.id}
-            onPressedChange={(pressed) => {
-              if (pressed) {
-                ui.setSettingsTab(tab.id)
-              }
-            }}
+          <ToggleGroupItem
+            value={tab.id}
             size="sm"
             class="shrink-0 px-2"
           >
@@ -333,9 +336,9 @@
             >
               {$_(tab.labelKey)}
             </span>
-          </Toggle>
+          </ToggleGroupItem>
         {/each}
-      </div>
+      </ToggleGroup>
     </div>
   </ResponsiveModal.Content>
 </ResponsiveModal.Root>
