@@ -160,14 +160,25 @@ jobs:
           cp src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk "$APK_NAME"
           echo "APK_NAME=$APK_NAME" >> $GITHUB_OUTPUT
 
+      - name: Determine release type
+        id: release_type
+        run: |
+          if [[ "${{ github.ref_name }}" == build-* ]]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+            echo "title=Build" >> $GITHUB_OUTPUT
+          else
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+            echo "title=更新内容 (What's New)" >> $GITHUB_OUTPUT
+          fi
+
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          prerelease: ${{ startsWith(github.ref_name, 'build-') }}
+          prerelease: ${{ steps.release_type.outputs.prerelease }}
           files: |
             ${{ steps.sign.outputs.APK_NAME || steps.rename.outputs.APK_NAME }}
           body: |
-            ## 📦 ${{ startsWith(github.ref_name, 'build-') && 'Build' || '更新内容 (What\'s New)' }} ${{ github.ref_name }}
+            ## 📦 ${{ steps.release_type.outputs.title }} ${{ github.ref_name }}
 
             ---
 
