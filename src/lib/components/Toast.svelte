@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { _ } from 'svelte-i18n'
   import { ui } from '$lib/stores/ui.svelte'
   import { X, AlertTriangle, Info, AlertCircle } from 'lucide-svelte'
 

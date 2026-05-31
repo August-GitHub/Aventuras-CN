@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { _ } from 'svelte-i18n'
-  import { goto } from '$app/navigation'
   import { debug } from '$lib/stores/debug.svelte'
   import { ui } from '$lib/stores/ui.svelte'
   import { story } from '$lib/stores/story.svelte'
