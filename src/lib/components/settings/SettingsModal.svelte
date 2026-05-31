@@ -174,7 +174,7 @@
 </script>
 
 <ResponsiveModal.Root open={ui.settingsModalOpen} onOpenChange={(v) => !v && safeClose()}>
-  <ResponsiveModal.Content class="flex h-[90vh] max-w-6xl flex-col overflow-hidden p-0">
+  <ResponsiveModal.Content class="flex h-[85vh] max-w-6xl flex-col overflow-hidden p-0">
     <div
       class="text-muted-foreground/30 absolute top-1 left-2 z-[110] font-mono text-[10px] md:top-auto md:bottom-1"
     >
@@ -311,7 +311,7 @@
       </ScrollArea>
     </div>
 
-    <div class="border-border bg-background border-t p-1 md:hidden">
+    <div class="border-border shrink-0 border-t bg-background p-1 md:hidden">
       <div class="flex justify-center gap-0 overflow-x-auto pb-0.5">
         {#each tabs as tab (tab.id)}
           <Toggle

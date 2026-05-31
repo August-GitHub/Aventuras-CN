@@ -6,7 +6,7 @@ import path from 'path'
  * 在 pre-push 阶段自动运行，拦截常见的 CI 配置错误。
  */
 
-const files = process.argv.slice(2).filter(f => f.endsWith('.yml') || f.endsWith('.yaml'))
+const files = process.argv.slice(2).filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'))
 if (files.length === 0) process.exit(0)
 
 let hasError = false
@@ -22,7 +22,7 @@ for (const file of files) {
     const opens = (line.match(/\$\{\{/g) || []).length
     const closes = (line.match(/\}\}/g) || []).length
     if (opens !== closes) {
-      errors.push(`  L${i + 1}: ${{ }} 表达式未闭合 (${opens} 个 {{, ${closes} 个 }})`)
+      errors.push(`  L${i + 1}: ${{}} 表达式未闭合 (${opens} 个 {{, ${closes} 个 }})`)
     }
   }
 
@@ -36,7 +36,9 @@ for (const file of files) {
       if (match) {
         for (const m of match) {
           if (/(&&|\|\|).*'.*'/.test(m)) {
-            errors.push(`  L${i + 1}: 布尔表达式内含单引号字符串可能导致转义错误 → ${m.slice(0, 60)}...\n     建议改用 steps.outputs 输出变量替代。`)
+            errors.push(
+              `  L${i + 1}: 布尔表达式内含单引号字符串可能导致转义错误 → ${m.slice(0, 60)}...\n     建议改用 steps.outputs 输出变量替代。`,
+            )
           }
         }
       }
@@ -58,7 +60,7 @@ for (const file of files) {
   if (errors.length > 0) {
     hasError = true
     console.error(`\n❌ ${path.basename(file)}`)
-    errors.forEach(e => console.error(e))
+    errors.forEach((e) => console.error(e))
   } else {
     console.log(`✅ ${path.basename(file)}`)
   }

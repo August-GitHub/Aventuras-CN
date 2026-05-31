@@ -33,10 +33,14 @@ function writeVersion(v) {
 function bump(version, type) {
   const [major, minor, patch] = version.split('.').map(Number)
   switch (type) {
-    case 'major': return `${major + 1}.0.0`
-    case 'minor': return `${major}.${minor + 1}.0`
-    case 'patch': return `${major}.${minor}.${patch + 1}`
-    default: return version
+    case 'major':
+      return `${major + 1}.0.0`
+    case 'minor':
+      return `${major}.${minor + 1}.0`
+    case 'patch':
+      return `${major}.${minor}.${patch + 1}`
+    default:
+      return version
   }
 }
 
@@ -56,11 +60,17 @@ const targets = [
   {
     name: 'tauri.conf.json',
     path: path.join(rootDir, 'src-tauri/tauri.conf.json'),
-    get: () => JSON.parse(fs.readFileSync(path.join(rootDir, 'src-tauri/tauri.conf.json'), 'utf8')).version,
+    get: () =>
+      JSON.parse(fs.readFileSync(path.join(rootDir, 'src-tauri/tauri.conf.json'), 'utf8')).version,
     set: (v) => {
-      const conf = JSON.parse(fs.readFileSync(path.join(rootDir, 'src-tauri/tauri.conf.json'), 'utf8'))
+      const conf = JSON.parse(
+        fs.readFileSync(path.join(rootDir, 'src-tauri/tauri.conf.json'), 'utf8'),
+      )
       conf.version = v
-      fs.writeFileSync(path.join(rootDir, 'src-tauri/tauri.conf.json'), JSON.stringify(conf, null, 2) + '\n')
+      fs.writeFileSync(
+        path.join(rootDir, 'src-tauri/tauri.conf.json'),
+        JSON.stringify(conf, null, 2) + '\n',
+      )
     },
   },
   {
@@ -117,5 +127,7 @@ console.log('─'.repeat(36))
 if (!changed) {
   console.log('✅ 所有文件版本已一致，无需修改。')
 } else {
-  console.log(`⚠️  已修改 ${targets.filter(t => t.get() === version).length} 个文件。请 git commit 提交更改。`)
+  console.log(
+    `⚠️  已修改 ${targets.filter((t) => t.get() === version).length} 个文件。请 git commit 提交更改。`,
+  )
 }
