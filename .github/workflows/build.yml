@@ -203,3 +203,19 @@ jobs:
             - 构建时间 / Build Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📢 Build Result
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "╔══════════════════════════════════════════════╗"
+            echo "║  ✅ 构建成功！APK 已发布到 Release 页面      ║"
+            echo "║  Tag: ${{ github.ref_name }}                  ║"
+            echo "╚══════════════════════════════════════════════╝"
+          else
+            echo "╔══════════════════════════════════════════════╗"
+            echo "║  ❌ 构建失败！请检查上方日志排查错误          ║"
+            echo "║  日志链接: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}║"
+            echo "╚══════════════════════════════════════════════╝"
+            exit 1
+          fi

@@ -1,6 +1,9 @@
 name: Lint and Type-check
 
 on:
+  push:
+    branches:
+      - beta
   pull_request:
     branches:
       - master

@@ -10,3 +10,6 @@ pre-push:
       run: NODE_OPTIONS="--max-old-space-size=8192" npm run lint
     check:
       run: npm run check
+    validate-workflows:
+      glob: ".github/workflows/*.yml"
+      run: node scripts/validate-workflows.js {push_files}
