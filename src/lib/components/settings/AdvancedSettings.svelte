@@ -202,7 +202,9 @@
             </div>
             <div class="flex-1">
               <Label class="leading-none font-medium">{$_('settings.loreManagement')}</Label>
-              <p class="text-muted-foreground mt-1 text-xs">{$_('settings.autonomousAgentLimits')}</p>
+              <p class="text-muted-foreground mt-1 text-xs">
+                {$_('settings.autonomousAgentLimits')}
+              </p>
             </div>
           </Collapsible.Trigger>
           <div class="flex shrink-0 items-center gap-1">
@@ -275,7 +277,9 @@
             </div>
             <div class="flex-1">
               <Label class="leading-none font-medium">{$_('settings.worldStateClassifier')}</Label>
-              <p class="text-muted-foreground mt-1 text-xs">{$_('settings.contextWindowManagement')}</p>
+              <p class="text-muted-foreground mt-1 text-xs">
+                {$_('settings.contextWindowManagement')}
+              </p>
             </div>
           </Collapsible.Trigger>
           <div class="flex shrink-0 items-center gap-1">
@@ -707,7 +711,9 @@
                   settings.saveServiceSpecificSettings()
                 }}
               />
-              <p class="text-muted-foreground text-xs">{$_('settings.entriesForLorebookInjection')}</p>
+              <p class="text-muted-foreground text-xs">
+                {$_('settings.entriesForLorebookInjection')}
+              </p>
             </div>
 
             <!-- Action Choices Context -->
@@ -748,7 +754,9 @@
             </div>
             <div class="flex-1">
               <Label class="leading-none font-medium">{$_('settings.lorebookLimits')}</Label>
-              <p class="text-muted-foreground mt-1 text-xs">{$_('settings.maxEntriesPerOperation')}</p>
+              <p class="text-muted-foreground mt-1 text-xs">
+                {$_('settings.maxEntriesPerOperation')}
+              </p>
             </div>
           </Collapsible.Trigger>
           <div class="flex shrink-0 items-center gap-1">

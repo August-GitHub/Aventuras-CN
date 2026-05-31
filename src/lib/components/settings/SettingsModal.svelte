@@ -28,7 +28,6 @@
   import { ScrollArea } from '$lib/components/ui/scroll-area'
   import { Textarea } from '$lib/components/ui/textarea'
   import * as Dialog from '$lib/components/ui/dialog'
-  import { Toggle } from '$lib/components/ui/toggle'
   import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group'
 
   import ApiConnectionTab from './tabs/api-connection.svelte'
@@ -322,11 +321,7 @@
         class="flex justify-center gap-0 overflow-x-auto pb-0.5"
       >
         {#each tabs as tab (tab.id)}
-          <ToggleGroupItem
-            value={tab.id}
-            size="sm"
-            class="shrink-0 px-2"
-          >
+          <ToggleGroupItem value={tab.id} size="sm" class="shrink-0 px-2">
             <tab.icon class="h-4 w-4" />
             <span
               class="overflow-hidden text-xs whitespace-nowrap transition-all duration-300 ease-in-out {ui.settingsTab ===
