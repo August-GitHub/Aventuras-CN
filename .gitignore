@@ -271,3 +271,5 @@ key.properties
 nul
 test_data/
 debug_screenshot/
+.playwright-cli/
+cn-test*.png
