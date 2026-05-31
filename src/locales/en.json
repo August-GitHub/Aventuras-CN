@@ -1253,6 +1253,21 @@
     "next": "Next",
     "creating": "Creating your adventure...",
     "setup": "Setup",
-    "note": "Note"
+    "note": "Note",
+    "createNewStory": "Create a New Story",
+    "stepOf": "Step {current} of {total}: {title}",
+    "beginStory": "Begin Adventure",
+    "createStory": "Create Story"
+  },
+  "stepMode": {
+    "howExperienceStory": "How would you like to experience your story?",
+    "adventureMode": "Adventure Mode",
+    "adventureModeDesc": "You are the protagonist. Make choices that shape the story as AI guides you through an interactive adventure.",
+    "creativeWriting": "Creative Writing",
+    "creativeWritingDesc": "AI assists your writing process. You control the narrative direction with full creative freedom."
+  },
+  "stepLorebook": {
+    "vaultLorebooks": "Vault Lorebooks",
+    "selectLorebooksVault": "Select lorebooks from your vault to enrich your world-building context."
   }
 }

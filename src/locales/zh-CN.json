@@ -1253,6 +1253,21 @@
     "next": "下一步",
     "creating": "正在创建你的冒险...",
     "setup": "设置",
-    "note": "注意"
+    "note": "注意",
+    "createNewStory": "创建新故事",
+    "stepOf": "第 {current} 步，共 {total} 步：{title}",
+    "beginStory": "开始冒险",
+    "createStory": "创建故事"
+  },
+  "stepMode": {
+    "howExperienceStory": "你想以什么方式体验你的故事？",
+    "adventureMode": "冒险模式",
+    "adventureModeDesc": "你是故事的主角。做出选择，在 AI 的引导下展开一场互动冒险。",
+    "creativeWriting": "创意写作",
+    "creativeWritingDesc": "AI 辅助你的创作过程。你完全掌控叙事方向，拥有充分的创作自由。"
+  },
+  "stepLorebook": {
+    "vaultLorebooks": "素材库设定集",
+    "selectLorebooksVault": "从素材库选择设定集，为你的故事世界增添背景知识。"
   }
 }
