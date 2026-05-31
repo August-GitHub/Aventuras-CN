@@ -454,7 +454,19 @@
     "confirmDelete": "Confirm Delete",
     "deleteProfileConfirmation": "Delete profile \"{name}\"? Tasks assigned to it will revert to Unassigned.",
     "thisIsPreview": "This is a preview of the selected voice. The story narration will sound like this.",
-    "thinking": "Thinking"
+    "thinking": "Thinking",
+    "adventure": "Adventure",
+    "youAreTheProtagonist": "You are the protagonist",
+    "storyMode": "Story Mode",
+    "chatHistory": "Chat History",
+    "storyTitle": "Story Title",
+    "importedOpeningScene": "Imported Opening Scene",
+    "openingScene": "Opening Scene",
+    "writeYourOwnOpening": "Write Your Own Opening",
+    "storySummary": "Story Summary",
+    "promptPack": "Prompt Pack",
+    "pack": "Pack",
+    "default": "Default"
   },
   "common": {
     "cancel": "Cancel",
@@ -1257,7 +1269,8 @@
     "createNewStory": "Create a New Story",
     "stepOf": "Step {current} of {total}: {title}",
     "beginStory": "Begin Adventure",
-    "createStory": "Create Story"
+    "createStory": "Create Story",
+    "importFromSillyTavern": "Import from SillyTavern"
   },
   "stepMode": {
     "howExperienceStory": "How would you like to experience your story?",

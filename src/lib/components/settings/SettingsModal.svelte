@@ -174,7 +174,7 @@
 </script>
 
 <ResponsiveModal.Root open={ui.settingsModalOpen} onOpenChange={(v) => !v && safeClose()}>
-  <ResponsiveModal.Content class="flex h-[85vh] max-w-6xl flex-col overflow-hidden p-0">
+  <ResponsiveModal.Content class="flex max-h-[85vh] max-w-6xl flex-col overflow-hidden p-0">
     <div
       class="text-muted-foreground/30 absolute top-1 left-2 z-[110] font-mono text-[10px] md:top-auto md:bottom-1"
     >

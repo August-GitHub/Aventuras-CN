@@ -454,7 +454,19 @@
     "confirmDelete": "确认删除",
     "deleteProfileConfirmation": "删除配置\"{name}\"？分配给它的任务将恢复为未分配。",
     "thisIsPreview": "这是所选声音的预览。故事叙述听起来会像这样。",
-    "thinking": "思考"
+    "thinking": "思考",
+    "adventure": "冒险",
+    "youAreTheProtagonist": "你是主角",
+    "storyMode": "故事模式",
+    "chatHistory": "聊天记录",
+    "storyTitle": "故事标题",
+    "importedOpeningScene": "导入的开场场景",
+    "openingScene": "开场场景",
+    "writeYourOwnOpening": "自行编写开场",
+    "storySummary": "故事概览",
+    "promptPack": "提示词包",
+    "pack": "提示包",
+    "default": "默认"
   },
   "common": {
     "cancel": "取消",
@@ -1257,7 +1269,8 @@
     "createNewStory": "创建新故事",
     "stepOf": "第 {current} 步，共 {total} 步：{title}",
     "beginStory": "开始冒险",
-    "createStory": "创建故事"
+    "createStory": "创建故事",
+    "importFromSillyTavern": "从 SillyTavern 导入"
   },
   "stepMode": {
     "howExperienceStory": "你想以什么方式体验你的故事？",
