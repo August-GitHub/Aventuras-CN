@@ -27,6 +27,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Sync version (VERSION → package.json / tauri.conf.json / Cargo.toml)
+        run: node scripts/sync-version.js
+
       - name: Read VERSION
         id: version
         run: echo "VERSION=$(cat VERSION)" >> $GITHUB_OUTPUT

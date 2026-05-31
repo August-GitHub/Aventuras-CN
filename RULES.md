@@ -54,15 +54,28 @@ release-2.0.0
 
 ## 版本号规则
 
-- `v{MAJOR}.{MINOR}.{PATCH}` 格式的 tag（如 `v1.4.0`）**仅作记录，不会触发 CI 构建**
+- `v{MAJOR}.{MINOR}.{PATCH}` 格式的 tag（如 `v1.2.0`）**仅作标记记录**
 - 要触发构建，必须使用 `build-*` 或 `release-*` 前缀
-- **版本号递增规则**：
-  - 每次打 tag 前，先检查当前 VERSION 文件和已有 tag 的最高版本号，新版本号 **不得低于** 两者中的最大值
-  - 根据修改幅度决定递增哪一位：
-    - **PATCH** (`x.y.Z+1`)：小修复，如修 bug、改文案、调整样式
-    - **MINOR** (`x.Y+1.0`)：新功能、翻译对齐、中等改动
-    - **MAJOR** (`X+1.0.0`)：破坏性变更、架构重构
-  - 禁止随意跳跃版本号（如从 1.2.0 突然跳到 9.9），保持节制递增
+- **单一真相源**：`VERSION` 文件是唯一版本号来源
+  - 其他文件由 `npm run sync-version`（或 `node scripts/sync-version.js`）自动同步：
+    - `package.json` → `"version"`
+    - `src-tauri/tauri.conf.json` → `"version"`
+    - `src-tauri/Cargo.toml` → `version = "..."`
+  - CI 构建前会自动运行同步脚本，确保一致
+
+### 版本号递增规则
+
+每次打 tag 前，先检查当前 VERSION 文件和已有 tag 的最高版本号，新版本号 **不得低于** 两者中的最大值。
+
+根据修改幅度决定递增哪一位：
+
+| 类型 | 命令 | 适用场景 |
+|------|------|----------|
+| PATCH | `npm run sync-version patch` (x.y.Z+1) | 小修复：修 bug、改文案、调整样式 |
+| MINOR | `npm run sync-version minor` (x.Y+1.0) | 新功能、翻译对齐、中等改动 |
+| MAJOR | `npm run sync-version major` (X+1.0.0) | 破坏性变更、架构重构 |
+
+禁止随意跳跃版本号（如从 1.2.0 突然跳到 9.9），保持节制递增。
 
 ---
 
