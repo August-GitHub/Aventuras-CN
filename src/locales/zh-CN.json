@@ -939,5 +939,231 @@
   },
   "sync": {
     "pleaseWait": "请稍候"
+  },
+  "library": {
+    "title": "故事库",
+    "subtitle": "你的冒险之旅在此等待",
+    "sync": "同步",
+    "vault": "仓库",
+    "import": "导入",
+    "stImport": "ST 导入",
+    "newStory": "新故事",
+    "discord": "加入 Discord",
+    "emptyState": {
+      "title": "还没有故事",
+      "description": "创建你的第一个冒险，或导入现有故事开始。",
+      "action": "创建故事"
+    },
+    "actions": {
+      "syncStories": "从云端同步故事",
+      "openVault": "打开仓库",
+      "importStory": "导入故事文件",
+      "importFromSillyTavern": "从 SillyTavern 导入",
+      "createNewStory": "创建新故事"
+    },
+    "delete": {
+      "title": "删除故事",
+      "confirm": "确定要删除此故事吗？此操作无法撤销。"
+    }
+  },
+  "story": {
+    "userAction": "你",
+    "system": "系统",
+    "imageStatus": {
+      "regenerating": "重新生成中...",
+      "generating": "生成中...",
+      "forceRetry": "强制重试",
+      "queued": "排队中",
+      "generationFailed": "生成失败",
+      "retryGeneration": "重新生成"
+    },
+    "actions": {
+      "retry": "重新生成",
+      "branch": "分支",
+      "checkpoint": "存档点",
+      "ttsStop": "停止朗读",
+      "ttsNarrate": "朗读",
+      "imagesGenerated": "图片已生成",
+      "generateImages": "生成图片",
+      "cannotEditDuringGeneration": "生成中无法编辑",
+      "edit": "编辑",
+      "cannotDeleteDuringGeneration": "生成中无法删除",
+      "delete": "删除"
+    },
+    "edit": {
+      "save": "保存",
+      "cancel": "取消",
+      "keyboardHint": "按 Enter 保存，Escape 取消",
+      "regenerateHint": "按 Ctrl+Enter 重新生成"
+    },
+    "delete": {
+      "confirm": "确定要删除此条目吗？"
+    },
+    "branch": {
+      "title": "创建分支",
+      "namePlaceholder": "分支名称...",
+      "create": "创建分支",
+      "hint": "分支让你探索不同的故事路径。"
+    },
+    "checkpoint": {
+      "title": "创建存档点",
+      "namePlaceholder": "存档点名称...",
+      "create": "创建存档点",
+      "hint": "存档点保存你的进度以便恢复。"
+    },
+    "imageLink": {
+      "tapToLink": "点击将图片关联到条目"
+    },
+    "unplacedImages": {
+      "title": "未放置的图片",
+      "hint": "这些图片已生成但未关联到任何条目。"
+    },
+    "error": {
+      "retry": "重试",
+      "dismiss": "关闭"
+    },
+    "imageModal": {
+      "fromChat": "来自聊天",
+      "custom": "自定义提示词",
+      "noPrompt": "无可用提示词",
+      "customPrompt": "自定义提示词",
+      "promptPlaceholder": "输入自定义提示词...",
+      "close": "关闭",
+      "regenerate": "重新生成"
+    }
+  },
+  "time": {
+    "panelTitle": "时间",
+    "editTime": "编辑时间",
+    "resetTime": "重置时间",
+    "years": "年",
+    "days": "天",
+    "hours": "时",
+    "minutes": "分",
+    "timeNormalized": "时间已标准化（1年 = 360天）",
+    "timeTracked": "故事内追踪的时间"
+  },
+  "lorebook": {
+    "editLorebook": "编辑 Lorebook",
+    "lorebookEditor": "Lorebook 编辑器",
+    "newEntry": "新条目",
+    "selectEntryToEdit": "选择要编辑的条目",
+    "orClickAddEntry": "或点击 + 添加新条目",
+    "entryName": "条目名称",
+    "entryType": "条目类型",
+    "keywords": "关键词",
+    "aliases": "别名",
+    "entriesDeleted": "条目已删除",
+    "deleteFailed": "删除条目失败",
+    "changes": "变更",
+    "created": "创建时间",
+    "description": "描述",
+    "mentions": "提及次数",
+    "metadata": "元数据",
+    "mode": "模式",
+    "name": "名称",
+    "priority": "优先级",
+    "saving": "保存中...",
+    "source": "来源",
+    "type": "类型",
+    "updated": "更新时间"
+  },
+  "gallery": {
+    "title": "画廊",
+    "loading": "正在加载图片...",
+    "buttons": {
+      "refresh": "刷新",
+      "save": "保存",
+      "saving": "保存中...",
+      "saveSelected": "保存选中",
+      "saveAll": "全部保存",
+      "close": "关闭",
+      "closeTitle": "关闭画廊"
+    },
+    "selection": {
+      "selectImages": "选择要保存的图片",
+      "allSelected": "已全选",
+      "selected": "已选 {count} 张"
+    },
+    "empty": {
+      "title": "暂无图片",
+      "description": "生成的图片会显示在这里。"
+    },
+    "metadata": {
+      "model": "模型",
+      "style": "风格",
+      "size": "尺寸",
+      "mode": "模式"
+    },
+    "footer": {
+      "oneSelectedForDownload": "已选择 1 张图片下载",
+      "selectedForDownload": "已选择 {count} 张图片下载",
+      "oneAvailable": "1 张图片可用",
+      "available": "{count} 张图片可用"
+    },
+    "navigation": {
+      "previous": "上一张",
+      "next": "下一张"
+    },
+    "imageModal": {
+      "regenerating": "重新生成中...",
+      "prompt": "提示词",
+      "promptPlaceholder": "提示词文本...",
+      "of": "/",
+      "oneImage": "1 张图片",
+      "regenerate": "重新生成"
+    }
+  },
+  "grammar": {
+    "wordAlreadyExists": "词汇已在词典中存在",
+    "singleWordOnly": "只能添加单个词",
+    "remove": "移除",
+    "addToDictionary": "添加到词典",
+    "noSuggestions": "无建议"
+  },
+  "inventory": {
+    "panelTitle": "背包栏",
+    "addItem": "添加物品",
+    "itemName": "物品名称",
+    "quantity": "数量",
+    "equipped": "装备中",
+    "backpack": "背包",
+    "noItems": "暂无物品",
+    "addFirst": "添加第一个物品",
+    "worldItems": "世界物品"
+  },
+  "quest": {
+    "panelTitle": "任务栏",
+    "addBeat": "添加节拍",
+    "title": "标题",
+    "quest": "任务",
+    "milestone": "里程碑",
+    "revelation": "揭示",
+    "event": "事件",
+    "plotPoint": "情节点",
+    "active": "进行中"
+  },
+  "reasoning": {
+    "disabled": "推理已禁用"
+  },
+  "suggestions": {
+    "title": "建议",
+    "count": "{count} 条建议",
+    "empty": "暂无建议。",
+    "generating": "正在生成建议...",
+    "refresh": "刷新",
+    "types": {
+      "action": "行动",
+      "dialogue": "对话",
+      "revelation": "揭示",
+      "twist": "转折"
+    }
+  },
+  "wizard": {
+    "back": "返回",
+    "next": "下一步",
+    "creating": "正在创建你的冒险...",
+    "setup": "设置",
+    "note": "注意"
   }
 }

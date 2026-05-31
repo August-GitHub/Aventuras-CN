@@ -780,5 +780,231 @@
   },
   "sync": {
     "pleaseWait": "Please wait"
+  },
+  "library": {
+    "title": "Library",
+    "subtitle": "Your adventures await",
+    "sync": "Sync",
+    "vault": "Vault",
+    "import": "Import",
+    "stImport": "ST Import",
+    "newStory": "New Story",
+    "discord": "Join Discord",
+    "emptyState": {
+      "title": "No stories yet",
+      "description": "Create your first adventure or import an existing story to get started.",
+      "action": "Create Story"
+    },
+    "actions": {
+      "syncStories": "Sync stories from cloud",
+      "openVault": "Open Vault",
+      "importStory": "Import story file",
+      "importFromSillyTavern": "Import from SillyTavern",
+      "createNewStory": "Create a new story"
+    },
+    "delete": {
+      "title": "Delete Story",
+      "confirm": "Are you sure you want to delete this story? This action cannot be undone."
+    }
+  },
+  "story": {
+    "userAction": "You",
+    "system": "System",
+    "imageStatus": {
+      "regenerating": "Regenerating...",
+      "generating": "Generating...",
+      "forceRetry": "Force Retry",
+      "queued": "Queued",
+      "generationFailed": "Generation Failed",
+      "retryGeneration": "Retry Generation"
+    },
+    "actions": {
+      "retry": "Regenerate",
+      "branch": "Branch",
+      "checkpoint": "Checkpoint",
+      "ttsStop": "Stop Narration",
+      "ttsNarrate": "Narrate",
+      "imagesGenerated": "Images Generated",
+      "generateImages": "Generate Images",
+      "cannotEditDuringGeneration": "Cannot edit during generation",
+      "edit": "Edit",
+      "cannotDeleteDuringGeneration": "Cannot delete during generation",
+      "delete": "Delete"
+    },
+    "edit": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "keyboardHint": "Press Enter to save, Escape to cancel",
+      "regenerateHint": "Press Ctrl+Enter to regenerate"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete this entry?"
+    },
+    "branch": {
+      "title": "Create Branch",
+      "namePlaceholder": "Branch name...",
+      "create": "Create Branch",
+      "hint": "Branches let you explore different story paths."
+    },
+    "checkpoint": {
+      "title": "Create Checkpoint",
+      "namePlaceholder": "Checkpoint name...",
+      "create": "Create Checkpoint",
+      "hint": "Checkpoints save your progress for easy restoration."
+    },
+    "imageLink": {
+      "tapToLink": "Tap to link image to entry"
+    },
+    "unplacedImages": {
+      "title": "Unplaced Images",
+      "hint": "These images were generated but not linked to any entry."
+    },
+    "error": {
+      "retry": "Retry",
+      "dismiss": "Dismiss"
+    },
+    "imageModal": {
+      "fromChat": "From Chat",
+      "custom": "Custom Prompt",
+      "noPrompt": "No prompt available",
+      "customPrompt": "Custom Prompt",
+      "promptPlaceholder": "Enter a custom prompt...",
+      "close": "Close",
+      "regenerate": "Regenerate"
+    }
+  },
+  "time": {
+    "panelTitle": "Time",
+    "editTime": "Edit time",
+    "resetTime": "Reset time",
+    "years": "Years",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "timeNormalized": "Time is normalized (1 year = 360 days)",
+    "timeTracked": "Time tracked in-story"
+  },
+  "lorebook": {
+    "editLorebook": "Edit Lorebook",
+    "lorebookEditor": "Lorebook Editor",
+    "newEntry": "New Entry",
+    "selectEntryToEdit": "Select an entry to edit",
+    "orClickAddEntry": "or click + to add a new entry",
+    "entryName": "Entry Name",
+    "entryType": "Entry Type",
+    "keywords": "Keywords",
+    "aliases": "Aliases",
+    "entriesDeleted": "Entries deleted",
+    "deleteFailed": "Failed to delete entries",
+    "changes": "Changes",
+    "created": "Created",
+    "description": "Description",
+    "mentions": "Mentions",
+    "metadata": "Metadata",
+    "mode": "Mode",
+    "name": "Name",
+    "priority": "Priority",
+    "saving": "Saving...",
+    "source": "Source",
+    "type": "Type",
+    "updated": "Updated"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "loading": "Loading images...",
+    "buttons": {
+      "refresh": "Refresh",
+      "save": "Save",
+      "saving": "Saving...",
+      "saveSelected": "Save Selected",
+      "saveAll": "Save All",
+      "close": "Close",
+      "closeTitle": "Close Gallery"
+    },
+    "selection": {
+      "selectImages": "Select images to save",
+      "allSelected": "All selected",
+      "selected": "{count} selected"
+    },
+    "empty": {
+      "title": "No images yet",
+      "description": "Generated images will appear here."
+    },
+    "metadata": {
+      "model": "Model",
+      "style": "Style",
+      "size": "Size",
+      "mode": "Mode"
+    },
+    "footer": {
+      "oneSelectedForDownload": "1 image selected for download",
+      "selectedForDownload": "{count} images selected for download",
+      "oneAvailable": "1 image available",
+      "available": "{count} images available"
+    },
+    "navigation": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "imageModal": {
+      "regenerating": "Regenerating...",
+      "prompt": "Prompt",
+      "promptPlaceholder": "Prompt text...",
+      "of": "of",
+      "oneImage": "1 image",
+      "regenerate": "Regenerate"
+    }
+  },
+  "grammar": {
+    "wordAlreadyExists": "Word already exists in dictionary",
+    "singleWordOnly": "Single word only",
+    "remove": "Remove",
+    "addToDictionary": "Add to dictionary",
+    "noSuggestions": "No suggestions"
+  },
+  "inventory": {
+    "panelTitle": "Inventory",
+    "addItem": "Add Item",
+    "itemName": "Item Name",
+    "quantity": "Quantity",
+    "equipped": "Equipped",
+    "backpack": "Backpack",
+    "noItems": "No items",
+    "addFirst": "Add your first item",
+    "worldItems": "World Items"
+  },
+  "quest": {
+    "panelTitle": "Quests",
+    "addBeat": "Add Beat",
+    "title": "Title",
+    "quest": "Quest",
+    "milestone": "Milestone",
+    "revelation": "Revelation",
+    "event": "Event",
+    "plotPoint": "Plot Point",
+    "active": "Active"
+  },
+  "reasoning": {
+    "disabled": "Reasoning disabled"
+  },
+  "suggestions": {
+    "title": "Suggestions",
+    "count": "{count} suggestions",
+    "empty": "No suggestions available.",
+    "generating": "Generating suggestions...",
+    "refresh": "Refresh",
+    "types": {
+      "action": "Action",
+      "dialogue": "Dialogue",
+      "revelation": "Revelation",
+      "twist": "Twist"
+    }
+  },
+  "wizard": {
+    "back": "Back",
+    "next": "Next",
+    "creating": "Creating your adventure...",
+    "setup": "Setup",
+    "note": "Note"
   }
 }
