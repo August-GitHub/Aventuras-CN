@@ -1,8 +1,9 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
+  import { untrack } from 'svelte'
   import { scenarioVault } from '$lib/stores/scenarioVault.svelte'
   import type { VaultScenario } from '$lib/types'
-  import { Loader2, Bot } from 'lucide-svelte'
+  import { Loader2, Bot, MapPin, Save } from 'lucide-svelte'
   import VaultScenarioFormFields from './VaultScenarioFormFields.svelte'
   import { Button } from '$lib/components/ui/button'
   import type { VaultScenarioInput } from '$lib/services/ai/sdk/schemas/vault'

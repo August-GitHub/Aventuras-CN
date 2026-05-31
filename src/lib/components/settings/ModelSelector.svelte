@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { settings } from '$lib/stores/settings.svelte'
   import { Server, Check, RefreshCw, Star, AlertTriangle, Brain, Braces } from 'lucide-svelte'
   import Autocomplete from '$lib/components/ui/autocomplete/Autocomplete.svelte'

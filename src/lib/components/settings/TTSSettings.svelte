@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { settings } from '$lib/stores/settings.svelte'
   import { Switch } from '$lib/components/ui/switch'
   import { Label } from '$lib/components/ui/label'

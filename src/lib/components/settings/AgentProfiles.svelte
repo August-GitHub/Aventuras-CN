@@ -1,6 +1,7 @@
 <script lang="ts">
   import { SvelteMap } from 'svelte/reactivity'
   import { onDestroy } from 'svelte'
+  import { _ } from 'svelte-i18n'
   import { createDebouncedSave } from '$lib/utils/debounce'
   import { settings, DEFAULT_SERVICE_PRESET_ASSIGNMENTS } from '$lib/stores/settings.svelte'
   import type { GenerationPreset } from '$lib/types'

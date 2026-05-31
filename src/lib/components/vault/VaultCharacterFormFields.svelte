@@ -95,7 +95,7 @@
       error = $_('character.failedToReadImage')
       uploadingPortrait = false
     }
-    reader.readAsDataUrl(file)
+    reader.readAsDataURL(file)
     input.value = ''
   }
 

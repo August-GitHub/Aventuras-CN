@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Entry } from '$lib/types'
+  import type { Entry, EntryType, EntryInjectionMode, EntryState } from '$lib/types'
   import { story } from '$lib/stores/story.svelte'
   import { ui } from '$lib/stores/ui.svelte'
   import { _ } from 'svelte-i18n'
@@ -30,12 +30,12 @@
   let { entry = null, onSave, onCancel }: Props = $props()
 
   let name = $derived(entry?.name ?? '')
-  let type = $derived<string>(entry?.type ?? 'character')
+  let type = $derived<EntryType>(entry?.type ?? 'character')
   let description = $derived(entry?.description ?? '')
   let hiddenInfo = $derived(entry?.hiddenInfo ?? '')
   let aliases = $derived<string[]>(entry?.aliases ?? [])
   let keywords = $derived<string[]>(entry?.injection.keywords ?? [])
-  let injectionMode = $derived<string>(entry?.injection.mode ?? 'keyword')
+  let injectionMode = $derived<EntryInjectionMode>(entry?.injection.mode ?? 'keyword')
   let priority = $derived(entry?.injection.priority ?? 50)
   let showHiddenInfo = $derived(!!entry?.hiddenInfo)
   let loreManagementBlacklisted = $derived(entry?.loreManagementBlacklisted ?? false)
@@ -72,8 +72,8 @@
     },
   ]
 
-  function getDefaultState(_entryType: string): Record<string, any> {
-    return {}
+  function getDefaultState(_entryType: EntryType): EntryState {
+    return {} as EntryState
   }
 
   function getDefaultAdventureState(): {
@@ -144,7 +144,7 @@
         description: description.trim(),
         hiddenInfo: hiddenInfo.trim() || null,
         aliases,
-        state: entry?.state?.type === type ? entry.state : getDefaultState(type),
+        state: (entry?.state?.type === type ? entry.state : getDefaultState(type)) as EntryState,
         adventureState: entry?.adventureState ?? getDefaultAdventureState(),
         creativeState: entry?.creativeState ?? getDefaultCreativeState(),
         injection: {
@@ -181,7 +181,7 @@
 
   <div class="space-y-2">
     <Label for="entry-type">{$_('lorebook.type')}</Label>
-    <Select type="single" value={type} onValueChange={(v) => (type = v)}>
+    <Select type="single" value={type} onValueChange={(v) => (type = v as EntryType)}>
       <SelectTrigger id="entry-type">
         {entryTypes.find((t) => t.value === type)?.labelKey
           ? $_(entryTypes.find((t) => t.value === type)?.labelKey ?? '')
@@ -278,7 +278,7 @@
     <Label>{$_('lorebook.contextInclusion')}</Label>
     <RadioGroup
       value={injectionMode}
-      onValueChange={(v) => (injectionMode = v)}
+      onValueChange={(v) => (injectionMode = v as EntryInjectionMode)}
       class="grid h-full grid-cols-1 gap-2 sm:grid-cols-3"
     >
       {#each injectionModes as mode (mode.value)}

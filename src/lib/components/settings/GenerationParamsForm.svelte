@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { settings } from '$lib/stores/settings.svelte'
   import { Brain, Settings2 } from 'lucide-svelte'
   import type { ReasoningEffort } from '$lib/types'
