@@ -135,7 +135,7 @@
 </script>
 
 <div
-  class="welcome-screen bg-background fixed inset-0 z-50 flex h-full w-full flex-col items-center justify-center overflow-x-hidden overflow-y-auto p-4 text-center"
+  class="welcome-screen bg-background fixed inset-0 z-[10000] flex h-full w-full flex-col items-center justify-center overflow-x-hidden overflow-y-auto p-4 text-center"
   out:fade={{ duration: 300 }}
 >
   <div class="mb-8 space-y-2">

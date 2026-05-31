@@ -1033,7 +1033,7 @@
 {#if expandedPortrait}
   <!-- svelte-ignore a11y_click_events_have_key_events -->
   <div
-    class="bg-background/80 animate-in fade-in fixed inset-0 z-50 flex cursor-pointer items-center justify-center p-4 backdrop-blur-sm duration-200"
+    class="bg-background/80 animate-in fade-in fixed inset-0 z-[10000] flex cursor-pointer items-center justify-center p-4 backdrop-blur-sm duration-200"
     onclick={() => (expandedPortrait = null)}
     role="dialog"
     aria-label="Expanded portrait"
