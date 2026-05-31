@@ -6,6 +6,7 @@
   import { story } from '$lib/stores/story.svelte'
   import { isAndroid } from '$lib/utils/platform'
   import '$lib/i18n'
+  import { _ } from 'svelte-i18n'
 
   let { children } = $props()
 
@@ -62,7 +63,7 @@
       }
 
       lastBackAttemptAt = now
-      ui.showToast('Press back again to exit', 'info', BACK_EXIT_WINDOW_MS)
+      ui.showToast($_('toast.pressBackAgainToExit'), 'info', BACK_EXIT_WINDOW_MS)
     }
 
     return () => {

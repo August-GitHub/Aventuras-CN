@@ -43,7 +43,7 @@
       customDictionaryWords = await grammarService.getCustomWords()
     } catch (error) {
       console.error('[Interface] Failed to load custom dictionary:', error)
-      ui.showToast('Failed to load custom dictionary', 'error')
+      ui.showToast($_('toast.failedToLoadDictionary'), 'error')
     } finally {
       loadingCustomDictionary = false
     }
@@ -59,19 +59,19 @@
       if (result === 'added') {
         customDictionaryInput = ''
         customDictionaryWords = await grammarService.getCustomWords()
-        ui.showToast('Word added to custom dictionary', 'info')
+        ui.showToast($_('toast.wordAddedToDictionary'), 'info')
         return
       }
 
       if (result === 'exists') {
-        ui.showToast('Word is already in your custom dictionary', 'warning')
+        ui.showToast($_('toast.wordAlreadyInDictionary'), 'warning')
         return
       }
 
-      ui.showToast('Only single words can be added to the dictionary', 'warning')
+      ui.showToast($_('toast.onlySingleWords'), 'warning')
     } catch (error) {
       console.error('[Interface] Failed to add custom dictionary word:', error)
-      ui.showToast('Failed to add word to dictionary', 'error')
+      ui.showToast($_('toast.failedToAddWord'), 'error')
     } finally {
       customDictionaryBusy = false
     }
@@ -94,14 +94,14 @@
 
       if (result === 'not_found') {
         customDictionaryWords = await grammarService.getCustomWords()
-        ui.showToast('Word not found in custom dictionary', 'warning')
+        ui.showToast($_('toast.wordNotFoundInDictionary'), 'warning')
         return
       }
 
       ui.showToast('Invalid dictionary word', 'warning')
     } catch (error) {
       console.error('[Interface] Failed to remove custom dictionary word:', error)
-      ui.showToast('Failed to remove word from dictionary', 'error')
+      ui.showToast($_('toast.failedToRemoveWord'), 'error')
     } finally {
       customDictionaryBusy = false
     }
@@ -109,17 +109,17 @@
 
   async function handleClearCustomDictionary() {
     if (customDictionaryWords.length === 0) return
-    const confirmed = confirm('Clear all custom dictionary words? This cannot be undone.')
+    const confirmed = confirm($_('confirm.clearDictionary'))
     if (!confirmed) return
 
     customDictionaryBusy = true
     try {
       await grammarService.clearCustomWords()
       customDictionaryWords = []
-      ui.showToast('Custom dictionary cleared', 'info')
+      ui.showToast($_('toast.dictionaryCleared'), 'info')
     } catch (error) {
       console.error('[Interface] Failed to clear custom dictionary:', error)
-      ui.showToast('Failed to clear custom dictionary', 'error')
+      ui.showToast($_('toast.failedToClearDictionary'), 'error')
     } finally {
       customDictionaryBusy = false
     }

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { ui } from '$lib/stores/ui.svelte'
   import { story } from '$lib/stores/story.svelte'
   import { database } from '$lib/services/database'
@@ -72,7 +73,7 @@
     }
 
     if (result.entries.length === 0) {
-      ui.showToast('No valid entries found in this lorebook file', 'error')
+      ui.showToast($_('toast.noValidEntriesFound'), 'error')
       return
     }
 

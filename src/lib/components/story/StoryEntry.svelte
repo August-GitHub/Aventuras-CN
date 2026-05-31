@@ -376,7 +376,7 @@
       clearDropTarget()
     } catch (err) {
       console.error('[StoryEntry] Failed to link image:', err)
-      ui.showToast('Failed to link image', 'error')
+      ui.showToast($_('toast.failedToLinkImage'), 'error')
     }
   }
 
@@ -1037,7 +1037,7 @@
       await aiService.generateImagesForNarrative(context)
     } catch (error) {
       console.error('[StoryEntry] Image generation failed:', error)
-      ui.showToast('Image generation failed', 'error')
+      ui.showToast($_('toast.imageGenerationFailed'), 'error')
     } finally {
       isGeneratingStoryImages = false
     }

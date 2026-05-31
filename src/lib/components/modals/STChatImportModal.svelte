@@ -217,11 +217,11 @@
               <span class="text-foreground font-medium">{parseResult.characterName}</span>
             </div>
             <div class="flex items-center justify-between">
-              <span>User messages</span>
+              <span>{$_('import.userMessages')}</span>
               <span>{userCount}</span>
             </div>
             <div class="flex items-center justify-between">
-              <span>Narration messages</span>
+              <span>{$_('import.narrationMessages')}</span>
               <span>{narrationCount}</span>
             </div>
             {#if parseResult.totalSkipped > 0}

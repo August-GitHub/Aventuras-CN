@@ -57,7 +57,7 @@
       }
     } catch (err) {
       console.error('[VaultExportModal] Export failed:', err)
-      ui.showToast('Export failed', 'error')
+      ui.showToast($_('toast.exportFailed'), 'error')
     } finally {
       exporting = false
     }

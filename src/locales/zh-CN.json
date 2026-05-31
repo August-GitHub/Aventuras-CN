@@ -898,5 +898,46 @@
     "createOrImportScenarios": "在 Vault 中创建或导入场景以在此使用",
     "searchScenarios": "搜索场景...",
     "processing": "处理中..."
+  },
+  "toast": {
+    "noEntriesToExport": "没有可导出的条目",
+    "exportSuccessful": "导出成功",
+    "lorebookExported": "Lorebook 导出成功",
+    "exportFailed": "导出失败",
+    "failedToLinkImage": "关联图片失败",
+    "imageGenerationFailed": "图片生成失败",
+    "failedToSaveToVault": "保存到 Vault 失败",
+    "pressBackAgainToExit": "再次按返回键退出",
+    "failedToLoadDictionary": "加载自定义词典失败",
+    "wordAddedToDictionary": "词已添加到自定义词典",
+    "wordAlreadyInDictionary": "该词已在你的自定义词典中",
+    "onlySingleWords": "只能添加单个词到词典",
+    "failedToAddWord": "添加词汇到词典失败",
+    "wordNotFoundInDictionary": "在自定义词典中未找到该词",
+    "invalidDictionaryWord": "无效的词典词汇",
+    "failedToRemoveWord": "从词典移除词汇失败",
+    "dictionaryCleared": "自定义词典已清空",
+    "failedToClearDictionary": "清空自定义词典失败",
+    "noValidEntriesFound": "在此 Lorebook 文件中未找到有效条目"
+  },
+  "confirm": {
+    "deleteTag": "确定要删除此标签吗？它将从所有 Vault 项目中移除。",
+    "resetTime": "将时间重置为零？此操作无法撤销。",
+    "clearDictionary": "清除所有自定义词典词汇？此操作无法撤销。"
+  },
+  "common": {
+    "allEntries": "全部条目",
+    "selectedOnly": "仅选中",
+    "notAvailable": "不可用"
+  },
+  "tags": {
+    "manageTags": "管理标签"
+  },
+  "import": {
+    "userMessages": "用户消息",
+    "narrationMessages": "叙述消息"
+  },
+  "sync": {
+    "pleaseWait": "请稍候"
   }
 }

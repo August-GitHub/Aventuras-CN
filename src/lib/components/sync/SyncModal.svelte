@@ -713,7 +713,7 @@
           <p class="text-muted-foreground mt-4">
             {selectedRemoteStory ? 'Pulling' : 'Pushing'} story...
           </p>
-          <p class="text-muted-foreground/80 mt-1 text-sm">Please wait</p>
+          <p class="text-muted-foreground/80 mt-1 text-sm">{$_('sync.pleaseWait')}</p>
         </div>
       {/if}
     </div>

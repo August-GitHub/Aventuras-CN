@@ -449,7 +449,7 @@
     try {
       const success = await LorebookImportExport.exportVaultLorebook(lorebook, 'aventura')
       if (success) {
-        ui.showToast('Lorebook exported successfully', 'info')
+        ui.showToast($_('toast.lorebookExported'), 'info')
       }
     } catch (e) {
       ui.showToast(e instanceof Error ? e.message : 'Export failed', 'error')

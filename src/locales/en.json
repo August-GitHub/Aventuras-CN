@@ -739,5 +739,46 @@
     "createOrImportScenarios": "Create or import scenarios in the vault to use them here.",
     "searchScenarios": "Search scenarios...",
     "processing": "Processing..."
+  },
+  "toast": {
+    "noEntriesToExport": "No entries to export",
+    "exportSuccessful": "Export successful",
+    "lorebookExported": "Lorebook exported successfully",
+    "exportFailed": "Export failed",
+    "failedToLinkImage": "Failed to link image",
+    "imageGenerationFailed": "Image generation failed",
+    "failedToSaveToVault": "Failed to save to vault",
+    "pressBackAgainToExit": "Press back again to exit",
+    "failedToLoadDictionary": "Failed to load custom dictionary",
+    "wordAddedToDictionary": "Word added to custom dictionary",
+    "wordAlreadyInDictionary": "Word is already in your custom dictionary",
+    "onlySingleWords": "Only single words can be added to the dictionary",
+    "failedToAddWord": "Failed to add word to dictionary",
+    "wordNotFoundInDictionary": "Word not found in custom dictionary",
+    "invalidDictionaryWord": "Invalid dictionary word",
+    "failedToRemoveWord": "Failed to remove word from dictionary",
+    "dictionaryCleared": "Custom dictionary cleared",
+    "failedToClearDictionary": "Failed to clear custom dictionary",
+    "noValidEntriesFound": "No valid entries found in this lorebook file"
+  },
+  "confirm": {
+    "deleteTag": "Are you sure you want to delete this tag? It will be removed from all vault items.",
+    "resetTime": "Reset time to zero? This cannot be undone.",
+    "clearDictionary": "Clear all custom dictionary words? This cannot be undone."
+  },
+  "common": {
+    "allEntries": "All entries",
+    "selectedOnly": "Selected only",
+    "notAvailable": "Not available"
+  },
+  "tags": {
+    "manageTags": "Manage Tags"
+  },
+  "import": {
+    "userMessages": "User messages",
+    "narrationMessages": "Narration messages"
+  },
+  "sync": {
+    "pleaseWait": "Please wait"
   }
 }

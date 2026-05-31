@@ -74,7 +74,7 @@
 
   async function handleDelete(id: string) {
     if (
-      confirm('Are you sure you want to delete this tag? It will be removed from all vault items.')
+      confirm($_('confirm.deleteTag'))
     ) {
       await tagStore.delete(id)
     }
@@ -92,7 +92,7 @@
     class="flex w-full max-w-none flex-col lg:w-[calc(100%-2rem)] lg:max-w-2xl"
     style="height: 500px;"
   >
-    <ResponsiveModal.Header title="Manage Tags" />
+    <ResponsiveModal.Header title={$_('tags.manageTags')} />
 
     <div class="flex flex-1 flex-col gap-4 overflow-hidden p-4">
       <!-- Tabs -->

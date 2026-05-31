@@ -187,7 +187,7 @@
       ui.showToast(`${char.name} saved to vault`, 'info')
     } catch (error) {
       console.error('Failed to save character to vault:', error)
-      ui.showToast('Failed to save to vault', 'error')
+      ui.showToast($_('toast.failedToSaveToVault'), 'error')
     }
   }
 </script>

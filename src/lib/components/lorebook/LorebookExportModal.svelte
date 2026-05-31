@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { ui } from '$lib/stores/ui.svelte'
   import { story } from '$lib/stores/story.svelte'
   import { LorebookImportExport } from '$lib/services/lorebookImportExport'
@@ -40,7 +41,7 @@
         entries: entriesToExport(),
         filename: story.currentStory?.title ? `${story.currentStory.title}-lorebook` : undefined,
       })
-      ui.showToast('Export successful', 'info')
+      ui.showToast($_('toast.exportSuccessful'), 'info')
       ui.closeLorebookExport()
     } catch (err) {
       ui.showToast(err instanceof Error ? err.message : 'Export failed', 'error')
@@ -80,7 +81,7 @@
             >
               <RadioGroupItem value="all" id="scope-all" />
               <Label for="scope-all" class="flex-1 cursor-pointer">
-                <div class="font-medium">All entries</div>
+                <div class="font-medium">{$_('common.allEntries')}</div>
                 <div class="text-muted-foreground text-xs">
                   {story.lorebookEntries.length} entries
                 </div>
@@ -95,7 +96,7 @@
             >
               <RadioGroupItem value="selected" id="scope-selected" />
               <Label for="scope-selected" class="flex-1 cursor-pointer">
-                <div class="font-medium">Selected only</div>
+                <div class="font-medium">{$_('common.selectedOnly')}</div>
                 <div class="text-muted-foreground text-xs">
                   {ui.lorebookBulkSelection.size} entries
                 </div>

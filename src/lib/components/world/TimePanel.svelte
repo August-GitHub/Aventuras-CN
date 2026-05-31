@@ -37,7 +37,7 @@
 
   async function resetTime() {
     const confirmed = await new Promise<boolean>((resolve) => {
-      const result = confirm('Reset time to zero? This cannot be undone.')
+      const result = confirm($_('confirm.resetTime'))
       resolve(result)
     })
     if (!confirmed) return
