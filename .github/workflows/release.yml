@@ -3,7 +3,6 @@ name: Build (Android)
 on:
   push:
     tags:
-      - 'build-*'
       - 'release-*'
   workflow_dispatch:
 
