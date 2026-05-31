@@ -3,6 +3,7 @@ name: Build (Android)
 on:
   push:
     tags:
+      - 'build-*'
       - 'release-*'
   workflow_dispatch:
 
@@ -162,11 +163,13 @@ jobs:
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          draft: false
+          prerelease: ${{ startsWith(github.ref_name, 'build-') }}
           files: |
             ${{ steps.sign.outputs.APK_NAME || steps.rename.outputs.APK_NAME }}
           body: |
-            ## 📦 更新内容 (What's New)
+            ## 📦 ${{ startsWith(github.ref_name, 'build-') && 'Build' || '更新内容 (What\'s New)' }} ${{ github.ref_name }}
+
+            ---
 
             ${{ steps.changelog.outputs.changelog }}
 
@@ -182,6 +185,7 @@ jobs:
             - 版本号 / Version: ${{ steps.version.outputs.VERSION }}
             - 分支 / Branch: ${{ steps.branch.outputs.branch }}
             - 提交 / Commit: ${{ steps.branch.outputs.commit }}
+            - Tag: ${{ github.ref_name }}
             - 构建时间 / Build Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

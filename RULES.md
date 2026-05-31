@@ -68,13 +68,13 @@ release-2.0.0
 
 ## CI 构建触发规则
 
-| Tag 前缀 | workflow | 用途 |
-|----------|----------|------|
-| `build-*` | `ci.yml` → Build (Android) | 开发测试构建 |
-| `release-*` | `release.yml` → Release (Android) | 正式发布 |
-| `v*` | ❌ 不触发 CI | 仅作标记记录 |
+所有构建均由 `build.yml` 统一处理，根据 tag 前缀自动区分：
 
-> ⚠️ 一个 tag 只会触发一个 workflow，不会重复构建。
+| Tag 前缀 | prerelease | 用途 |
+|----------|------------|------|
+| `build-*` | ✅ `true` | 开发测试构建 |
+| `release-*` | `false` | 正式发布 |
+| `v*` | ❌ 不触发 CI | 仅作标记记录 |
 
 ---
 
