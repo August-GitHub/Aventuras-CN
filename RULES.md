@@ -77,14 +77,53 @@ release-2.0.0
 
 ## 版本号规则
 
-- `v{MAJOR}.{MINOR}.{PATCH}` 格式的 tag（如 `v1.2.0`）**仅作标记记录**
-- 要触发构建，必须使用 `build-*` 或 `release-*` 前缀
-- **单一真相源**：`VERSION` 文件是唯一版本号来源
-  - 其他文件由 `npm run sync-version`（或 `node scripts/sync-version.js`）自动同步：
-    - `package.json` → `"version"`
-    - `src-tauri/tauri.conf.json` → `"version"`
-    - `src-tauri/Cargo.toml` → `version = "..."`
-  - CI 构建前会自动运行同步脚本，确保一致
+> **⚠️⚠️⚠️ 最高优先级规则 — 违反此规则将直接导致 APK 版本号显示错误 ⚠️⚠️⚠️**
+
+### ❌ 绝对禁止的操作
+
+| 禁止行为 | 后果 | 正确做法 |
+|----------|------|----------|
+| 手动编辑 `package.json` 的 `version` 字段 | 与 VERSION 不同步，APK 显示错误版本 | 用 `npm run sync-version` |
+| 手动编辑 `tauri.conf.json` 的 `version` 字段 | APK 显示旧版本号（如 1.3.4 tag 打出 1.3.3 的 APK） | 用 `npm run sync-version` |
+| 手动编辑 `Cargo.toml` 的 `version` 字段 | Rust 层版本不一致 | 用 `npm run sync-version` |
+| 不验证就打 tag | 用户下载的 APK 版本号与 tag 不符 | 打 tag 前**必须**运行验证命令 |
+
+### ✅ 唯一正确的版本号变更流程
+
+```
+步骤 1: 编辑 VERSION 文件（唯一真相源）
+        echo "1.3.6" > VERSION
+
+步骤 2: 运行同步脚本
+        npm run sync-version
+
+步骤 3: 验证 4 个文件全部一致（必须执行！）
+        npm run sync-version -- --check
+
+步骤 4: git commit + git push（只 push 代码，不打 tag）
+
+步骤 5: 所有问题修完后，才打 build tag 触发构建
+        git tag build-1.3.6-beta && git push origin build-1.3.6-beta
+```
+
+### 单一真相源
+
+- **`VERSION` 文件是唯一版本号来源**，绝对不可手动修改其他 3 个文件
+- 其他文件由 `npm run sync-version`（或 `node scripts/sync-version.js`）自动同步：
+  - `package.json` → `"version"`
+  - `src-tauri/tauri.conf.json` → `"version"` （⚠️ 此文件控制 APP 显示版本号）
+  - `src-tauri/Cargo.toml` → `version = "..."`
+- CI 构建前会自动运行同步脚本，确保一致
+
+### 🔒 打 tag 前强制验证
+
+**每次创建 `build-*` 或 `release-*` tag 前，必须先执行：**
+
+```bash
+npm run sync-version -- --check
+```
+
+该命令会检查 4 个文件版本号是否完全一致。如果不一致，会报错并退出，**禁止在不一致的情况下打 tag**。
 
 ### 版本号递增规则
 
