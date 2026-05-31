@@ -466,7 +466,13 @@
     "storySummary": "Story Summary",
     "promptPack": "Prompt Pack",
     "pack": "Pack",
-    "default": "Default"
+    "allLorebookEntriesExported": "All lorebook entries exported",
+    "cfg": "CFG Scale",
+    "exportFormat": "Export Format",
+    "runRawSql": "Run Raw SQL",
+    "tags": "Tags",
+    "whatToExport": "What to Export",
+    "writeQueries": "Write Queries"
   },
   "common": {
     "cancel": "Cancel",
@@ -491,7 +497,13 @@
     "resetAll": "Reset All",
     "allEntries": "All entries",
     "selectedOnly": "Selected only",
-    "notAvailable": "Not available"
+    "notAvailable": "Not available",
+    "add": "Add",
+    "checking": "Checking...",
+    "clearAll": "Clear All",
+    "description": "Description",
+    "name": "Name",
+    "select": "Select"
   },
   "interface": {
     "theme": "Theme",
@@ -699,7 +711,26 @@
       "storyBeat": "Story Beat",
       "number": "Number",
       "boolean": "Boolean",
-      "couldNotDelete": "Could not delete pack"
+      "couldNotDelete": "Could not delete pack",
+      "characters": "Characters",
+      "clearIcon": "Clear icon",
+      "defaultValue": "Default value",
+      "insertVariable": "Insert variable",
+      "items": "Items",
+      "loadingTemplate": "Loading template...",
+      "locations": "Locations",
+      "noIcon": "No icon",
+      "noIconsFound": "No icons found",
+      "noRuntimeVariables": "No runtime variables",
+      "noVariableFound": "No variable found",
+      "runtime": "Runtime",
+      "runtimeVariables": "Runtime Variables",
+      "runtimeVariablesHelp": "Variables that are resolved at runtime when the prompt is used.",
+      "searchIcons": "Search icons...",
+      "searchVariables": "Search variables...",
+      "storyBeats": "Story Beats",
+      "structuralErrors": "Structural Errors",
+      "templateValid": "Template is valid"
     }
   },
   "character": {
@@ -725,7 +756,32 @@
     "pleaseSelectImage": "Please select an image file",
     "failedToReadImage": "Failed to read image file",
     "useCategoryFormat": "Use \"Category: value\" format, e.g. Face: oval, Hair: dark. Categories: Face, Hair, Eyes, Build, Clothing, Accessories, Distinguishing features.",
-    "saveFailed": "Failed to save character"
+    "saveFailed": "Failed to save character",
+    "active": "Active",
+    "addCharacter": "Add Character",
+    "addFirst": "Add your first character",
+    "appearance": "Appearance",
+    "appearancePlaceholder": "Describe appearance...",
+    "deceased": "Deceased",
+    "generate": "Generate",
+    "generating": "Generating...",
+    "hideDetails": "Hide Details",
+    "inactive": "Inactive",
+    "makeProtagonist": "Make Protagonist",
+    "noCharacters": "No characters yet",
+    "panelTitle": "Characters",
+    "protagonistSwapError": "Failed to swap protagonist",
+    "relationship": "Relationship",
+    "remove": "Remove",
+    "saveToVault": "Save to Vault",
+    "showDetails": "Show Details",
+    "status": "Status",
+    "swap": "Swap",
+    "traitsAppearance": "Traits & Appearance",
+    "traitsPlaceholder": "Describe personality and traits...",
+    "upload": "Upload Image",
+    "uploading": "Uploading...",
+    "you": "You"
   },
   "scenario": {
     "name": "Name",
@@ -992,6 +1048,10 @@
       "promptPlaceholder": "Enter a custom prompt...",
       "close": "Close",
       "regenerate": "Regenerate"
+    },
+    "entries": {
+      "goToBottom": "Go to bottom",
+      "goToTop": "Go to top"
     }
   },
   "memory": {
@@ -1167,7 +1227,8 @@
     "lorebookEditor": "Lorebook Editor",
     "selectEntryToEdit": "Select an entry to edit",
     "orClickAddEntry": "or click + to add a new entry",
-    "entryType": "Entry Type"
+    "entryType": "Entry Type",
+    "saveFailed": "Failed to save entry"
   },
   "gallery": {
     "title": "Gallery",
@@ -1213,6 +1274,10 @@
       "of": "of",
       "oneImage": "1 image",
       "regenerate": "Regenerate"
+    },
+    "toast": {
+      "loadFailed": "Failed to load image",
+      "savedOneImage": "1 image saved"
     }
   },
   "grammar": {
@@ -1245,7 +1310,9 @@
     "active": "Active"
   },
   "reasoning": {
-    "disabled": "Reasoning disabled"
+    "disabled": "Reasoning disabled",
+    "hideThinking": "Hide thinking",
+    "showThinking": "Show thinking"
   },
   "suggestions": {
     "title": "Suggestions",
@@ -1270,7 +1337,27 @@
     "stepOf": "Step {current} of {total}: {title}",
     "beginStory": "Begin Adventure",
     "createStory": "Create Story",
-    "importFromSillyTavern": "Import from SillyTavern"
+    "importFromSillyTavern": "Import from SillyTavern",
+    "accessModels": "Access models",
+    "affordableAccess": "Affordable access to powerful language models",
+    "apiKey": "API Key",
+    "backToCustomization": "Back to Customization",
+    "chooseProvider": "Choose a Provider",
+    "configureEndpointLater": "Or configure your own endpoint later in Settings",
+    "configureOwnEndpoint": "Configure your own endpoint",
+    "customizeEnvironment": "Customize your environment",
+    "enterApiKey": "Enter API Key",
+    "failedToInitialize": "Failed to initialize",
+    "getAKey": "Get a key",
+    "getStarted": "Get Started",
+    "nextStep": "Next Step",
+    "pleaseEnterApiKey": "Please enter your API key",
+    "reasoningModelsAutoDetected": "Reasoning models auto-detected",
+    "settingUp": "Setting up...",
+    "targetLanguage": "Target Language",
+    "translateMyInput": "Translate my input",
+    "translateWorldState": "Translate world state",
+    "welcomeTitle": "Welcome to Aventuras"
   },
   "stepMode": {
     "howExperienceStory": "How would you like to experience your story?",
@@ -1282,5 +1369,42 @@
   "stepLorebook": {
     "vaultLorebooks": "Vault Lorebooks",
     "selectLorebooksVault": "Select lorebooks from your vault to enrich your world-building context."
+  },
+  "actionChoices": {
+    "generating": "Generating choices...",
+    "title": "Suggested Actions"
+  },
+  "actionInput": {
+    "actionTypes": {
+      "do": "Do",
+      "free": "Free",
+      "say": "Say",
+      "story": "Story",
+      "think": "Think"
+    },
+    "error": {
+      "configIncomplete": "Configuration incomplete. Please check your API settings.",
+      "emptyResponse": "Received empty response from AI. Please try again.",
+      "generationFailed": "Generation failed. Please check your connection and try again."
+    },
+    "notification": {
+      "generationComplete": "Generation complete",
+      "generationFailed": "Generation failed",
+      "tapToRetry": "Tap to retry",
+      "tapToReturn": "Tap to return"
+    },
+    "placeholders": {
+      "do": "What action do you take?",
+      "free": "Write anything...",
+      "say": "What do you say?",
+      "story": "Describe what happens next...",
+      "think": "What are you thinking?"
+    }
+  },
+  "storyCard": {
+    "noDescription": "No description"
+  },
+  "tts": {
+    "selectLanguage": "Select language"
   }
 }
