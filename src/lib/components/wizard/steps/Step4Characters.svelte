@@ -214,7 +214,9 @@
                 </div>
                 <div class="text-left">
                   <div class="text-sm font-medium">
-                    {loadedVaultCharacterId ? $_('stepCharacters.characterSelected') : $_('stepCharacters.selectCharacter')}
+                    {loadedVaultCharacterId
+                      ? $_('stepCharacters.characterSelected')
+                      : $_('stepCharacters.selectCharacter')}
                   </div>
                   <div class="text-muted-foreground text-xs">
                     {loadedVaultCharacterId
@@ -258,7 +260,9 @@
         <div class="space-y-1">
           <h4 class="text-foreground flex items-center gap-2 text-sm font-medium">
             <User class="h-4 w-4" />
-            {isEditingProtagonist ? $_('stepCharacters.editCharacter') : $_('stepCharacters.createCharacter')}
+            {isEditingProtagonist
+              ? $_('stepCharacters.editCharacter')
+              : $_('stepCharacters.createCharacter')}
           </h4>
           <p class="text-muted-foreground text-xs">
             {selectedMode === 'adventure'
@@ -355,7 +359,9 @@
                   onclick={() => (showAdjustWithAI = !showAdjustWithAI)}
                 >
                   <Sparkles class="h-3.5 w-3.5" />
-                  {showAdjustWithAI ? $_('stepCharacters.hideAiOptions') : $_('stepCharacters.expandWithAi')}
+                  {showAdjustWithAI
+                    ? $_('stepCharacters.hideAiOptions')
+                    : $_('stepCharacters.expandWithAi')}
                   <ChevronDown
                     class="h-3 w-3 transition-transform {showAdjustWithAI ? 'rotate-180' : ''}"
                   />
@@ -377,7 +383,9 @@
                   class="bg-card text-card-foreground mt-3 space-y-4 rounded-lg border p-4 shadow-sm"
                 >
                   <div class="space-y-2">
-                    <Label for="ai-guidance" class="text-xs">{$_('stepCharacters.aiGuidanceOptional')}</Label>
+                    <Label for="ai-guidance" class="text-xs"
+                      >{$_('stepCharacters.aiGuidanceOptional')}</Label
+                    >
                     <Textarea
                       id="ai-guidance"
                       value={characterElaborationGuidance}
@@ -427,7 +435,9 @@
           {:else}
             <!-- Edit Actions -->
             <div class="flex items-center justify-end gap-2">
-              <Button variant="ghost" size="sm" onclick={handleCancelEdit}>{$_('stepCharacters.cancel')}</Button>
+              <Button variant="ghost" size="sm" onclick={handleCancelEdit}
+                >{$_('stepCharacters.cancel')}</Button
+              >
               <Button size="sm" onclick={handleSaveEdit}>{$_('stepCharacters.saveChanges')}</Button>
             </div>
           {/if}
@@ -447,7 +457,9 @@
                 </div>
                 <div>
                   <Card.Title class="text-base leading-none">{protagonist.name}</Card.Title>
-                  <Card.Description class="mt-0.5 text-xs">{$_('stepCharacters.protagonist')}</Card.Description>
+                  <Card.Description class="mt-0.5 text-xs"
+                    >{$_('stepCharacters.protagonist')}</Card.Description
+                  >
                 </div>
               </div>
 
@@ -492,7 +504,9 @@
               <div class="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
                 {#if protagonist.background}
                   <div class="space-y-0.5">
-                    <span class="text-foreground font-medium">{$_('stepCharacters.background')}</span>
+                    <span class="text-foreground font-medium"
+                      >{$_('stepCharacters.background')}</span
+                    >
                     <p class="text-muted-foreground leading-tight">
                       {protagonist.background}
                     </p>
@@ -500,7 +514,9 @@
                 {/if}
                 {#if protagonist.motivation}
                   <div class="space-y-0.5">
-                    <span class="text-foreground font-medium">{$_('stepCharacters.motivation')}</span>
+                    <span class="text-foreground font-medium"
+                      >{$_('stepCharacters.motivation')}</span
+                    >
                     <p class="text-muted-foreground leading-tight">
                       {protagonist.motivation}
                     </p>

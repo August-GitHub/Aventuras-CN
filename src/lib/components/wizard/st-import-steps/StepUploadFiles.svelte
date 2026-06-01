@@ -115,7 +115,10 @@
                   <span>· {$_('stImport.hasGreeting')}</span>
                 {/if}
                 {#if cardParsedData.alternateGreetings.length > 0}
-                  <span>· {cardParsedData.alternateGreetings.length} {$_('stImport.altGreetings')}</span>
+                  <span
+                    >· {cardParsedData.alternateGreetings.length}
+                    {$_('stImport.altGreetings')}</span
+                  >
                 {/if}
                 {#if cardParsedData.characterBook}
                   <span>· {$_('stImport.hasLorebook')}</span>
@@ -184,7 +187,9 @@
             <div>
               <p class="text-sm font-medium">{chatParseResult.characterName}</p>
               <p class="text-muted-foreground text-xs">
-                {userCount} {$_('import.userMessages')} · {narrationCount} {$_('import.narrationMessages')}
+                {userCount}
+                {$_('import.userMessages')} · {narrationCount}
+                {$_('import.narrationMessages')}
                 {#if chatParseResult.totalSkipped > 0}
                   · {chatParseResult.totalSkipped} {$_('stImport.skipped')}
                 {/if}

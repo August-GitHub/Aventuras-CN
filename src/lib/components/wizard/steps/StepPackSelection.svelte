@@ -103,7 +103,9 @@
         <div class="w-full border-t"></div>
       </div>
       <div class="relative flex justify-center text-xs uppercase">
-        <span class="bg-background text-muted-foreground px-2">{$_('stepPackSelection.variables')}</span>
+        <span class="bg-background text-muted-foreground px-2"
+          >{$_('stepPackSelection.variables')}</span
+        >
       </div>
     </div>
 

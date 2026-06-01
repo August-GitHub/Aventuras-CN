@@ -172,7 +172,9 @@
                     : $_('stepSupportingCast.addFromVault')}
                 </div>
                 <div class="text-muted-foreground text-xs">
-                  {hasVaultCharacters ? $_('stepSupportingCast.browseSavedCharacters') : $_('stepSupportingCast.vaultIsEmpty')}
+                  {hasVaultCharacters
+                    ? $_('stepSupportingCast.browseSavedCharacters')
+                    : $_('stepSupportingCast.vaultIsEmpty')}
                 </div>
               </div>
             </div>
@@ -222,7 +224,9 @@
         class="hover:border-primary/50 h-12 justify-start gap-3 border-dashed hover:border-solid"
         onclick={onGenerateCharacters}
         disabled={isGeneratingCharacters || !protagonist}
-        title={!protagonist ? $_('stepSupportingCast.createProtagonistFirst') : $_('stepSupportingCast.generate3AiCharacters')}
+        title={!protagonist
+          ? $_('stepSupportingCast.createProtagonistFirst')
+          : $_('stepSupportingCast.generate3AiCharacters')}
       >
         <div class="bg-accent/10 flex h-6 w-6 items-center justify-center rounded-full">
           {#if isGeneratingCharacters}
@@ -240,7 +244,9 @@
       <div class="mb-2 flex items-center justify-between">
         <h4 class="flex items-center gap-2 text-sm font-medium">
           <User class="h-4 w-4" />
-          {editingSupportingCharacterIndex !== null ? $_('stepSupportingCast.editCharacter') : $_('stepSupportingCast.newCharacter')}
+          {editingSupportingCharacterIndex !== null
+            ? $_('stepSupportingCast.editCharacter')
+            : $_('stepSupportingCast.newCharacter')}
         </h4>
         <Button variant="ghost" size="icon" class="h-8 w-8" onclick={onCancelSupportingForm}>
           <X class="h-4 w-4" />
@@ -307,7 +313,9 @@
               onclick={() => (showAdjustWithAI = !showAdjustWithAI)}
             >
               <Sparkles class="h-3.5 w-3.5" />
-              {showAdjustWithAI ? $_('stepSupportingCast.hideAiOptions') : $_('stepSupportingCast.adjustWithAi')}
+              {showAdjustWithAI
+                ? $_('stepSupportingCast.hideAiOptions')
+                : $_('stepSupportingCast.adjustWithAi')}
               <ChevronDown
                 class="h-3 w-3 transition-transform {showAdjustWithAI ? 'rotate-180' : ''}"
               />
@@ -318,7 +326,8 @@
             <div class="space-y-1.5">
               <Label
                 for="ai-guidance-supp"
-                class="text-muted-foreground text-[10px] tracking-wider uppercase">{$_('stepSupportingCast.guidance')}</Label
+                class="text-muted-foreground text-[10px] tracking-wider uppercase"
+                >{$_('stepSupportingCast.guidance')}</Label
               >
               <Textarea
                 id="ai-guidance-supp"
@@ -349,14 +358,18 @@
         <Separator class="my-2" />
 
         <div class="flex justify-end gap-2">
-          <Button variant="ghost" onclick={onCancelSupportingForm}>{$_('stepSupportingCast.cancel')}</Button>
+          <Button variant="ghost" onclick={onCancelSupportingForm}
+            >{$_('stepSupportingCast.cancel')}</Button
+          >
           <Button
             class="gap-2"
             onclick={onUseSupportingAsIs}
             disabled={!supportingCharacterName.trim()}
           >
             <Check class="h-4 w-4" />
-            {editingSupportingCharacterIndex !== null ? $_('stepSupportingCast.update') : $_('stepSupportingCast.addCharacter')}
+            {editingSupportingCharacterIndex !== null
+              ? $_('stepSupportingCast.update')
+              : $_('stepSupportingCast.addCharacter')}
           </Button>
         </div>
       </div>

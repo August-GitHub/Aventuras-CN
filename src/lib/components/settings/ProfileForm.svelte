@@ -166,7 +166,11 @@
 
 <div class="space-y-3">
   <!-- Profile Name -->
-  <Input label={$_('settings.profileName')} placeholder={$_('settings.profileNamePlaceholder')} bind:value={name} />
+  <Input
+    label={$_('settings.profileName')}
+    placeholder={$_('settings.profileNamePlaceholder')}
+    bind:value={name}
+  />
 
   <!-- Provider Type -->
   <ProviderTypeSelector value={providerType} onchange={handleProviderTypeChange} />
@@ -424,8 +428,7 @@
   <Dialog.Content class="sm:max-w-md">
     <Dialog.Header>
       <Dialog.Title>{$_('settings.addCustomModelDialogTitle')}</Dialog.Title>
-      <Dialog.Description>{$_('settings.enterModelIdentifier')}</Dialog.Description
-      >
+      <Dialog.Description>{$_('settings.enterModelIdentifier')}</Dialog.Description>
     </Dialog.Header>
     <div class="flex flex-col gap-2 py-4">
       <div class="flex gap-2">
@@ -446,7 +449,9 @@
       {/if}
     </div>
     <Dialog.Footer>
-      <Button variant="outline" onclick={() => (showCustomModelDialog = false)}>{$_('settings.cancelBtn')}</Button>
+      <Button variant="outline" onclick={() => (showCustomModelDialog = false)}
+        >{$_('settings.cancelBtn')}</Button
+      >
       <Button onclick={handleAddCustomModelFromDialog} disabled={!customModelDialogInput.trim()}>
         {$_('settings.addBtn')}
       </Button>

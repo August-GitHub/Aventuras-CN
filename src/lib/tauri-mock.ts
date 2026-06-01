@@ -11,9 +11,15 @@ export const invoke = (...args: unknown[]) => {
 
 // @tauri-apps/plugin-sql
 export default class Database {
-  static async load() { return new Database() }
-  async select() { return [] }
-  async execute() { return { rowsAffected: 0 } }
+  static async load() {
+    return new Database()
+  }
+  async select() {
+    return []
+  }
+  async execute() {
+    return { rowsAffected: 0 }
+  }
   async close() {}
 }
 

@@ -80,7 +80,9 @@
   {#if !imageGenerationEnabled}
     <Alert.Root class="py-2">
       <AlertCircle class="h-4 w-4" />
-      <Alert.Title class="text-xs font-semibold">{$_('stepPortraits.generationDisabled')}</Alert.Title>
+      <Alert.Title class="text-xs font-semibold"
+        >{$_('stepPortraits.generationDisabled')}</Alert.Title
+      >
       <Alert.Description class="text-xs">
         {$_('stepPortraits.generationDisabledDesc')}
       </Alert.Description>
@@ -137,7 +139,9 @@
           <div class="min-w-0 flex-1">
             <div class="flex items-center justify-between">
               <h4 class="truncate font-medium">{protagonist.name}</h4>
-              <Badge variant="default" class="h-5 px-1.5 text-[10px]">{$_('stepPortraits.protagonistBadge')}</Badge>
+              <Badge variant="default" class="h-5 px-1.5 text-[10px]"
+                >{$_('stepPortraits.protagonistBadge')}</Badge
+              >
             </div>
 
             <div class="mb-2 space-y-1.5">
@@ -166,12 +170,12 @@
                     {$_('stepPortraits.uploading')}
                   {:else}
                     <ImageUp class="h-3 w-3" />
-                  {$_('stepPortraits.upload')}
-                {/if}
-              </Button>
-              <input
-                type="file"
-                accept="image/*"
+                    {$_('stepPortraits.upload')}
+                  {/if}
+                </Button>
+                <input
+                  type="file"
+                  accept="image/*"
                   class="absolute inset-0 cursor-pointer opacity-0"
                   onchange={onProtagonistPortraitUpload}
                   disabled={isUploadingProtagonistPortrait || isGeneratingProtagonistPortrait}
@@ -196,7 +200,9 @@
                     {$_('stepPortraits.generating')}
                   {:else}
                     <Wand2 class="h-3 w-3" />
-                    {protagonistPortrait ? $_('stepPortraits.regenerate') : $_('stepPortraits.generate')}
+                    {protagonistPortrait
+                      ? $_('stepPortraits.regenerate')
+                      : $_('stepPortraits.generate')}
                   {/if}
                 </Button>
               {/if}
@@ -221,7 +227,7 @@
     <div class="space-y-2">
       <div class="flex items-center gap-2 pb-1">
         <Separator class="flex-1" />
-          <h4 class="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+        <h4 class="text-muted-foreground text-xs font-medium tracking-wider uppercase">
           {$_('stepPortraits.supportingCast')}
         </h4>
         <Separator class="flex-1" />
@@ -331,7 +337,9 @@
                           {$_('stepPortraits.generating')}
                         {:else}
                           <Wand2 class="h-2.5 w-2.5" />
-                          {supportingCharacterPortraits[char.name] ? $_('stepPortraits.regenerate') : $_('stepPortraits.generate')}
+                          {supportingCharacterPortraits[char.name]
+                            ? $_('stepPortraits.regenerate')
+                            : $_('stepPortraits.generate')}
                         {/if}
                       </Button>
                     {/if}

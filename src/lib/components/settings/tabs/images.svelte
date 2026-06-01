@@ -1241,7 +1241,9 @@
 
           <div class="space-y-2">
             <Label>
-              {$_('settings.backgroundBlur', { values: { value: settings.systemServicesSettings.imageGeneration.backgroundBlur } })}
+              {$_('settings.backgroundBlur', {
+                values: { value: settings.systemServicesSettings.imageGeneration.backgroundBlur },
+              })}
             </Label>
             <Slider
               type="multiple"
@@ -1497,7 +1499,10 @@
         </div>
         <div class="col-span-2 space-y-2">
           <Label>{$_('settings.negativePrompt')}</Label>
-          <Textarea bind:value={profileNegativePrompt} placeholder={$_('settings.negativePromptPlaceholder')} />
+          <Textarea
+            bind:value={profileNegativePrompt}
+            placeholder={$_('settings.negativePromptPlaceholder')}
+          />
         </div>
       </div>
     {/if}
@@ -1548,21 +1553,36 @@
           </div>
           <div class="space-y-2">
             <Label>{$_('settings.cfg')}</Label>
-            <Input type="number" bind:value={profileCfg} placeholder={$_('settings.enterCfg')} step="0.1" />
+            <Input
+              type="number"
+              bind:value={profileCfg}
+              placeholder={$_('settings.enterCfg')}
+              step="0.1"
+            />
           </div>
           <div class="space-y-2">
             <Label>{$_('settings.steps')}</Label>
-            <Input type="number" bind:value={profileSteps} placeholder={$_('settings.enterSteps')} />
+            <Input
+              type="number"
+              bind:value={profileSteps}
+              placeholder={$_('settings.enterSteps')}
+            />
           </div>
         {/if}
         <div class="col-span-2 space-y-2">
           <Label>{$_('settings.positivePromptBase')}</Label>
-          <Textarea bind:value={profilePositivePrompt} placeholder={$_('settings.basePositivePromptPlaceholder')} />
+          <Textarea
+            bind:value={profilePositivePrompt}
+            placeholder={$_('settings.basePositivePromptPlaceholder')}
+          />
         </div>
         {#if (profileMode !== ComfyMode.CustomWorkflow && profileMode !== ComfyMode.UnetTxt2Img) || profileCustomWorkflow?.negativePromptPath}
           <div class="col-span-2 space-y-2">
             <Label>{$_('settings.negativePrompt')}</Label>
-            <Textarea bind:value={profileNegativePrompt} placeholder={$_('settings.negativePromptPlaceholder')} />
+            <Textarea
+              bind:value={profileNegativePrompt}
+              placeholder={$_('settings.negativePromptPlaceholder')}
+            />
           </div>
         {/if}
 
@@ -1649,7 +1669,9 @@
                 <summary
                   class="text-muted-foreground hover:text-foreground mb-2 cursor-pointer list-none select-none"
                 >
-                  <span class="underline underline-offset-2">{$_('settings.howToGetWorkflowFile')}</span>
+                  <span class="underline underline-offset-2"
+                    >{$_('settings.howToGetWorkflowFile')}</span
+                  >
                 </summary>
                 <ol class="text-muted-foreground mt-1 space-y-1.5 pl-1">
                   <li>

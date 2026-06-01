@@ -99,9 +99,7 @@
     onManualOpeningChange,
   }: Props = $props()
 
-  let altOpeningLabels = $derived(
-    cardImportedAlternateGreetings.map((_, i) => `Alt ${i + 1}`),
-  )
+  let altOpeningLabels = $derived(cardImportedAlternateGreetings.map((_, i) => `Alt ${i + 1}`))
 
   let showExpandOptions = $state(false)
 
@@ -263,7 +261,9 @@
             transition:slide={{ duration: 150 }}
           >
             <div class="space-y-1.5">
-              <Label for="opening-ai-guidance" class="text-xs">{$_('stepOpening.aiGuidanceOptional')}</Label>
+              <Label for="opening-ai-guidance" class="text-xs"
+                >{$_('stepOpening.aiGuidanceOptional')}</Label
+              >
               <Textarea
                 id="opening-ai-guidance"
                 value={openingGuidance}
@@ -285,7 +285,9 @@
                   {$_('stepOpening.generating')}
                 {:else}
                   <Sparkles class="h-3.5 w-3.5" />
-                  {generatedOpening ? $_('stepOpening.regenerateOpening') : $_('stepOpening.generateOpeningWithAi')}
+                  {generatedOpening
+                    ? $_('stepOpening.regenerateOpening')
+                    : $_('stepOpening.generateOpeningWithAi')}
                 {/if}
               </Button>
               {#if generatedOpening}
@@ -364,7 +366,9 @@
             rows={6}
           />
           <div class="flex justify-end gap-2">
-            <Button variant="secondary" size="sm" onclick={onCancelEdit}>{$_('stepOpening.cancel')}</Button>
+            <Button variant="secondary" size="sm" onclick={onCancelEdit}
+              >{$_('stepOpening.cancel')}</Button
+            >
             <Button size="sm" onclick={onSaveEdit} disabled={!openingDraft?.trim()}>
               {$_('stepOpening.saveChanges')}
             </Button>
@@ -389,7 +393,9 @@
       <div class="text-muted-foreground grid grid-cols-2 gap-2">
         <div>
           <strong class="text-foreground">{$_('stepOpening.mode')}</strong>
-          {selectedMode === 'adventure' ? $_('stepOpening.adventure') : $_('stepOpening.creativeWriting')}
+          {selectedMode === 'adventure'
+            ? $_('stepOpening.adventure')
+            : $_('stepOpening.creativeWriting')}
         </div>
         <div>
           <strong class="text-foreground">{$_('stepOpening.genre')}</strong>
@@ -405,7 +411,9 @@
         </div>
         <div>
           <strong class="text-foreground">{$_('stepOpening.tense')}</strong>
-          {selectedTense === 'present' ? $_('stepOpening.tensePresent') : $_('stepOpening.tensePast')}
+          {selectedTense === 'present'
+            ? $_('stepOpening.tensePresent')
+            : $_('stepOpening.tensePast')}
         </div>
         {#if expandedSetting}
           <div class="col-span-2">

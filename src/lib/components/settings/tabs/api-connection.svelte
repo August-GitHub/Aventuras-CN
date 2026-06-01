@@ -462,12 +462,12 @@
                 onAddCustomModel={handleAddCustomModel}
               />
               <p class="text-muted-foreground mt-2 min-h-[1lh] text-right text-xs">
-                  {#if saveStatus === 'saving'}
-                    {$_('settings.saving')}
-                  {:else if saveStatus === 'saved'}
-                    {$_('settings.saved')}
-                  {:else if saveStatus === 'error'}
-                    <span class="text-destructive">{$_('settings.saveFailed')}</span>
+                {#if saveStatus === 'saving'}
+                  {$_('settings.saving')}
+                {:else if saveStatus === 'saved'}
+                  {$_('settings.saved')}
+                {:else if saveStatus === 'error'}
+                  <span class="text-destructive">{$_('settings.saveFailed')}</span>
                 {/if}
               </p>
             </div>

@@ -382,7 +382,9 @@
       {#if settings.systemServicesSettings.tts.volumeOverride}
         <div>
           <Label class="mb-2 block">
-            {$_('settings.narrationVolume', { values: { value: Math.round(settings.systemServicesSettings.tts.volume * 100) } })}
+            {$_('settings.narrationVolume', {
+              values: { value: Math.round(settings.systemServicesSettings.tts.volume * 100) },
+            })}
           </Label>
           <Slider
             value={settings.systemServicesSettings.tts.volume}
@@ -403,7 +405,9 @@
     <!-- Speech Speed -->
     <div>
       <Label class="mb-2 block">
-        {$_('settings.speechSpeed', { values: { value: settings.systemServicesSettings.tts.speed.toFixed(2) } })}
+        {$_('settings.speechSpeed', {
+          values: { value: settings.systemServicesSettings.tts.speed.toFixed(2) },
+        })}
       </Label>
       <Slider
         value={settings.systemServicesSettings.tts.speed}

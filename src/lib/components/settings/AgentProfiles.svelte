@@ -426,7 +426,8 @@
     </div>
     <div class="flex items-center gap-2">
       {#if resettingProfiles}
-        <span class="text-muted-foreground text-xs font-medium">{$_('agentProfiles.resetAll')}</span>
+        <span class="text-muted-foreground text-xs font-medium">{$_('agentProfiles.resetAll')}</span
+        >
         <Button
           variant="ghost"
           size="sm"
@@ -779,7 +780,9 @@
     {#if getServicesForProfile('custom').length !== 0}
       <Card.Root class="bg-muted/20 flex h-full flex-col border-dashed">
         <div class="border-b p-3 pb-2">
-          <div class="text-muted-foreground text-sm font-medium">{$_('agentProfiles.unassigned')}</div>
+          <div class="text-muted-foreground text-sm font-medium">
+            {$_('agentProfiles.unassigned')}
+          </div>
         </div>
         <Card.Content
           class="flex flex-1 flex-col gap-2 p-3 transition-all {getServicesForProfile('custom')
