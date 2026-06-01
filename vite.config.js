@@ -16,22 +16,24 @@ const mockPath = path.resolve(__dirname, 'src/lib/tauri-mock.ts')
 // https://vite.dev/config/
 export default defineConfig(async () => ({
   plugins: [tailwindcss(), sveltekit()],
-  resolve: host ? undefined : {
-    alias: [
-      { find: /^@tauri-apps\/api\/core$/, replacement: mockPath },
-      { find: /^@tauri-apps\/plugin-sql$/, replacement: mockPath },
-      { find: /^@tauri-apps\/plugin-dialog$/, replacement: mockPath },
-      { find: /^@tauri-apps\/plugin-fs$/, replacement: mockPath },
-      { find: /^@tauri-apps\/plugin-http$/, replacement: mockPath },
-      { find: /^@tauri-apps\/api\/path$/, replacement: mockPath },
-      { find: /^@tauri-apps\/api\/app$/, replacement: mockPath },
-      { find: /^@tauri-apps\/api\/event$/, replacement: mockPath },
-      { find: /^@tauri-apps\/api\/webviewWindow$/, replacement: mockPath },
-      { find: /^@tauri-apps\/plugin-updater$/, replacement: mockPath },
-      { find: /^@tauri-apps\/plugin-process$/, replacement: mockPath },
-      { find: /^@tauri-apps\/plugin-notification$/, replacement: mockPath },
-    ],
-  },
+  resolve: host
+    ? undefined
+    : {
+        alias: [
+          { find: /^@tauri-apps\/api\/core$/, replacement: mockPath },
+          { find: /^@tauri-apps\/plugin-sql$/, replacement: mockPath },
+          { find: /^@tauri-apps\/plugin-dialog$/, replacement: mockPath },
+          { find: /^@tauri-apps\/plugin-fs$/, replacement: mockPath },
+          { find: /^@tauri-apps\/plugin-http$/, replacement: mockPath },
+          { find: /^@tauri-apps\/api\/path$/, replacement: mockPath },
+          { find: /^@tauri-apps\/api\/app$/, replacement: mockPath },
+          { find: /^@tauri-apps\/api\/event$/, replacement: mockPath },
+          { find: /^@tauri-apps\/api\/webviewWindow$/, replacement: mockPath },
+          { find: /^@tauri-apps\/plugin-updater$/, replacement: mockPath },
+          { find: /^@tauri-apps\/plugin-process$/, replacement: mockPath },
+          { find: /^@tauri-apps\/plugin-notification$/, replacement: mockPath },
+        ],
+      },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //

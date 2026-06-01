@@ -17,8 +17,7 @@
     GeneratedProtagonist,
   } from '$lib/services/ai/sdk'
   import type { Genre } from '$lib/services/ai/wizard'
-  import type { POVOption } from '../wizardTypes'
-  import { styleUserPlaceholders, tenseOptions } from '../wizardTypes'
+  import { styleUserPlaceholders } from '../wizardTypes'
 
   interface Props {
     // State
@@ -102,13 +101,6 @@
   let altOpeningLabels = $derived(cardImportedAlternateGreetings.map((_, i) => `Alt ${i + 1}`))
 
   let showExpandOptions = $state(false)
-
-  // POV options for summary
-  const povOptions: POVOption[] = [
-    { id: 'first', label: '1st Person', example: '' },
-    { id: 'second', label: '2nd Person', example: '' },
-    { id: 'third', label: '3rd Person', example: '' },
-  ]
 </script>
 
 <div class="space-y-4 p-1">
