@@ -41,7 +41,7 @@ export const exists = () => Promise.resolve(false)
 export const readDir = () => Promise.resolve([])
 
 // @tauri-apps/plugin-http
-export const fetch = (url: string, ...args: unknown[]) => globalThis.fetch(url, ...args)
+export const fetch = (url: string, init?: RequestInit) => globalThis.fetch(url, init)
 
 // @tauri-apps/api/path
 export const appDataDir = () => Promise.resolve('/mock/')

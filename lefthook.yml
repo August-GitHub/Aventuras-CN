@@ -1,7 +1,7 @@
 pre-commit:
   commands:
     check_migrations:
-      glob: "src-tauri/migrations/*.sql"
+      glob: 'src-tauri/migrations/*.sql'
       run: node scripts/check_migrations.js {staged_files}
 
 pre-push:
@@ -11,5 +11,5 @@ pre-push:
     check:
       run: npm run check
     validate-workflows:
-      glob: ".github/workflows/*.yml"
+      glob: '.github/workflows/*.yml'
       run: node scripts/validate-workflows.js {push_files}

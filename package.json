@@ -14,7 +14,8 @@
     "sync-version": "node scripts/sync-version.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write \"**/*.{ts,js,svelte,json,css,html}\""
+    "format": "prettier --write \"**/*.{ts,js,svelte,json,css,html}\"",
+    "pre-build": "sh scripts/pre-build-check.sh"
   },
   "license": "AGPL-3.0",
   "dependencies": {
