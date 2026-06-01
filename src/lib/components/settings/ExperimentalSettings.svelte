@@ -39,8 +39,6 @@
   import { isAndroid } from '$lib/utils/platform'
   import { ask } from '@tauri-apps/plugin-dialog'
 
-  // (reserved for future revert-on-cancel logic)
-
   let isBackingUp = $state(false)
   let backupResult = $state<{ success: boolean; message: string } | null>(null)
   let hasEverBackedUp = $state(false)
