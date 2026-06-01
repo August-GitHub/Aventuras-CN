@@ -39,8 +39,7 @@
   import { isAndroid } from '$lib/utils/platform'
   import { ask } from '@tauri-apps/plugin-dialog'
 
-  // Local mirror so we can revert the visual state if the confirm dialog is cancelled
-  let stateTrackingChecked = $state(settings.experimentalFeatures.stateTracking)
+  // (reserved for future revert-on-cancel logic)
 
   let isBackingUp = $state(false)
   let backupResult = $state<{ success: boolean; message: string } | null>(null)
@@ -175,7 +174,7 @@
         { title: 'Enable State Tracking', kind: 'warning' },
       )
       if (!shouldContinue) {
-        stateTrackingChecked = !checked // revert visual state
+        // User cancelled — do NOT apply the change
         return
       }
     }
@@ -247,7 +246,6 @@
 
   async function handleResetAll() {
     await settings.resetExperimentalFeatures()
-    stateTrackingChecked = settings.experimentalFeatures.stateTracking
   }
 </script>
 
@@ -341,7 +339,10 @@
           </p>
         {/if}
       </div>
-      <Switch bind:checked={stateTrackingChecked} onCheckedChange={handleStateTrackingToggle} />
+      <Switch
+        checked={settings.experimentalFeatures.stateTracking}
+        onCheckedChange={handleStateTrackingToggle}
+      />
     </div>
 
     <!-- Rollback on Delete -->

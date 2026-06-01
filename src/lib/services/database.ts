@@ -124,6 +124,16 @@ class DatabaseService {
           // Must run exactly once per connection; placing it here (instead of
           // after the await below) avoids concurrent callers re-issuing it.
           await db.execute('PRAGMA foreign_keys = ON')
+          // Durability settings — critical for Android where process kill is common.
+          // NORMAL: sync to disk after each committed transaction (fsync per commit).
+          // wal_autocheckpoint=1: checkpoint WAL → main DB after every write,
+          //   preventing data loss when OS kills the process between writes.
+          await db.execute('PRAGMA synchronous = NORMAL')
+          try {
+            await db.execute('PRAGMA wal_autocheckpoint = 1')
+          } catch {
+            // Some read-only connections may not support this; ignore silently.
+          }
           this.db = db
           return db
         })
@@ -141,9 +151,24 @@ class DatabaseService {
    */
   async close(): Promise<void> {
     if (this.db) {
+      await this.checkpoint()
       await this.db.close()
       this.db = null
       this.dbPromise = null
+    }
+  }
+
+  /**
+   * Force an immediate WAL checkpoint — writes all pending WAL entries
+   * into the main database file. Call this before the process may be killed
+   * (e.g. on pagehide / visibilitychange) to prevent data loss on Android.
+   */
+  async checkpoint(): Promise<void> {
+    if (!this.db) return
+    try {
+      await this.db.execute('PRAGMA wal_checkpoint(TRUNCATE)')
+    } catch {
+      // May fail in read-only mode or non-WAL journal mode; ignore.
     }
   }
 

@@ -247,6 +247,12 @@ pub fn run() {
                 tauri::async_runtime::block_on(migration_patch::apply_checksum_patch(&db_path));
             }
 
+            // Safety: ensure database directory exists so SQL plugin can create/open DB.
+            // On some Android devices the app_data_dir may not exist on first launch.
+            if !db_path.parent().map(|p| p.exists()).unwrap_or(false) {
+                let _ = std::fs::create_dir_all(db_path.parent().unwrap());
+            }
+
             Ok(())
         })
         .plugin(tauri_plugin_fs::init())

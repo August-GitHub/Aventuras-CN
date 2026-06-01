@@ -72,6 +72,21 @@
     }
   })
 
+  // Force a SQLite WAL checkpoint when the page is being unloaded or hidden.
+  // This is critical on Android where swiping an app away kills the process
+  // immediately — without this, pending WAL writes are lost and all settings
+  // revert to defaults on next launch.
+  function handleBeforeUnload(): void {
+    database.checkpoint().catch(() => {})
+  }
+  // pagehide fires for tab close, navigation, and Android app background/kill.
+  // visibilitychange alone does NOT fire when Android kills a process,
+  // but pagehide fires synchronously during teardown in most cases.
+  if (typeof window !== 'undefined') {
+    window.addEventListener('pagehide', handleBeforeUnload)
+    window.addEventListener('beforeunload', handleBeforeUnload)
+  }
+
   async function handleProviderSetupComplete() {
     showProviderSetup = false
     // Ensure templates are seeded (idempotent, safe to call again)
