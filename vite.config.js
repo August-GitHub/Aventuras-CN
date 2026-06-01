@@ -14,11 +14,15 @@ const host = process.env.TAURI_DEV_HOST
 const mockPath = path.resolve(__dirname, 'src/lib/tauri-mock.ts')
 
 // https://vite.dev/config/
-export default defineConfig(async () => ({
+// command === 'serve' → vite dev / tauri dev
+// command === 'build' → vite build / tauri build
+// Mock @tauri-apps/* ONLY during standalone web dev (npm run dev without Tauri).
+// NEVER mock during any build (vite build, tauri build) — that would replace
+// the real SQLite/filesystem/notification plugins with no-op stubs.
+export default defineConfig(({ command }) => ({
   plugins: [tailwindcss(), sveltekit()],
-  resolve: host
-    ? undefined
-    : {
+  resolve: command === 'serve' && !host
+    ? {
         alias: [
           { find: /^@tauri-apps\/api\/core$/, replacement: mockPath },
           { find: /^@tauri-apps\/plugin-sql$/, replacement: mockPath },
@@ -33,7 +37,8 @@ export default defineConfig(async () => ({
           { find: /^@tauri-apps\/plugin-process$/, replacement: mockPath },
           { find: /^@tauri-apps\/plugin-notification$/, replacement: mockPath },
         ],
-      },
+      }
+    : undefined,
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
