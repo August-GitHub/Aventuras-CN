@@ -1808,5 +1808,28 @@
     "presetTranslation": "翻译",
     "bgImageGeneration": "背景图生成",
     "bgImageGenerationDesc": "生成场景背景图"
+  },
+  "discovery": {
+    "title": "浏览",
+    "characters": "角色",
+    "lorebooks": "Lorebooks",
+    "scenarios": "场景",
+    "description": "从在线来源查找并导入新的{mode}。",
+    "allSources": "全部来源",
+    "unknown": "未知",
+    "searchPlaceholder": "搜索...",
+    "searchTagsPlaceholder": "搜索标签...",
+    "addTag": "添加 \"{tag}\"",
+    "noTagsFound": "未找到标签。",
+    "suggestions": "推荐",
+    "popular": "热门",
+    "nsfwLabel": "NSFW：",
+    "hideNsfw": "隐藏",
+    "blurNsfw": "模糊",
+    "showNsfw": "显示",
+    "clearAll": "清除全部",
+    "loadMore": "加载更多",
+    "noResultsFound": "未找到结果",
+    "noResultsHint": "尝试调整搜索词或筛选条件。"
   }
 }

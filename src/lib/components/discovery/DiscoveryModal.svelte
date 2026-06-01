@@ -6,6 +6,7 @@
   import { characterVault } from '$lib/stores/characterVault.svelte'
   import { lorebookVault } from '$lib/stores/lorebookVault.svelte'
   import { scenarioVault } from '$lib/stores/scenarioVault.svelte'
+  import { _ } from 'svelte-i18n'
 
   import * as ResponsiveModal from '$lib/components/ui/responsive-modal'
   import { Button } from '$lib/components/ui/button'
@@ -270,14 +271,15 @@
         <ResponsiveModal.Title
           class="mt-2 flex items-center justify-center gap-2 sm:mt-0 sm:justify-start"
         >
-          Browse {mode === 'character'
-            ? 'Characters'
+          {$_('discovery.title')}
+          {mode === 'character'
+            ? $_('discovery.characters')
             : mode === 'lorebook'
-              ? 'Lorebooks'
-              : 'Scenarios'}
+              ? $_('discovery.lorebooks')
+              : $_('discovery.scenarios')}
         </ResponsiveModal.Title>
         <ResponsiveModal.Description class="sr-only">
-          Find and import new {mode}s from online sources.
+          {$_('discovery.description', { values: { mode } })}
         </ResponsiveModal.Description>
       </ResponsiveModal.Header>
 
@@ -293,7 +295,7 @@
                     {#if activeProviderId === 'all'}
                       <div class="text-muted-foreground flex min-w-0 items-center gap-2">
                         <Globe class="h-4 w-4 shrink-0" />
-                        <span class="text-foreground truncate">All Sources</span>
+                        <span class="text-foreground truncate">{$_('discovery.allSources')}</span>
                       </div>
                     {:else}
                       {@const p = providers.find((p) => p.id === activeProviderId)}
@@ -303,14 +305,14 @@
                         {:else}
                           <Globe class="h-4 w-4 shrink-0" />
                         {/if}
-                        <span class="truncate">{p?.name || 'Unknown'}</span>
+                        <span class="truncate">{p?.name || $_('discovery.unknown')}</span>
                       </div>
                     {/if}
                   </Select.Trigger>
                   <Select.Content>
                     <Select.Item value="all">
                       <Globe class="mr-2 h-4 w-4" />
-                      All Sources
+                      {$_('discovery.allSources')}
                     </Select.Item>
                     {#each providers as provider (provider.id)}
                       <Select.Item value={provider.id}>
@@ -351,7 +353,7 @@
                   <Popover.Content class="w-[300px] p-0" align="start">
                     <Command.Root shouldFilter={false}>
                       <Command.Input
-                        placeholder="Search tags..."
+                        placeholder={$_('discovery.searchTagsPlaceholder')}
                         bind:value={tagInput}
                         onkeydown={(e) => {
                           if (e.key === 'Enter') {
@@ -372,14 +374,14 @@
                               class="w-full px-4 py-2 text-left text-sm"
                               onclick={addCustomTag}
                             >
-                              Add "{tagInput}"
+                              {$_('discovery.addTag', { values: { tag: tagInput } })}
                             </button>
                           {:else}
-                            No tags found.
+                            {$_('discovery.noTagsFound')}
                           {/if}
                         </Command.Empty>
                         {#if tagSuggestions.length > 0}
-                          <Command.Group heading="Suggestions">
+                          <Command.Group heading={$_('discovery.suggestions')}>
                             {#each tagSuggestions as tag, i (i)}
                               <Command.Item
                                 value={tag}
@@ -401,7 +403,7 @@
                         {/if}
 
                         {#if popularTags.length > 0 && !tagInput}
-                          <Command.Group heading="Popular">
+                          <Command.Group heading={$_('discovery.popular')}>
                             {#each popularTags as tag, i (i)}
                               <Command.Item value={tag} onSelect={() => toggleTag(tag)}>
                                 <div
@@ -424,7 +426,9 @@
               <div class="bg-border mx-1 hidden h-6 w-px shrink-0 sm:block"></div>
 
               <div class="flex shrink-0 items-center gap-2">
-                <span class="text-muted-foreground text-xs font-medium">NSFW:</span>
+                <span class="text-muted-foreground text-xs font-medium"
+                  >{$_('discovery.nsfwLabel')}</span
+                >
                 <ToggleGroup.Root
                   type="single"
                   bind:value={nsfwMode}
@@ -434,26 +438,26 @@
                   <ToggleGroup.Item
                     value="disable"
                     class="data-[state=on]:bg-background data-[state=on]:text-foreground text-muted-foreground hover:text-foreground flex h-7 items-center gap-1.5 rounded-md px-2 text-xs transition-all hover:bg-transparent data-[state=on]:shadow-sm"
-                    title="Hide NSFW"
+                    title={$_('discovery.hideNsfw')}
                   >
                     <EyeOff class="h-3.5 w-3.5" />
-                    <span class="hidden lg:inline">Hide</span>
+                    <span class="hidden lg:inline">{$_('discovery.hideNsfw')}</span>
                   </ToggleGroup.Item>
                   <ToggleGroup.Item
                     value="blur"
                     class="data-[state=on]:bg-background data-[state=on]:text-foreground text-muted-foreground hover:text-foreground flex h-7 items-center gap-1.5 rounded-md px-2 text-xs transition-all hover:bg-transparent data-[state=on]:shadow-sm"
-                    title="Blur NSFW"
+                    title={$_('discovery.blurNsfw')}
                   >
                     <Blend class="h-3.5 w-3.5" />
-                    <span class="hidden lg:inline">Blur</span>
+                    <span class="hidden lg:inline">{$_('discovery.blurNsfw')}</span>
                   </ToggleGroup.Item>
                   <ToggleGroup.Item
                     value="enable"
                     class="text-muted-foreground flex h-7 items-center gap-1.5 rounded-md px-2 text-xs transition-all hover:bg-transparent hover:text-red-500 data-[state=on]:bg-red-500/10 data-[state=on]:text-red-600 data-[state=on]:shadow-sm"
-                    title="Show NSFW"
+                    title={$_('discovery.showNsfw')}
                   >
                     <Eye class="h-3.5 w-3.5" />
-                    <span class="hidden lg:inline">Show</span>
+                    <span class="hidden lg:inline">{$_('discovery.showNsfw')}</span>
                   </ToggleGroup.Item>
                 </ToggleGroup.Root>
               </div>
@@ -461,7 +465,7 @@
 
             <div class="hidden w-[250px] shrink-0 items-center sm:flex lg:w-[300px]">
               <Input
-                placeholder="Search..."
+                placeholder={$_('discovery.searchPlaceholder')}
                 bind:value={searchQuery}
                 onkeydown={(e) => e.key === 'Enter' && handleSearch()}
                 class="focus-visible:border-primary h-9 rounded-r-none border-r-0 focus-visible:z-10 focus-visible:ring-0"
@@ -485,7 +489,7 @@
           <div class="flex gap-2 sm:hidden">
             <div class="flex flex-1 items-center">
               <Input
-                placeholder="Search..."
+                placeholder={$_('discovery.searchPlaceholder')}
                 bind:value={searchQuery}
                 onkeydown={(e) => e.key === 'Enter' && handleSearch()}
                 class="focus-visible:border-primary h-9 rounded-r-none border-r-0 focus-visible:z-10 focus-visible:ring-0"
@@ -527,7 +531,7 @@
                 class="hover:text-destructive h-7 px-2 text-xs"
                 onclick={clearTags}
               >
-                Clear all
+                {$_('discovery.clearAll')}
               </Button>
             </div>
           {/if}
@@ -546,8 +550,8 @@
         {#if results.length === 0 && !isLoading}
           <div class="text-muted-foreground flex h-full flex-col items-center justify-center p-8">
             <Search class="mb-4 h-12 w-12 opacity-20" />
-            <p class="text-lg font-medium">No results found</p>
-            <p class="text-sm opacity-70">Try adjusting your search terms or filters.</p>
+            <p class="text-lg font-medium">{$_('discovery.noResultsFound')}</p>
+            <p class="text-sm opacity-70">{$_('discovery.noResultsHint')}</p>
           </div>
         {:else}
           <div
@@ -575,7 +579,7 @@
                 {#if isLoading}
                   <Loader2 class="mr-2 h-4 w-4 animate-spin" />
                 {/if}
-                Load More
+                {$_('discovery.loadMore')}
               </Button>
             </div>
           {/if}

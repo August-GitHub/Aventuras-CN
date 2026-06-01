@@ -1468,5 +1468,28 @@
     "translateChoicesDesc": "Translates action choices",
     "translateWizard": "Translate Wizard",
     "translateWizardDesc": "Translates wizard content"
+  },
+  "discovery": {
+    "title": "Browse",
+    "characters": "Characters",
+    "lorebooks": "Lorebooks",
+    "scenarios": "Scenarios",
+    "description": "Find and import new {mode}s from online sources.",
+    "allSources": "All Sources",
+    "unknown": "Unknown",
+    "searchPlaceholder": "Search...",
+    "searchTagsPlaceholder": "Search tags...",
+    "addTag": "Add \"{tag}\"",
+    "noTagsFound": "No tags found.",
+    "suggestions": "Suggestions",
+    "popular": "Popular",
+    "nsfwLabel": "NSFW:",
+    "hideNsfw": "Hide",
+    "blurNsfw": "Blur",
+    "showNsfw": "Show",
+    "clearAll": "Clear all",
+    "loadMore": "Load More",
+    "noResultsFound": "No results found",
+    "noResultsHint": "Try adjusting your search terms or filters."
   }
 }
