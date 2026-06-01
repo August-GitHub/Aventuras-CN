@@ -129,7 +129,7 @@
           <Select.Trigger class="w-full">
             {selectedProfileName}
           </Select.Trigger>
-          <Select.Content>
+          <Select.Content portalProps={{ disabled: true }}>
             {#each profileOptions as option, i (i)}
               <Select.Item value={option.value}>{option.label}</Select.Item>
             {/each}

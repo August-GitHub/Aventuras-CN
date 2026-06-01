@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { User, Loader2, X, Wand2, ImageUp, AlertCircle } from 'lucide-svelte'
   import { normalizeImageDataUrl } from '$lib/utils/image'
   import type { GeneratedCharacter, GeneratedProtagonist } from '$lib/services/ai/sdk'
@@ -70,20 +71,18 @@
 
 <div class="space-y-4">
   <div class="space-y-1">
-    <h3 class="text-lg font-medium">Character Portraits</h3>
+    <h3 class="text-lg font-medium">{$_('stepPortraits.title')}</h3>
     <p class="text-muted-foreground text-sm">
-      Upload or generate visual representations for your cast. Portraits allow characters to appear
-      in story illustrations.
+      {$_('stepPortraits.description')}
     </p>
   </div>
 
   {#if !imageGenerationEnabled}
     <Alert.Root class="py-2">
       <AlertCircle class="h-4 w-4" />
-      <Alert.Title class="text-xs font-semibold">Generation Disabled</Alert.Title>
+      <Alert.Title class="text-xs font-semibold">{$_('stepPortraits.generationDisabled')}</Alert.Title>
       <Alert.Description class="text-xs">
-        Image generation is not configured. You can manually upload portraits or enable generation
-        in Settings.
+        {$_('stepPortraits.generationDisabledDesc')}
       </Alert.Description>
     </Alert.Root>
   {/if}
@@ -91,7 +90,7 @@
   {#if portraitError}
     <Alert.Root variant="destructive" class="py-2">
       <AlertCircle class="h-4 w-4" />
-      <Alert.Title class="text-xs font-semibold">Error</Alert.Title>
+      <Alert.Title class="text-xs font-semibold">{$_('stepPortraits.error')}</Alert.Title>
       <Alert.Description class="text-xs">{portraitError}</Alert.Description>
     </Alert.Root>
   {/if}
@@ -138,17 +137,17 @@
           <div class="min-w-0 flex-1">
             <div class="flex items-center justify-between">
               <h4 class="truncate font-medium">{protagonist.name}</h4>
-              <Badge variant="default" class="h-5 px-1.5 text-[10px]">Protagonist</Badge>
+              <Badge variant="default" class="h-5 px-1.5 text-[10px]">{$_('stepPortraits.protagonistBadge')}</Badge>
             </div>
 
             <div class="mb-2 space-y-1.5">
               <Label class="text-muted-foreground text-[10px] tracking-wider uppercase"
-                >Appearance</Label
+                >{$_('stepPortraits.appearance')}</Label
               >
               <Textarea
                 value={protagonistVisualDescriptors}
                 oninput={(e) => onProtagonistDescriptorsChange(e.currentTarget.value)}
-                placeholder="e.g., long silver hair, violet eyes, fair skin, elegant dark blue coat..."
+                placeholder={$_('stepPortraits.appearancePlaceholder')}
                 class="min-h-[60px] resize-none text-xs"
                 rows={2}
               />
@@ -164,15 +163,15 @@
                 >
                   {#if isUploadingProtagonistPortrait}
                     <Loader2 class="h-3 w-3 animate-spin" />
-                    Uploading...
+                    {$_('stepPortraits.uploading')}
                   {:else}
                     <ImageUp class="h-3 w-3" />
-                    Upload
-                  {/if}
-                </Button>
-                <input
-                  type="file"
-                  accept="image/*"
+                  {$_('stepPortraits.upload')}
+                {/if}
+              </Button>
+              <input
+                type="file"
+                accept="image/*"
                   class="absolute inset-0 cursor-pointer opacity-0"
                   onchange={onProtagonistPortraitUpload}
                   disabled={isUploadingProtagonistPortrait || isGeneratingProtagonistPortrait}
@@ -189,15 +188,15 @@
                     isUploadingProtagonistPortrait ||
                     !protagonistVisualDescriptors.trim()}
                   title={!protagonistVisualDescriptors.trim()
-                    ? 'Add appearance descriptors to generate'
+                    ? $_('stepPortraits.addAppearanceDescriptors')
                     : ''}
                 >
                   {#if isGeneratingProtagonistPortrait}
                     <Loader2 class="h-3 w-3 animate-spin" />
-                    Generating...
+                    {$_('stepPortraits.generating')}
                   {:else}
                     <Wand2 class="h-3 w-3" />
-                    {protagonistPortrait ? 'Regenerate' : 'Generate'}
+                    {protagonistPortrait ? $_('stepPortraits.regenerate') : $_('stepPortraits.generate')}
                   {/if}
                 </Button>
               {/if}
@@ -212,7 +211,7 @@
         class="text-muted-foreground flex flex-col items-center justify-center p-6 text-center"
       >
         <User class="mb-2 h-8 w-8 opacity-50" />
-        <p class="text-sm">No protagonist created. Go back to create one.</p>
+        <p class="text-sm">{$_('stepPortraits.noProtagonistCreated')}</p>
       </Card.Content>
     </Card.Root>
   {/if}
@@ -222,8 +221,8 @@
     <div class="space-y-2">
       <div class="flex items-center gap-2 pb-1">
         <Separator class="flex-1" />
-        <h4 class="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-          Supporting Cast
+          <h4 class="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+          {$_('stepPortraits.supportingCast')}
         </h4>
         <Separator class="flex-1" />
       </div>
@@ -298,10 +297,10 @@
                       >
                         {#if uploadingCharacterName === char.name}
                           <Loader2 class="h-2.5 w-2.5 animate-spin" />
-                          Uploading...
+                          {$_('stepPortraits.uploading')}
                         {:else}
                           <ImageUp class="h-2.5 w-2.5" />
-                          Upload
+                          {$_('stepPortraits.upload')}
                         {/if}
                       </Button>
                       <input
@@ -324,15 +323,15 @@
                           uploadingCharacterName !== null ||
                           !(supportingCharacterVisualDescriptors[char.name] || '').trim()}
                         title={!(supportingCharacterVisualDescriptors[char.name] || '').trim()
-                          ? 'Add appearance descriptors to generate'
+                          ? $_('stepPortraits.addAppearanceDescriptors')
                           : ''}
                       >
                         {#if generatingPortraitName === char.name}
                           <Loader2 class="h-2.5 w-2.5 animate-spin" />
-                          Gen...
+                          {$_('stepPortraits.generating')}
                         {:else}
                           <Wand2 class="h-2.5 w-2.5" />
-                          {supportingCharacterPortraits[char.name] ? 'Regen' : 'Generate'}
+                          {supportingCharacterPortraits[char.name] ? $_('stepPortraits.regenerate') : $_('stepPortraits.generate')}
                         {/if}
                       </Button>
                     {/if}
@@ -352,8 +351,8 @@
         class="text-muted-foreground flex flex-col items-center justify-center p-8 text-center"
       >
         <User class="mb-3 h-10 w-10 opacity-50" />
-        <p>No characters created yet.</p>
-        <p class="mt-1 text-xs">Go back to step 5 to create characters.</p>
+        <p>{$_('stepPortraits.noCharactersCreated')}</p>
+        <p class="mt-1 text-xs">{$_('stepPortraits.goBackToStep5')}</p>
       </Card.Content>
     </Card.Root>
   {/if}

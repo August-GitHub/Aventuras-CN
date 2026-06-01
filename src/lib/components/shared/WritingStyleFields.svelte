@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import * as RadioGroup from '$lib/components/ui/radio-group'
   import { Button } from '$lib/components/ui/button'
   import { Label } from '$lib/components/ui/label'
@@ -63,7 +64,7 @@
     >
       <Label class="flex items-center gap-2 text-base font-semibold">
         <User class="h-4 w-4" />
-        Perspective
+        {$_('writingStyle.perspective')}
       </Label>
       <RadioGroup.Root
         value={selectedPOV}
@@ -88,11 +89,11 @@
       </RadioGroup.Root>
       <p class="text-muted-foreground h-4 text-xs">
         {#if selectedPOV === 'first'}
-          "I draw my sword..."
+          {$_('writingStyle.firstExample')}
         {:else if selectedPOV === 'second'}
-          "You draw your sword..."
+          {$_('writingStyle.secondExample')}
         {:else}
-          "He/She/They draw their sword..."
+          {$_('writingStyle.thirdExample')}
         {/if}
       </p>
       {#if disabledFields?.pov && disabledReason}
@@ -108,7 +109,7 @@
     >
       <Label class="flex items-center gap-2 text-base font-semibold">
         <BookOpen class="h-4 w-4" />
-        Tense
+        {$_('writingStyle.tense')}
       </Label>
       <RadioGroup.Root
         value={selectedTense}
@@ -133,9 +134,9 @@
       </RadioGroup.Root>
       <p class="text-muted-foreground h-4 text-xs">
         {#if selectedTense === 'present'}
-          Action happens now.
+          {$_('writingStyle.presentExample')}
         {:else}
-          Action happened in the past.
+          {$_('writingStyle.pastExample')}
         {/if}
       </p>
       {#if disabledFields?.tense && disabledReason}
@@ -148,11 +149,11 @@
   <section class="space-y-2 pt-1">
     <div class="grid w-full items-center gap-2">
       <Input
-        label="Narrative Tone"
+        label={$_('writingStyle.narrativeTone')}
         id="tone"
         value={tone}
         oninput={(e) => onToneChange(e.currentTarget.value)}
-        placeholder="e.g. Dark and gritty, Whimsical, Clinical"
+        placeholder={$_('writingStyle.tonePlaceholder')}
       />
     </div>
     <div class="flex flex-wrap gap-2">
@@ -169,7 +170,7 @@
     <section class="space-y-2 pt-1">
       <Label class="flex items-center gap-2 text-base font-semibold">
         <Eye class="h-4 w-4" />
-        Visual Experience
+        {$_('writingStyle.visualExperience')}
       </Label>
 
       <RadioGroup.Root
@@ -184,11 +185,11 @@
             class="border-muted bg-popover hover:bg-accent has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 flex h-full cursor-pointer flex-col justify-between rounded-xl border-2 p-4"
           >
             <div class="mb-2 flex w-full items-start justify-between">
-              <span class="font-semibold">Text Only</span>
+              <span class="font-semibold">{$_('writingStyle.textOnly')}</span>
               <RadioGroup.Item value="none" id="img-none" class="sr-only" />
             </div>
             <div class="text-muted-foreground text-xs font-normal">
-              Pure text adventure. No images will be generated.
+              {$_('writingStyle.textOnlyDesc')}
             </div>
           </Label>
         </div>
@@ -200,11 +201,11 @@
             class="border-muted bg-popover hover:bg-accent has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 flex h-full cursor-pointer flex-col justify-between rounded-xl border-2 p-4"
           >
             <div class="mb-2 flex w-full items-start justify-between">
-              <span class="font-semibold">Agent Mode</span>
+              <span class="font-semibold">{$_('writingStyle.agentMode')}</span>
               <RadioGroup.Item value="agentic" id="img-auto" class="sr-only" />
             </div>
             <div class="text-muted-foreground text-xs font-normal">
-              AI decides when to generate images based on the story.
+              {$_('writingStyle.agentModeDesc')}
             </div>
           </Label>
         </div>
@@ -216,11 +217,11 @@
             class="border-muted bg-popover hover:bg-accent has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 flex h-full cursor-pointer flex-col justify-between rounded-xl border-2 p-4"
           >
             <div class="mb-2 flex w-full items-start justify-between">
-              <span class="font-semibold">Inline Mode</span>
+              <span class="font-semibold">{$_('writingStyle.inlineMode')}</span>
               <RadioGroup.Item value="inline" id="img-inline" class="sr-only" />
             </div>
             <div class="text-muted-foreground text-xs font-normal">
-              Images are embedded directly in the text flow.
+              {$_('writingStyle.inlineModeDesc')}
             </div>
           </Label>
         </div>
@@ -235,9 +236,9 @@
             onCheckedChange={onBackgroundImagesEnabledChange}
           />
           <div class="grid gap-1.5 leading-none">
-            <Label for="bg-images">Background Images</Label>
+            <Label for="bg-images">{$_('writingStyle.backgroundImages')}</Label>
             <p class="text-muted-foreground text-xs">
-              Generate immersive background images for scenes.
+              {$_('writingStyle.backgroundImagesDesc')}
             </p>
           </div>
         </div>
@@ -249,9 +250,9 @@
             onCheckedChange={onReferenceModeChange}
           />
           <div class="grid gap-1.5 leading-none">
-            <Label for="reference-mode">Portrait Reference Mode</Label>
+            <Label for="reference-mode">{$_('writingStyle.portraitReferenceMode')}</Label>
             <p class="text-muted-foreground text-xs">
-              Use character portraits as visual references.
+              {$_('writingStyle.portraitReferenceModeDesc')}
             </p>
           </div>
         </div>
@@ -273,9 +274,9 @@
         disabled={disabledFields?.visualProseMode}
       />
       <div class="grid gap-1.5 leading-none">
-        <Label for="visual-prose">Visual Prose Styling</Label>
+        <Label for="visual-prose">{$_('writingStyle.visualProseStyling')}</Label>
         <p class="text-muted-foreground text-xs">
-          Enable rich text formatting (colors, fonts) for dialogue and actions.
+          {$_('writingStyle.visualProseStylingDesc')}
         </p>
         {#if disabledFields?.visualProseMode && disabledReason}
           <p class="text-muted-foreground/70 text-xs italic">{disabledReason}</p>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { Upload, ImageIcon, Check, X, MessageSquare, User, AlertCircle } from 'lucide-svelte'
   import * as Card from '$lib/components/ui/card'
   import * as Alert from '$lib/components/ui/alert'
@@ -80,15 +81,15 @@
 
 <div class="space-y-5">
   <p class="text-muted-foreground">
-    Upload your SillyTavern character card and optionally a chat export.
+    {$_('stImport.uploadDescription')}
   </p>
 
   <!-- Character Card Upload -->
   <div class="space-y-2">
     <h4 class="flex items-center gap-2 text-sm font-medium">
       <User class="h-4 w-4" />
-      Character Card
-      <Badge variant="secondary" class="text-xs">Required</Badge>
+      {$_('stImport.characterCard')}
+      <Badge variant="secondary" class="text-xs">{$_('common.required')}</Badge>
     </h4>
 
     {#if cardParsedData}
@@ -111,13 +112,13 @@
               <div class="text-muted-foreground flex flex-wrap gap-1.5 text-xs">
                 <span>{cardParsedData.version.toUpperCase()}</span>
                 {#if cardParsedData.firstMessage}
-                  <span>· Has greeting</span>
+                  <span>· {$_('stImport.hasGreeting')}</span>
                 {/if}
                 {#if cardParsedData.alternateGreetings.length > 0}
-                  <span>· {cardParsedData.alternateGreetings.length} alt greetings</span>
+                  <span>· {cardParsedData.alternateGreetings.length} {$_('stImport.altGreetings')}</span>
                 {/if}
                 {#if cardParsedData.characterBook}
-                  <span>· Has lorebook</span>
+                  <span>· {$_('stImport.hasLorebook')}</span>
                 {/if}
               </div>
             </div>
@@ -145,8 +146,8 @@
         onkeydown={(e) => e.key === 'Enter' && cardFileInput?.click()}
       >
         <ImageIcon class="text-muted-foreground mb-2 h-8 w-8" />
-        <p class="text-sm font-medium">Drop character card here or click to browse</p>
-        <p class="text-muted-foreground mt-1 text-xs">PNG or JSON character card file</p>
+        <p class="text-sm font-medium">{$_('stImport.dropCardHere')}</p>
+        <p class="text-muted-foreground mt-1 text-xs">{$_('stImport.cardFileFormat')}</p>
       </div>
       <input
         type="file"
@@ -170,7 +171,7 @@
     <h4 class="flex items-center gap-2 text-sm font-medium">
       <MessageSquare class="h-4 w-4" />
       Chat Import
-      <Badge variant="outline" class="text-xs">Optional</Badge>
+      <Badge variant="outline" class="text-xs">{$_('common.optional')}</Badge>
     </h4>
 
     {#if chatParseResult}
@@ -183,9 +184,9 @@
             <div>
               <p class="text-sm font-medium">{chatParseResult.characterName}</p>
               <p class="text-muted-foreground text-xs">
-                {userCount} user messages · {narrationCount} narrations
+                {userCount} {$_('import.userMessages')} · {narrationCount} {$_('import.narrationMessages')}
                 {#if chatParseResult.totalSkipped > 0}
-                  · {chatParseResult.totalSkipped} skipped
+                  · {chatParseResult.totalSkipped} {$_('stImport.skipped')}
                 {/if}
               </p>
             </div>
@@ -213,8 +214,8 @@
         onkeydown={(e) => e.key === 'Enter' && chatFileInput?.click()}
       >
         <Upload class="text-muted-foreground mb-2 h-8 w-8" />
-        <p class="text-sm font-medium">Drop .jsonl file here or click to browse</p>
-        <p class="text-muted-foreground mt-1 text-xs">SillyTavern chat file (.jsonl)</p>
+        <p class="text-sm font-medium">{$_('stImport.dropChatFileHere')}</p>
+        <p class="text-muted-foreground mt-1 text-xs">{$_('stImport.chatFileFormat')}</p>
       </div>
       <input
         type="file"

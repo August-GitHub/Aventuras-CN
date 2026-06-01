@@ -1,6 +1,7 @@
 <script lang="ts">
   import { story } from '$lib/stores/story.svelte'
   import { ask } from '@tauri-apps/plugin-dialog'
+  import { _ } from 'svelte-i18n'
   import {
     GitBranch,
     ChevronRight,
@@ -81,7 +82,7 @@
       await story.deleteBranch(branchId)
     } catch (error) {
       console.error('Failed to delete branch:', error)
-      alert(error instanceof Error ? error.message : 'Failed to delete branch')
+      alert(error instanceof Error ? error.message : $_('story.branch.deleteFailed'))
     }
   }
 
@@ -126,7 +127,7 @@
       showCreateForm = false
     } catch (error) {
       console.error('Failed to create branch:', error)
-      alert(error instanceof Error ? error.message : 'Failed to create branch')
+      alert(error instanceof Error ? error.message : $_('story.branch.createFailed'))
     }
   }
 

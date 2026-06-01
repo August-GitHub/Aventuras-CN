@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { slide } from 'svelte/transition'
   import {
     Archive,
@@ -174,9 +175,9 @@
   {#if !expandedSetting}
     <Alert.Root>
       <AlertCircle class="h-4 w-4" />
-      <Alert.Title>Missing World Setting</Alert.Title>
+      <Alert.Title>{$_('stepCharacters.missingWorldSetting')}</Alert.Title>
       <Alert.Description>
-        Go back to Step 3 and expand your setting first. This helps create a more fitting character.
+        {$_('stepCharacters.missingWorldSettingDesc')}
       </Alert.Description>
     </Alert.Root>
   {:else}
@@ -185,7 +186,7 @@
       <div class="flex items-center justify-between pb-1">
         <h4 class="text-muted-foreground flex items-center gap-2 text-sm font-medium">
           <Archive class="h-4 w-4" />
-          Load from Vault
+          {$_('stepCharacters.loadFromVault')}
         </h4>
         <Button
           variant="link"
@@ -193,7 +194,7 @@
           class="h-auto p-0 text-xs"
           onclick={() => onNavigateToVault?.()}
         >
-          Manage Vault
+          {$_('stepCharacters.manageVault')}
         </Button>
       </div>
 
@@ -213,12 +214,12 @@
                 </div>
                 <div class="text-left">
                   <div class="text-sm font-medium">
-                    {loadedVaultCharacterId ? 'Character Selected' : 'Select a Character'}
+                    {loadedVaultCharacterId ? $_('stepCharacters.characterSelected') : $_('stepCharacters.selectCharacter')}
                   </div>
                   <div class="text-muted-foreground text-xs">
                     {loadedVaultCharacterId
-                      ? 'Click to change selection'
-                      : 'Browse your saved protagonists'}
+                      ? $_('stepCharacters.clickToChangeSelection')
+                      : $_('stepCharacters.browseSavedProtagonists')}
                   </div>
                 </div>
               </div>
@@ -257,12 +258,12 @@
         <div class="space-y-1">
           <h4 class="text-foreground flex items-center gap-2 text-sm font-medium">
             <User class="h-4 w-4" />
-            {isEditingProtagonist ? 'Edit Character' : 'Create Character'}
+            {isEditingProtagonist ? $_('stepCharacters.editCharacter') : $_('stepCharacters.createCharacter')}
           </h4>
           <p class="text-muted-foreground text-xs">
             {selectedMode === 'adventure'
-              ? 'Create or describe your character for this adventure.'
-              : 'Define the main character for your story.'}
+              ? $_('stepCharacters.createOrDescribe')
+              : $_('stepCharacters.defineMainCharacter')}
           </p>
         </div>
 
@@ -275,29 +276,29 @@
 
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Input
-            label="Name"
+            label={$_('stepCharacters.name')}
             id="char-name"
             value={isEditingProtagonist ? editName : manualCharacterName}
             oninput={(e) =>
               isEditingProtagonist
                 ? (editName = e.currentTarget.value)
                 : onManualNameChange(e.currentTarget.value)}
-            placeholder="e.g., Alex, Jordan..."
+            placeholder={$_('stepCharacters.namePlaceholder')}
           />
           <Input
-            label="Motivation"
+            label={$_('stepCharacters.motivation')}
             id="char-motivation"
             value={isEditingProtagonist ? editMotivation : manualCharacterMotivation}
             oninput={(e) =>
               isEditingProtagonist
                 ? (editMotivation = e.currentTarget.value)
                 : onManualMotivationChange(e.currentTarget.value)}
-            placeholder="What drives them?"
+            placeholder={$_('stepCharacters.motivationPlaceholder')}
           />
         </div>
 
         <div class="space-y-2">
-          <Label for="char-desc">Description</Label>
+          <Label for="char-desc">{$_('stepCharacters.description')}</Label>
           <Textarea
             id="char-desc"
             value={isEditingProtagonist ? editDescription : manualCharacterDescription}
@@ -305,14 +306,14 @@
               isEditingProtagonist
                 ? (editDescription = e.currentTarget.value)
                 : onManualDescriptionChange(e.currentTarget.value)}
-            placeholder="Physical appearance, demeanor..."
+            placeholder={$_('stepCharacters.descriptionPlaceholder')}
             class="min-h-20"
           />
         </div>
 
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div class="space-y-2">
-            <Label for="char-bg">Background</Label>
+            <Label for="char-bg">{$_('stepCharacters.background')}</Label>
             <Textarea
               id="char-bg"
               value={isEditingProtagonist ? editBackground : manualCharacterBackground}
@@ -320,12 +321,12 @@
                 isEditingProtagonist
                   ? (editBackground = e.currentTarget.value)
                   : onManualBackgroundChange(e.currentTarget.value)}
-              placeholder="Where they come from..."
+              placeholder={$_('stepCharacters.backgroundPlaceholder')}
               class="min-h-20 resize-none"
             />
           </div>
           <div class="space-y-2">
-            <Label for="char-traits">Traits (comma-separated)</Label>
+            <Label for="char-traits">{$_('stepCharacters.traits')}</Label>
             <Textarea
               id="char-traits"
               value={isEditingProtagonist ? editTraits : manualCharacterTraits}
@@ -333,7 +334,7 @@
                 isEditingProtagonist
                   ? (editTraits = e.currentTarget.value)
                   : onManualTraitsChange(e.currentTarget.value)}
-              placeholder="e.g., brave, curious..."
+              placeholder={$_('stepCharacters.traitsPlaceholder')}
               class="min-h-20 resize-none"
             />
           </div>
@@ -354,7 +355,7 @@
                   onclick={() => (showAdjustWithAI = !showAdjustWithAI)}
                 >
                   <Sparkles class="h-3.5 w-3.5" />
-                  {showAdjustWithAI ? 'Hide AI Options' : 'Expand with AI'}
+                  {showAdjustWithAI ? $_('stepCharacters.hideAiOptions') : $_('stepCharacters.expandWithAi')}
                   <ChevronDown
                     class="h-3 w-3 transition-transform {showAdjustWithAI ? 'rotate-180' : ''}"
                   />
@@ -367,7 +368,7 @@
                   class="gap-2"
                 >
                   <Check class="h-3.5 w-3.5" />
-                  Use Character
+                  {$_('stepCharacters.useCharacter')}
                 </Button>
               </div>
 
@@ -376,12 +377,12 @@
                   class="bg-card text-card-foreground mt-3 space-y-4 rounded-lg border p-4 shadow-sm"
                 >
                   <div class="space-y-2">
-                    <Label for="ai-guidance" class="text-xs">AI Guidance (Optional)</Label>
+                    <Label for="ai-guidance" class="text-xs">{$_('stepCharacters.aiGuidanceOptional')}</Label>
                     <Textarea
                       id="ai-guidance"
                       value={characterElaborationGuidance}
                       oninput={(e) => onCharacterGuidanceChange(e.currentTarget.value)}
-                      placeholder="e.g., Make them more cynical, add a tragic backstory..."
+                      placeholder={$_('stepCharacters.aiGuidancePlaceholder')}
                       class="h-20 resize-none text-sm"
                     />
                   </div>
@@ -397,10 +398,10 @@
                     >
                       {#if isExpandingCharacter && activeElaborationSource === 'expand'}
                         <Loader2 class="h-3.5 w-3.5 animate-spin" />
-                        Expanding...
+                        {$_('stepCharacters.expanding')}
                       {:else}
                         <Sparkles class="h-3.5 w-3.5" />
-                        Expand Details
+                        {$_('stepCharacters.expandDetails')}
                       {/if}
                     </Button>
 
@@ -413,10 +414,10 @@
                     >
                       {#if isGeneratingProtagonist}
                         <RefreshCw class="h-3.5 w-3.5 animate-spin" />
-                        Generating...
+                        {$_('stepCharacters.generating')}
                       {:else}
                         <RefreshCw class="h-3.5 w-3.5" />
-                        Generate New
+                        {$_('stepCharacters.generateNew')}
                       {/if}
                     </Button>
                   </div>
@@ -426,8 +427,8 @@
           {:else}
             <!-- Edit Actions -->
             <div class="flex items-center justify-end gap-2">
-              <Button variant="ghost" size="sm" onclick={handleCancelEdit}>Cancel</Button>
-              <Button size="sm" onclick={handleSaveEdit}>Save Changes</Button>
+              <Button variant="ghost" size="sm" onclick={handleCancelEdit}>{$_('stepCharacters.cancel')}</Button>
+              <Button size="sm" onclick={handleSaveEdit}>{$_('stepCharacters.saveChanges')}</Button>
             </div>
           {/if}
         </div>
@@ -446,7 +447,7 @@
                 </div>
                 <div>
                   <Card.Title class="text-base leading-none">{protagonist.name}</Card.Title>
-                  <Card.Description class="mt-0.5 text-xs">Protagonist</Card.Description>
+                  <Card.Description class="mt-0.5 text-xs">{$_('stepCharacters.protagonist')}</Card.Description>
                 </div>
               </div>
 
@@ -456,7 +457,7 @@
                   size="icon"
                   class="text-muted-foreground hover:text-foreground h-7 w-7"
                   onclick={handleStartEdit}
-                  title="Edit"
+                  title={$_('stepCharacters.editTooltip')}
                 >
                   <PenTool class="h-3.5 w-3.5" />
                 </Button>
@@ -468,7 +469,7 @@
                     : 'text-muted-foreground hover:text-foreground'}"
                   onclick={onSaveToVault}
                   disabled={savedToVaultConfirm}
-                  title="Save to Vault"
+                  title={$_('stepCharacters.saveToVaultTooltip')}
                 >
                   {#if savedToVaultConfirm}
                     <Check class="h-3.5 w-3.5" />
@@ -491,7 +492,7 @@
               <div class="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
                 {#if protagonist.background}
                   <div class="space-y-0.5">
-                    <span class="text-foreground font-medium">Background</span>
+                    <span class="text-foreground font-medium">{$_('stepCharacters.background')}</span>
                     <p class="text-muted-foreground leading-tight">
                       {protagonist.background}
                     </p>
@@ -499,7 +500,7 @@
                 {/if}
                 {#if protagonist.motivation}
                   <div class="space-y-0.5">
-                    <span class="text-foreground font-medium">Motivation</span>
+                    <span class="text-foreground font-medium">{$_('stepCharacters.motivation')}</span>
                     <p class="text-muted-foreground leading-tight">
                       {protagonist.motivation}
                     </p>
@@ -529,7 +530,7 @@
               <Input
                 value={characterElaborationGuidance}
                 oninput={(e) => onCharacterGuidanceChange(e.currentTarget.value)}
-                placeholder="Refinement notes..."
+                placeholder={$_('stepCharacters.refinementNotes')}
                 class="h-7 text-xs"
               />
               <Button
@@ -538,7 +539,7 @@
                 class="h-7 w-7 p-0"
                 onclick={handleRefine}
                 disabled={isRefiningCharacter}
-                title="Refine with AI"
+                title={$_('stepCharacters.refineWithAi')}
               >
                 {#if isRefiningCharacter && activeElaborationSource === 'refine'}
                   <Loader2 class="h-3 w-3 animate-spin" />

@@ -99,6 +99,10 @@
     onManualOpeningChange,
   }: Props = $props()
 
+  let altOpeningLabels = $derived(
+    cardImportedAlternateGreetings.map((_, i) => `Alt ${i + 1}`),
+  )
+
   let showExpandOptions = $state(false)
 
   // POV options for summary
@@ -111,7 +115,7 @@
 
 <div class="space-y-4 p-1">
   <p class="text-muted-foreground">
-    Give your story a title and either write your own opening scene or generate one with AI.
+    {$_('stepOpening.giveStoryTitle')}
   </p>
 
   <div class="space-y-2">
@@ -120,7 +124,7 @@
       type="text"
       value={storyTitle}
       oninput={(e) => onTitleChange(e.currentTarget.value)}
-      placeholder="Enter a title for your adventure..."
+      placeholder={$_('stepOpening.titlePlaceholder')}
     />
   </div>
 
@@ -139,7 +143,7 @@
             class="text-muted-foreground hover:text-foreground h-auto p-0 text-xs"
             onclick={onClearCardOpening}
           >
-            Clear
+            {$_('stepOpening.clear')}
           </Button>
         </div>
 
@@ -147,7 +151,7 @@
         {#if cardImportedAlternateGreetings.length > 0}
           <div>
             <Label class="text-muted-foreground mb-2 block text-xs font-medium"
-              >Select Opening</Label
+              >{$_('stepOpening.selectOpening')}</Label
             >
             <div class="flex flex-wrap gap-2">
               <Button
@@ -156,7 +160,7 @@
                 class="h-7 text-xs"
                 onclick={() => onSelectedGreetingChange(0)}
               >
-                Default
+                {$_('stepOpening.defaultOpening')}
               </Button>
               {#each cardImportedAlternateGreetings as _, i (i)}
                 <Button
@@ -165,7 +169,7 @@
                   class="h-7 text-xs"
                   onclick={() => onSelectedGreetingChange(i + 1)}
                 >
-                  Alt {i + 1}
+                  {altOpeningLabels[i]}
                 </Button>
               {/each}
             </div>
@@ -195,13 +199,13 @@
             >
               {'{{user}}'}
             </Badge>
-            will be replaced with your character's name
+            {$_('stepOpening.userPlaceholderReplaced')}
           </p>
         {/if}
 
         <Button size="sm" class="gap-2" onclick={onUseCardOpening}>
           <Check class="h-3 w-3" />
-          Use This Opening
+          {$_('stepOpening.useThisOpening')}
         </Button>
       </Card.Content>
     </Card.Root>
@@ -213,7 +217,7 @@
       <Card.Content class="space-y-3 p-4">
         <h4 class="text-foreground font-medium">{$_('settings.openingScene')}</h4>
         <p class="text-muted-foreground text-sm">
-          Write your own opening scene or generate one with AI
+          {$_('stepOpening.writeYourOwnScene')}
         </p>
 
         <!-- Manual Text Entry -->
@@ -222,17 +226,17 @@
           <Textarea
             value={manualOpeningText}
             oninput={(e) => onManualOpeningChange(e.currentTarget.value)}
-            placeholder="Write the opening scene of your story here... Describe the setting, introduce your character, set the mood. This will be the first entry in your adventure."
+            placeholder={$_('stepOpening.openingPlaceholder')}
             class="min-h-[140px] resize-y text-sm"
             rows={6}
             disabled={isGeneratingOpening || isRefiningOpening || generatedOpening !== null}
           />
           {#if generatedOpening}
             <p class="text-xs text-amber-400">
-              AI-generated opening active. Clear it below to write your own.
+              {$_('stepOpening.aiOpeningActive')}
             </p>
           {:else if manualOpeningText.trim()}
-            <p class="text-xs text-green-400">✓ Custom opening ready</p>
+            <p class="text-xs text-green-400">✓ {$_('stepOpening.customOpeningReady')}</p>
           {/if}
         </div>
 
@@ -245,7 +249,7 @@
             onclick={() => (showExpandOptions = !showExpandOptions)}
           >
             <Sparkles class="h-3.5 w-3.5" />
-            {showExpandOptions ? 'Hide AI Options' : 'Expand with AI'}
+            {showExpandOptions ? $_('stepOpening.hideAiOptions') : $_('stepOpening.expandWithAi')}
             <ChevronDown
               class="h-3 w-3 transition-transform {showExpandOptions ? 'rotate-180' : ''}"
             />
@@ -259,12 +263,12 @@
             transition:slide={{ duration: 150 }}
           >
             <div class="space-y-1.5">
-              <Label for="opening-ai-guidance" class="text-xs">AI Guidance (Optional)</Label>
+              <Label for="opening-ai-guidance" class="text-xs">{$_('stepOpening.aiGuidanceOptional')}</Label>
               <Textarea
                 id="opening-ai-guidance"
                 value={openingGuidance}
                 oninput={(e) => onGuidanceChange(e.currentTarget.value)}
-                placeholder="e.g., Start with a dramatic confrontation, set the scene in a rainy alley..."
+                placeholder={$_('stepOpening.guidancePlaceholder')}
                 class="mt-1 h-16 resize-none text-sm"
               />
             </div>
@@ -278,10 +282,10 @@
               >
                 {#if isGeneratingOpening}
                   <Loader2 class="h-3.5 w-3.5 animate-spin" />
-                  Generating...
+                  {$_('stepOpening.generating')}
                 {:else}
                   <Sparkles class="h-3.5 w-3.5" />
-                  {generatedOpening ? 'Regenerate Opening' : 'Generate Opening with AI'}
+                  {generatedOpening ? $_('stepOpening.regenerateOpening') : $_('stepOpening.generateOpeningWithAi')}
                 {/if}
               </Button>
               {#if generatedOpening}
@@ -290,7 +294,7 @@
                   size="icon"
                   class="shrink-0"
                   onclick={onClearGenerated}
-                  title="Clear AI-generated opening"
+                  title={$_('stepOpening.clearAiGeneratedTitle')}
                 >
                   <X class="h-4 w-4" />
                 </Button>
@@ -301,13 +305,13 @@
 
         {#if !generatedOpening && !isGeneratingOpening && !manualOpeningText.trim() && !cardImportedFirstMessage}
           <span class="text-center text-sm text-amber-400">
-            Either write your own opening or generate one with AI
+            {$_('stepOpening.eitherWriteOrGenerate')}
           </span>
         {/if}
       </Card.Content>
     </Card.Root>
   {:else}
-    <p class="text-muted-foreground -mt-3 text-sm">Enter a title to continue*</p>
+    <p class="text-muted-foreground -mt-3 text-sm">{$_('stepOpening.enterTitleToContinue')}</p>
   {/if}
 
   {#if openingError}
@@ -328,10 +332,10 @@
                 size="sm"
                 class="text-muted-foreground hover:text-foreground h-auto gap-1 px-2 py-1 text-xs"
                 onclick={onStartEdit}
-                title="Edit the opening text"
+                title={$_('stepOpening.editOpeningTitle')}
               >
                 <PenTool class="h-3 w-3" />
-                Edit
+                {$_('stepOpening.editOpening')}
               </Button>
               <Button
                 variant="ghost"
@@ -339,14 +343,14 @@
                 class="text-accent-400 hover:text-accent-300 hover:bg-accent-950/20 h-auto gap-1 px-2 py-1 text-xs"
                 onclick={onRefineOpening}
                 disabled={isRefiningOpening || isGeneratingOpening}
-                title="Refine using the current opening text"
+                title={$_('stepOpening.refineOpeningTitle')}
               >
                 {#if isRefiningOpening}
                   <Loader2 class="h-3 w-3 animate-spin" />
-                  Refining...
+                  {$_('stepOpening.refining')}
                 {:else}
                   <Sparkles class="h-3 w-3" />
-                  Refine Further
+                  {$_('stepOpening.refineFurther')}
                 {/if}
               </Button>
             </div>
@@ -360,9 +364,9 @@
             rows={6}
           />
           <div class="flex justify-end gap-2">
-            <Button variant="secondary" size="sm" onclick={onCancelEdit}>Cancel</Button>
+            <Button variant="secondary" size="sm" onclick={onCancelEdit}>{$_('stepOpening.cancel')}</Button>
             <Button size="sm" onclick={onSaveEdit} disabled={!openingDraft?.trim()}>
-              Save Changes
+              {$_('stepOpening.saveChanges')}
             </Button>
           </div>
         {:else}
@@ -384,38 +388,42 @@
       <h4 class="text-foreground font-medium">{$_('settings.storySummary')}</h4>
       <div class="text-muted-foreground grid grid-cols-2 gap-2">
         <div>
-          <strong class="text-foreground">Mode:</strong>
-          {selectedMode === 'adventure' ? 'Adventure' : 'Creative Writing'}
+          <strong class="text-foreground">{$_('stepOpening.mode')}</strong>
+          {selectedMode === 'adventure' ? $_('stepOpening.adventure') : $_('stepOpening.creativeWriting')}
         </div>
         <div>
-          <strong class="text-foreground">Genre:</strong>
+          <strong class="text-foreground">{$_('stepOpening.genre')}</strong>
           {selectedGenre === 'custom' ? customGenre : selectedGenre}
         </div>
         <div>
-          <strong class="text-foreground">POV:</strong>
-          {povOptions.find((p) => p.id === selectedPOV)?.label}
+          <strong class="text-foreground">{$_('stepOpening.pov')}</strong>
+          {selectedPOV === 'first'
+            ? $_('stepOpening.pov1st')
+            : selectedPOV === 'second'
+              ? $_('stepOpening.pov2nd')
+              : $_('stepOpening.pov3rd')}
         </div>
         <div>
-          <strong class="text-foreground">Tense:</strong>
-          {tenseOptions.find((t) => t.id === selectedTense)?.label}
+          <strong class="text-foreground">{$_('stepOpening.tense')}</strong>
+          {selectedTense === 'present' ? $_('stepOpening.tensePresent') : $_('stepOpening.tensePast')}
         </div>
         {#if expandedSetting}
           <div class="col-span-2">
-            <strong class="text-foreground">Setting:</strong>
+            <strong class="text-foreground">{$_('stepOpening.setting')}</strong>
             {expandedSetting.name}
           </div>
         {/if}
         {#if protagonist}
           <div class="col-span-2">
-            <strong class="text-foreground">Protagonist:</strong>
+            <strong class="text-foreground">{$_('stepOpening.protagonist')}</strong>
             {protagonist.name}
           </div>
         {/if}
         {#if importedEntriesCount > 0}
           <div class="col-span-2 flex items-center gap-2">
             <Book class="text-accent-400 h-4 w-4" />
-            <strong class="text-foreground">Lorebook:</strong>
-            {importedEntriesCount} entries to import
+            <strong class="text-foreground">{$_('stepOpening.lorebook')}</strong>
+            {$_('stepOpening.entriesToImport', { values: { count: importedEntriesCount } })}
           </div>
         {/if}
       </div>

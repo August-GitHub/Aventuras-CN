@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { slide } from 'svelte/transition'
   import {
     Archive,
@@ -127,9 +128,9 @@
 <div class="space-y-4">
   <!-- Header / Description -->
   <div class="space-y-1">
-    <h3 class="text-lg font-medium">Supporting Cast</h3>
+    <h3 class="text-lg font-medium">{$_('stepSupportingCast.title')}</h3>
     <p class="text-muted-foreground text-sm">
-      Add side characters, allies, or antagonists to enrich your story. This step is optional.
+      {$_('stepSupportingCast.description')}
     </p>
   </div>
 
@@ -138,7 +139,7 @@
     <div class="flex items-center justify-between pb-1">
       <h4 class="text-muted-foreground flex items-center gap-2 text-sm font-medium">
         <Archive class="h-4 w-4" />
-        Load from Vault
+        {$_('stepSupportingCast.loadFromVault')}
       </h4>
       <Button
         variant="link"
@@ -146,7 +147,7 @@
         class="h-auto p-0 text-xs"
         onclick={() => onNavigateToVault?.()}
       >
-        Manage Vault
+        {$_('stepSupportingCast.manageVault')}
       </Button>
     </div>
 
@@ -167,11 +168,11 @@
               <div class="text-left">
                 <div class="text-sm font-medium">
                   {supportingCharacters.length > 0
-                    ? `${supportingCharacters.length} Character${supportingCharacters.length === 1 ? '' : 's'} Added`
-                    : 'Add from Vault'}
+                    ? `${supportingCharacters.length} ${$_('stepSupportingCast.charactersAdded')}`
+                    : $_('stepSupportingCast.addFromVault')}
                 </div>
                 <div class="text-muted-foreground text-xs">
-                  {hasVaultCharacters ? 'Browse your saved characters' : 'Vault is empty'}
+                  {hasVaultCharacters ? $_('stepSupportingCast.browseSavedCharacters') : $_('stepSupportingCast.vaultIsEmpty')}
                 </div>
               </div>
             </div>
@@ -213,7 +214,7 @@
         <div class="bg-primary/10 flex h-6 w-6 items-center justify-center rounded-full">
           <Plus class="text-primary h-4 w-4" />
         </div>
-        <span class="text-sm">Create New Character</span>
+        <span class="text-sm">{$_('stepSupportingCast.createNewCharacter')}</span>
       </Button>
 
       <Button
@@ -221,7 +222,7 @@
         class="hover:border-primary/50 h-12 justify-start gap-3 border-dashed hover:border-solid"
         onclick={onGenerateCharacters}
         disabled={isGeneratingCharacters || !protagonist}
-        title={!protagonist ? 'Create a protagonist first' : 'Generate 3 AI characters'}
+        title={!protagonist ? $_('stepSupportingCast.createProtagonistFirst') : $_('stepSupportingCast.generate3AiCharacters')}
       >
         <div class="bg-accent/10 flex h-6 w-6 items-center justify-center rounded-full">
           {#if isGeneratingCharacters}
@@ -230,7 +231,7 @@
             <Sparkles class="text-accent-foreground h-4 w-4" />
           {/if}
         </div>
-        <span class="text-sm">Generate Cast with AI</span>
+        <span class="text-sm">{$_('stepSupportingCast.generateCastWithAi')}</span>
       </Button>
     </div>
   {:else}
@@ -239,7 +240,7 @@
       <div class="mb-2 flex items-center justify-between">
         <h4 class="flex items-center gap-2 text-sm font-medium">
           <User class="h-4 w-4" />
-          {editingSupportingCharacterIndex !== null ? 'Edit Character' : 'New Character'}
+          {editingSupportingCharacterIndex !== null ? $_('stepSupportingCast.editCharacter') : $_('stepSupportingCast.newCharacter')}
         </h4>
         <Button variant="ghost" size="icon" class="h-8 w-8" onclick={onCancelSupportingForm}>
           <X class="h-4 w-4" />
@@ -249,46 +250,46 @@
       <div class="space-y-2.5">
         <div class="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
           <Input
-            label="Name"
+            label={$_('stepSupportingCast.formName')}
             id="supp-name"
             value={supportingCharacterName}
             oninput={(e) => onSupportingNameChange(e.currentTarget.value)}
-            placeholder="e.g., Lady Vivienne"
+            placeholder={$_('stepSupportingCast.namePlaceholder')}
           />
           <Input
-            label="Role"
+            label={$_('stepSupportingCast.formRole')}
             id="supp-role"
             value={supportingCharacterRole}
             oninput={(e) => onSupportingRoleChange(e.currentTarget.value)}
-            placeholder="e.g., ally, antagonist..."
+            placeholder={$_('stepSupportingCast.rolePlaceholder')}
           />
         </div>
 
         <div class="space-y-1.5">
-          <Label for="supp-desc" class="text-xs">Description</Label>
+          <Label for="supp-desc" class="text-xs">{$_('stepSupportingCast.formDescription')}</Label>
           <Textarea
             id="supp-desc"
             value={supportingCharacterDescription}
             oninput={(e) => onSupportingDescriptionChange(e.currentTarget.value)}
-            placeholder="Appearance, personality..."
+            placeholder={$_('stepSupportingCast.descriptionPlaceholder')}
             class="min-h-20 resize-none text-sm"
           />
         </div>
 
         <div class="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
           <Input
-            label="Relationship"
+            label={$_('stepSupportingCast.formRelationship')}
             id="supp-rel"
             value={supportingCharacterRelationship}
             oninput={(e) => onSupportingRelationshipChange(e.currentTarget.value)}
-            placeholder="e.g., Childhood friend..."
+            placeholder={$_('stepSupportingCast.relationshipPlaceholder')}
           />
           <Input
-            label="Traits"
+            label={$_('stepSupportingCast.formTraits')}
             id="supp-traits"
             value={supportingCharacterTraits}
             oninput={(e) => onSupportingTraitsChange(e.currentTarget.value)}
-            placeholder="e.g., cunning, loyal..."
+            placeholder={$_('stepSupportingCast.traitsPlaceholder')}
           />
         </div>
 
@@ -306,7 +307,7 @@
               onclick={() => (showAdjustWithAI = !showAdjustWithAI)}
             >
               <Sparkles class="h-3.5 w-3.5" />
-              {showAdjustWithAI ? 'Hide AI Options' : 'Adjust with AI'}
+              {showAdjustWithAI ? $_('stepSupportingCast.hideAiOptions') : $_('stepSupportingCast.adjustWithAi')}
               <ChevronDown
                 class="h-3 w-3 transition-transform {showAdjustWithAI ? 'rotate-180' : ''}"
               />
@@ -317,13 +318,13 @@
             <div class="space-y-1.5">
               <Label
                 for="ai-guidance-supp"
-                class="text-muted-foreground text-[10px] tracking-wider uppercase">Guidance</Label
+                class="text-muted-foreground text-[10px] tracking-wider uppercase">{$_('stepSupportingCast.guidance')}</Label
               >
               <Textarea
                 id="ai-guidance-supp"
                 value={supportingCharacterGuidance}
                 oninput={(e) => onSupportingGuidanceChange(e.currentTarget.value)}
-                placeholder="e.g., Make them more sinister..."
+                placeholder={$_('stepSupportingCast.guidancePlaceholder')}
                 class="h-16 resize-none text-xs"
               />
             </div>
@@ -336,10 +337,10 @@
             >
               {#if isElaboratingSupportingCharacter}
                 <Loader2 class="h-3.5 w-3.5 animate-spin" />
-                Expanding...
+                {$_('stepSupportingCast.expanding')}
               {:else}
                 <Sparkles class="h-3.5 w-3.5" />
-                Expand Details
+                {$_('stepSupportingCast.expandDetails')}
               {/if}
             </Button>
           </Collapsible.Content>
@@ -348,14 +349,14 @@
         <Separator class="my-2" />
 
         <div class="flex justify-end gap-2">
-          <Button variant="ghost" onclick={onCancelSupportingForm}>Cancel</Button>
+          <Button variant="ghost" onclick={onCancelSupportingForm}>{$_('stepSupportingCast.cancel')}</Button>
           <Button
             class="gap-2"
             onclick={onUseSupportingAsIs}
             disabled={!supportingCharacterName.trim()}
           >
             <Check class="h-4 w-4" />
-            {editingSupportingCharacterIndex !== null ? 'Update' : 'Add Character'}
+            {editingSupportingCharacterIndex !== null ? $_('stepSupportingCast.update') : $_('stepSupportingCast.addCharacter')}
           </Button>
         </div>
       </div>
@@ -366,7 +367,7 @@
   {#if supportingCharacters.length > 0}
     <div class="grid grid-cols-1 gap-3 pt-2">
       <h4 class="text-muted-foreground mb-1 text-sm font-medium">
-        Cast Members ({supportingCharacters.length})
+        {$_('stepSupportingCast.castMembers')} ({supportingCharacters.length})
       </h4>
       {#each supportingCharacters as char, index (index)}
         <Card.Root class="group hover:border-primary/30 transition-all">
@@ -398,7 +399,7 @@
                     size="icon"
                     class="text-muted-foreground hover:text-foreground h-6 w-6"
                     onclick={() => onEditSupportingCharacter(index)}
-                    title="Edit"
+                    title={$_('stepSupportingCast.editTooltip')}
                   >
                     <PenTool class="h-3 w-3" />
                   </Button>
@@ -407,7 +408,7 @@
                     size="icon"
                     class="text-muted-foreground hover:text-destructive h-6 w-6"
                     onclick={() => onDeleteSupportingCharacter(index)}
-                    title="Delete"
+                    title={$_('stepSupportingCast.deleteTooltip')}
                   >
                     <Trash2 class="h-3 w-3" />
                   </Button>

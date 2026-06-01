@@ -13,6 +13,18 @@
     />
     %sveltekit.head%
     <script>
+      // Stub Tauri APIs for web-only preview (npm run dev without Tauri shell)
+      // This prevents "Cannot read properties of undefined (reading 'invoke')" errors
+      // when running the frontend in a regular browser.
+      window.__TAURI_INTERNALS__ = {
+        invoke: function (cmd, args) {
+          console.log('[Tauri mock] invoke:', cmd, args)
+          return Promise.resolve(null)
+        },
+        metadata: { currentWindow: { label: 'main' }, currentWebview: { label: 'main' } }
+      }
+    </script>
+    <script>
       // Pull Android system-bar insets from the native bridge and set them as
       // CSS vars (fallback for devices where env(safe-area-inset-*) misses
       // system bars or gesture areas). Re-runs on resize/visibility change

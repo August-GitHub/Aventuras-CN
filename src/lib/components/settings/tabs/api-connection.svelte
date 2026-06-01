@@ -321,7 +321,7 @@
       <CardContent>
         <div class="mb-3 flex items-center gap-2">
           <Star class="text-primary h-4 w-4" />
-          <span class="text-primary text-sm font-medium">New Profile</span>
+          <span class="text-primary text-sm font-medium">{$_('settings.newProfile')}</span>
         </div>
 
         <Separator class="mb-4" />
@@ -358,7 +358,7 @@
                 class="flex-1"
               >
                 <Check class="h-4 w-4" />
-                Create Profile
+                {$_('settings.createProfile')}
               </Button>
             </div>
           {/snippet}
@@ -391,7 +391,7 @@
                     <Badge
                       variant="default"
                       class="hidden shrink-0 items-center justify-center md:flex"
-                      title="Used when agent profiles don't specify an API profile"
+                      title={$_('settings.fallbackTitle')}
                     >
                       <Star class="mr-1 h-3 w-3" />
                       {$_('settings.fallback')}
@@ -419,7 +419,7 @@
                   <Badge
                     variant="default"
                     class="shrink-0 text-xs md:hidden"
-                    title="Used when agent profiles don't specify an API profile"
+                    title={$_('settings.fallbackTitle')}
                   >
                     {$_('settings.fallback')}
                   </Badge>
@@ -430,7 +430,7 @@
                     size="icon"
                     class="w-5"
                     onclick={() => handleSetDefault(profile.id)}
-                    title="Set as fallback profile"
+                    title={$_('settings.setAsFallback')}
                   >
                     <Star class="h-4 w-4" />
                   </Button>
@@ -462,12 +462,12 @@
                 onAddCustomModel={handleAddCustomModel}
               />
               <p class="text-muted-foreground mt-2 min-h-[1lh] text-right text-xs">
-                {#if saveStatus === 'saving'}
-                  Saving...
-                {:else if saveStatus === 'saved'}
-                  ✓ Saved
-                {:else if saveStatus === 'error'}
-                  <span class="text-destructive">⚠ Save failed</span>
+                  {#if saveStatus === 'saving'}
+                    {$_('settings.saving')}
+                  {:else if saveStatus === 'saved'}
+                    {$_('settings.saved')}
+                  {:else if saveStatus === 'error'}
+                    <span class="text-destructive">{$_('settings.saveFailed')}</span>
                 {/if}
               </p>
             </div>

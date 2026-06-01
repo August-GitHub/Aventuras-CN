@@ -145,10 +145,10 @@
 
   const REASONING_LEVELS: ReasoningEffort[] = ['off', 'low', 'medium', 'high']
   const REASONING_LABELS: Record<ReasoningEffort, string> = {
-    off: 'Off',
-    low: 'Low',
-    medium: 'Medium',
-    high: 'High',
+    off: $_('settings.reasoningOff'),
+    low: $_('settings.reasoningLow'),
+    medium: $_('settings.reasoningMedium'),
+    high: $_('settings.reasoningHigh'),
   }
 
   function getReasoningIndex(value?: ReasoningEffort): number {
@@ -238,18 +238,18 @@
       {#if modelReasoningCapability === 'enforced'}
         <div class="flex items-center gap-1.5 text-xs text-emerald-500">
           <Brain class="h-3.5 w-3.5" />
-          Reasoning enabled
+          {$_('settings.reasoningEnabled')}
         </div>
       {:else if modelReasoningCapability === 'supported'}
         <div class="flex items-center gap-1.5 text-xs text-emerald-500">
           <Brain class="h-3.5 w-3.5" />
-          Reasoning supported
+          {$_('settings.reasoningSupported')}
         </div>
       {/if}
     {:else}
       <div class="flex items-center gap-1.5 text-xs text-emerald-500">
         <Brain class="h-3.5 w-3.5" />
-        Reasoning supported by provider (specific model support unknown)
+        {$_('settings.reasoningSupportedByProvider')}
       </div>
     {/if}
   {/if}
@@ -276,8 +276,8 @@
         onValueChange={onTemperatureChange}
       />
       <div class="text-muted-foreground flex justify-between text-xs">
-        <span>Focused</span>
-        <span>Creative</span>
+        <span>{$_('settings.focusedLabel')}</span>
+        <span>{$_('settings.creativeLabel')}</span>
       </div>
     </div>
 
@@ -287,7 +287,7 @@
         <div class="grid gap-0.5">
           <Label>{$_('settings.maxOutputTokens')}</Label>
           <span class="text-muted-foreground text-[10px] leading-tight">
-            Includes reasoning + response tokens
+            {$_('settings.includesReasoningTokens')}
           </span>
         </div>
         <div class="flex items-center gap-1.5">
@@ -295,7 +295,7 @@
             <span
               class="text-muted-foreground rounded bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400"
             >
-              Manual
+              {$_('settings.manual')}
             </span>
           {:else}
             <span class="text-muted-foreground text-xs">
@@ -310,8 +310,8 @@
               showNumericOverride ? 'text-primary' : 'text-muted-foreground hover:text-foreground',
             )}
             title={showNumericOverride
-              ? 'Close manual override (snap to slider)'
-              : 'Set exact value (expert)'}
+              ? $_('settings.closeManualOverride')
+              : $_('settings.setExactValueTitle')}
           >
             <Settings2 class="h-3.5 w-3.5" />
           </button>
@@ -353,10 +353,10 @@
           step={256}
           oninput={handleNumericInput}
           onblur={handleNumericBlur}
-          placeholder="256 – 262144"
+          placeholder={$_('settings.tokenRangePlaceholder')}
         />
         <p class="text-muted-foreground text-[10px]">
-          Expert override: accepts any value from 256 to 262,144
+          {$_('settings.expertOverrideText')}
         </p>
       {/if}
     </div>
@@ -381,7 +381,7 @@
           </div>
         {:else}
           <div class="flex justify-between">
-            <Label>Thinking: {REASONING_LABELS[reasoningEffort]}</Label>
+            <Label>{$_('settings.thinkingLabel')}: {REASONING_LABELS[reasoningEffort]}</Label>
           </div>
           {#if modelReasoningCapability === 'enforced'}
             <Slider
@@ -393,9 +393,9 @@
               onValueChange={(v) => onReasoningChange(getReasoningValue(v))}
             />
             <div class="text-muted-foreground flex justify-between text-xs">
-              <span>Low</span>
-              <span>Med</span>
-              <span>High</span>
+              <span>{$_('settings.reasoningLow')}</span>
+              <span>{$_('settings.reasoningMedium')}</span>
+              <span>{$_('settings.reasoningHigh')}</span>
             </div>
           {:else}
             <Slider
@@ -407,10 +407,10 @@
               onValueChange={(v) => onReasoningChange(getReasoningValue(v))}
             />
             <div class="text-muted-foreground flex justify-between text-xs">
-              <span>Off</span>
-              <span>Low</span>
-              <span>Med</span>
-              <span>High</span>
+              <span>{$_('settings.reasoningOff')}</span>
+              <span>{$_('settings.reasoningLow')}</span>
+              <span>{$_('settings.reasoningMedium')}</span>
+              <span>{$_('settings.reasoningHigh')}</span>
             </div>
           {/if}
         {/if}

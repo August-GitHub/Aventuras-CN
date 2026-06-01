@@ -217,7 +217,7 @@
   async function handleCreateBranch() {
     if (!branchName.trim()) return
     if (!entryCheckpoint) {
-      alert('Cannot branch from this entry - no checkpoint available')
+      alert($_('story.checkpoint.noCheckpointAvailable'))
       return
     }
     try {
@@ -226,7 +226,7 @@
       branchName = ''
     } catch (error) {
       console.error('[StoryEntry] Failed to create branch:', error)
-      alert(error instanceof Error ? error.message : 'Failed to create branch')
+      alert(error instanceof Error ? error.message : $_('story.branch.createFailed'))
     }
   }
 
@@ -971,7 +971,7 @@
     const ttsSettings = settings.systemServicesSettings.tts
 
     if (!ttsSettings.enabled) {
-      alert('TTS is not enabled. Please enable it in settings.')
+      alert($_('settings.ttsNotEnabled'))
       return
     }
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import WritingStyleFields from '$lib/components/shared/WritingStyleFields.svelte'
   import { ScrollArea } from '$lib/components/ui/scroll-area'
   import type { POV, Tense } from '$lib/types'
@@ -50,9 +51,9 @@
 <div class="flex h-full flex-col gap-4 p-1">
   <div class="flex items-center justify-between">
     <div>
-      <h3 class="text-lg font-bold tracking-tight">Writing Style</h3>
+      <h3 class="text-lg font-bold tracking-tight">{$_('stepWritingStyle.title')}</h3>
       <p class="text-muted-foreground">
-        Choose a narrative voice and configure the AI's writing style.
+        {$_('stepWritingStyle.description')}
       </p>
     </div>
   </div>

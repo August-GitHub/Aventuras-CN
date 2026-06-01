@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { slide } from 'svelte/transition'
   import {
     Loader2,
@@ -130,7 +131,7 @@
   <div class="flex items-center justify-between pb-1">
     <h4 class="text-muted-foreground flex items-center gap-2 text-sm font-medium">
       <Archive class="h-4 w-4" />
-      Load from Vault
+      {$_('stepSetting.loadFromVault')}
     </h4>
     <Button
       variant="link"
@@ -138,7 +139,7 @@
       class="h-auto p-0 text-xs"
       onclick={() => onNavigateToVault?.()}
     >
-      Manage Vault
+      {$_('stepSetting.manageVault')}
     </Button>
   </div>
 
@@ -159,13 +160,13 @@
             <div class="text-left">
               <div class="text-sm font-medium">
                 {selectedScenarioId && loadedVaultScenarioId
-                  ? 'Scenario Selected'
-                  : 'Select a Scenario'}
+                  ? $_('stepSetting.scenarioSelected')
+                  : $_('stepSetting.selectScenario')}
               </div>
               <div class="text-muted-foreground text-xs">
                 {selectedScenarioId && loadedVaultScenarioId
-                  ? 'Click to change selection'
-                  : 'Browse your saved worlds'}
+                  ? $_('stepSetting.clickToChangeSelection')
+                  : $_('stepSetting.browseSavedWorlds')}
               </div>
             </div>
           </div>
@@ -194,7 +195,7 @@
 </div>
 <h4 class="text-muted-foreground flex items-center gap-2 pb-2 text-sm font-medium">
   <MapPin class="h-4 w-4" />
-  Quick Start Templates
+  {$_('stepSetting.quickStartTemplates')}
 </h4>
 <div class="grid grid-cols-2 gap-2 pb-4 sm:grid-cols-3">
   {#each QUICK_START_SEEDS as seed (seed.id)}
@@ -224,32 +225,32 @@
   <!-- Genre Input -->
   <div class="space-y-1">
     <Input
-      label="Genre"
+      label={$_('stepSetting.genreLabel')}
       id="genre-input"
       value={customGenre}
       oninput={(e) => onCustomGenreChange(e.currentTarget.value)}
-      placeholder="e.g. Dark Fantasy, Cyberpunk Noir, etc."
+      placeholder={$_('stepSetting.genrePlaceholder')}
     />
     <p class="text-muted-foreground text-[0.8rem]">
-      A short tag describing the style/tone of your story.
+      {$_('stepSetting.genreDescription')}
     </p>
   </div>
 
   <!-- Setting Description -->
   <div class="space-y-2">
-    <Label for="setting-input">World Description</Label>
+    <Label for="setting-input">{$_('stepSetting.worldDescription')}</Label>
     <Textarea
       id="setting-input"
       value={settingSeed}
       oninput={(e) => onSettingSeedChange(e.currentTarget.value)}
-      placeholder="Describe your world... (e.g., A kingdom where music is magic)"
+      placeholder={$_('stepSetting.worldDescriptionPlaceholder')}
       class="mt-1 min-h-25 resize-none"
     />
 
     {#if hasUserPlaceholder}
       <div class="bg-muted/50 text-muted-foreground flex items-center gap-2 rounded-md p-2 text-xs">
         <Badge variant="outline" class="h-5 font-mono text-[10px]">{'{{user}}'}</Badge>
-        <span>will be replaced with your character's name</span>
+        <span>{$_('stepSetting.userPlaceholderReplaced')}</span>
       </div>
     {/if}
 
@@ -261,13 +262,13 @@
         onclick={() => (showExpandOptions = !showExpandOptions)}
       >
         <Sparkles class="h-3.5 w-3.5" />
-        {showExpandOptions ? 'Hide AI Options' : 'Expand with AI'}
+        {showExpandOptions ? $_('stepSetting.hideAiOptions') : $_('stepSetting.expandWithAi')}
         <ChevronDown class="h-3 w-3 transition-transform {showExpandOptions ? 'rotate-180' : ''}" />
       </Button>
 
       <Button size="sm" onclick={onUseAsIs} disabled={!settingSeed.trim()} class="gap-2">
         <Check class="h-3.5 w-3.5" />
-        Use Description
+        {$_('stepSetting.useDescription')}
       </Button>
     </div>
 
@@ -278,12 +279,12 @@
         transition:slide={{ duration: 150 }}
       >
         <div class="space-y-1.5">
-          <Label for="ai-guidance" class="text-xs">AI Guidance (Optional)</Label>
+          <Label for="ai-guidance" class="text-xs">{$_('stepSetting.aiGuidanceOptional')}</Label>
           <Textarea
             id="ai-guidance"
             value={settingElaborationGuidance}
             oninput={(e) => onGuidanceChange(e.currentTarget.value)}
-            placeholder="e.g., Focus on dark gothic atmosphere, add steampunk elements..."
+            placeholder={$_('stepSetting.aiGuidancePlaceholder')}
             class="mt-1 h-16 resize-none text-sm"
           />
         </div>
@@ -296,10 +297,10 @@
         >
           {#if isExpandingSetting}
             <Loader2 class="h-3.5 w-3.5 animate-spin" />
-            Expanding...
+            {$_('stepSetting.expanding')}
           {:else}
             <Sparkles class="h-3.5 w-3.5" />
-            Generate Expanded World
+            {$_('stepSetting.generateExpandedWorld')}
           {/if}
         </Button>
       </div>
@@ -318,7 +319,7 @@
   >
     <span class="flex items-center gap-2 text-green-500">
       <Check class="h-4 w-4" />
-      Imported NPCs: {importedCardNpcs.map((n) => n.name).join(', ')}
+      {$_('stepSetting.importedNpcs')}{importedCardNpcs.map((n) => n.name).join(', ')}
     </span>
     <Button
       variant="ghost"
@@ -344,7 +345,7 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
         <Check class="h-4 w-4 text-green-500" />
-        <span class="font-medium">Active World Setting</span>
+        <span class="font-medium">{$_('stepSetting.activeWorldSetting')}</span>
       </div>
 
       <div class="flex items-center gap-1">
@@ -358,9 +359,9 @@
           disabled={!settingSeed.trim() || savedScenarioToVaultConfirm}
         >
           {#if savedScenarioToVaultConfirm}
-            <Check class="h-3.5 w-3.5" /> Saved
+            <Check class="h-3.5 w-3.5" /> {$_('stepSetting.saved')}
           {:else}
-            <Archive class="h-3.5 w-3.5" /> Save
+            <Archive class="h-3.5 w-3.5" /> {$_('stepSetting.saveBtn')}
           {/if}
         </Button>
 
@@ -371,9 +372,9 @@
           onclick={isEditingDescription ? handleSaveDescription : handleEditDescription}
         >
           {#if isEditingDescription}
-            <Check class="h-3.5 w-3.5" /> Done
+            <Check class="h-3.5 w-3.5" /> {$_('stepSetting.doneBtn')}
           {:else}
-            <PenTool class="h-3.5 w-3.5" /> Edit
+            <PenTool class="h-3.5 w-3.5" /> {$_('stepSetting.editBtn')}
           {/if}
         </Button>
       </div>
@@ -396,7 +397,7 @@
       <!-- Locations -->
       {#if expandedSetting.keyLocations.length > 0}
         <div class="flex flex-wrap gap-2 text-xs">
-          <span class="text-foreground py-0.5 font-medium">Locations:</span>
+          <span class="text-foreground py-0.5 font-medium">{$_('stepSetting.locations')}</span>
           {#each expandedSetting.keyLocations as loc (loc.name)}
             <Badge variant="secondary" class="font-normal">{loc.name}</Badge>
           {/each}
@@ -418,7 +419,7 @@
       <Input
         value={settingElaborationGuidance}
         oninput={(e) => onGuidanceChange(e.currentTarget.value)}
-        placeholder="Refinement notes..."
+        placeholder={$_('stepSetting.refinementNotes')}
         class="h-8 text-xs"
       />
       <Button
@@ -427,7 +428,7 @@
         class="h-8 w-8 p-0"
         onclick={onExpandFurther}
         disabled={isRefiningSetting}
-        title="Refine with AI"
+        title={$_('stepSetting.refineWithAi')}
       >
         {#if isRefiningSetting}
           <Loader2 class="h-3.5 w-3.5 animate-spin" />

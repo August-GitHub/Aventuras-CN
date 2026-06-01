@@ -297,12 +297,25 @@
     return servicesByProfile.get(profileId) ?? []
   }
 
+  const PRESET_NAME_KEYS: Record<string, string> = {
+    classification: 'agentProfiles.presetClassification',
+    memory: 'agentProfiles.presetMemory',
+    suggestions: 'agentProfiles.presetSuggestions',
+    agentic: 'agentProfiles.presetAgentic',
+    wizard: 'agentProfiles.presetWizard',
+    translation: 'agentProfiles.presetTranslation',
+  }
+
+  function tPresetName(preset: { id: string; name: string }): string {
+    return PRESET_NAME_KEYS[preset.id] ? $_(PRESET_NAME_KEYS[preset.id]) : preset.name
+  }
+
   function createNewPreset() {
     const newId = `preset-${Date.now()}`
     const defaultProfile = settings.getMainNarrativeProfile()
     const newPreset: GenerationPreset = {
       id: newId,
-      name: 'New Profile',
+      name: $_('agentProfiles.newProfile'),
       description: '',
       profileId: defaultProfile?.id ?? settings.getDefaultProfileIdForProvider(),
       model: settings.apiSettings.defaultModel ?? '',
@@ -408,18 +421,18 @@
 <div class="border-t pt-6">
   <div class="mb-4 flex items-start justify-between sm:items-center">
     <div>
-      <h3 class="text-base font-medium">Agent Profiles</h3>
-      <p class="text-muted-foreground text-xs">Click a task to move it between profiles.</p>
+      <h3 class="text-base font-medium">{$_('agentProfiles.title')}</h3>
+      <p class="text-muted-foreground text-xs">{$_('agentProfiles.description')}</p>
     </div>
     <div class="flex items-center gap-2">
       {#if resettingProfiles}
-        <span class="text-muted-foreground text-xs font-medium"> Reset all? </span>
+        <span class="text-muted-foreground text-xs font-medium">{$_('agentProfiles.resetAll')}</span>
         <Button
           variant="ghost"
           size="sm"
           class="text-muted-foreground hover:text-foreground w-5 px-0 hover:bg-transparent"
           onclick={() => (resettingProfiles = false)}
-          title="Cancel"
+          title={$_('agentProfiles.cancel')}
         >
           <X class="h-3.5 w-3.5" />
         </Button>
@@ -431,7 +444,7 @@
             resettingProfiles = false
             handleResetProfiles()
           }}
-          title="Confirm Reset"
+          title={$_('agentProfiles.confirmReset')}
         >
           <Check class="h-3.5 w-3.5" />
         </Button>
@@ -440,25 +453,25 @@
           variant="ghost"
           size="sm"
           onclick={() => (resettingProfiles = true)}
-          title="Reset all profiles to defaults"
+          title={$_('agentProfiles.resetToDefaultsTitle')}
           class="text-xs"
         >
           <RotateCcw class="mr-1 h-3 w-3" />
-          Reset
+          {$_('agentProfiles.reset')}
         </Button>
         <Button
           variant="ghost"
           size="sm"
           onclick={handleApplyMainToAll}
-          title="Apply Main Narrative profile and model to all agent profiles"
+          title={$_('agentProfiles.applyMainTitle')}
           class="text-xs"
         >
           <Copy class="mr-1 h-3 w-3" />
-          Apply Main
+          {$_('agentProfiles.applyMain')}
         </Button>
         <Button variant="secondary" size="sm" onclick={createNewPreset} class="text-xs">
           <Plus class="mr-1 h-3 w-3" />
-          New Profile
+          {$_('agentProfiles.newProfile')}
         </Button>
       {/if}
     </div>
@@ -472,8 +485,8 @@
           <div class="flex items-start justify-between">
             <Card.Title class="text-base">
               {settings.generationPresets.find((p) => p.id === editingPresetId)
-                ? 'Edit Profile'
-                : 'Create Profile'}
+                ? $_('agentProfiles.editProfile')
+                : $_('agentProfiles.createProfile')}
             </Card.Title>
             <Button
               variant="text"
@@ -494,7 +507,7 @@
                 type="text"
                 bind:value={preset.name}
                 oninput={() => debouncedSave()}
-                placeholder="e.g. Classification, Memory"
+                placeholder={$_('agentProfiles.namePlaceholder')}
               />
             </div>
             <div class="grid gap-2">
@@ -503,7 +516,7 @@
                 type="text"
                 bind:value={preset.description}
                 oninput={() => debouncedSave()}
-                placeholder="Brief description"
+                placeholder={$_('agentProfiles.descriptionPlaceholder')}
               />
             </div>
           </div>
@@ -514,7 +527,7 @@
               class="flex items-center gap-2 rounded border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-600 dark:text-red-400"
             >
               <AlertCircle class="h-4 w-4 shrink-0" />
-              No model configured — story generation is blocked until you set one.
+              {$_('agentProfiles.noModelConfigured')}
             </div>
           {/if}
 
@@ -561,7 +574,7 @@
           <div class="grid gap-2">
             <Label>{$_('settings.structuredOutput')}</Label>
             <div class="flex rounded-md border">
-              {#each [['auto', 'Auto'], ['on', 'Force On'], ['off', 'Force Off']] as [val, label] (val)}
+              {#each [['auto', $_('agentProfiles.auto')], ['on', $_('agentProfiles.forceOn')], ['off', $_('agentProfiles.forceOff')]] as [val, label] (val)}
                 {@const isActive = (preset.structuredOutputOverride ?? 'auto') === val}
                 <button
                   type="button"
@@ -578,8 +591,7 @@
               {/each}
             </div>
             <p class="text-muted-foreground text-xs">
-              Auto uses provider/model capability detection. Force On/Off to override. Using
-              structured output can break reasoning when using local model servers.
+              {$_('agentProfiles.structuredOutputDescription')}
             </p>
           </div>
 
@@ -590,12 +602,9 @@
             })()}
             <div class="flex flex-row items-center justify-between gap-3">
               <div class="space-y-0.5">
-                <Label class="text-sm">Thinking nudge</Label>
+                <Label class="text-sm">{$_('agentProfiles.thinkingNudge')}</Label>
                 <p class="text-muted-foreground text-xs">
-                  Inject a prompt to encourage the model to use <code>&lt;think&gt;</code> tags properly.
-                  Useful for some local models such as Mistral models, but may cause issues with other
-                  models such as Qwen 3.5. Has no effect when using structured output with local model
-                  servers.
+                  {$_('agentProfiles.thinkingNudgeDescription')}
                 </p>
               </div>
               <Switch
@@ -611,7 +620,7 @@
           <!-- Manual Request Body (unchanged) -->
           {#if settings.advancedRequestSettings.manualMode}
             <div class="border-t pt-2">
-              <Label class="mb-2 block">Manual Request Body (JSON)</Label>
+              <Label class="mb-2 block">{$_('agentProfiles.manualRequestBody')}</Label>
               <Textarea
                 bind:value={preset.manualBody}
                 onblur={() => debouncedSave()}
@@ -620,7 +629,7 @@
                 placeholder={'{"temperature": 0.7, "top_p": 0.9}'}
               />
               <p class="text-muted-foreground mt-1 text-xs">
-                Overrides request parameters; messages and tools are managed by Aventuras.
+                {$_('agentProfiles.manualRequestBodyDescription')}
               </p>
             </div>
           {/if}
@@ -636,8 +645,8 @@
         <Card.Root class="flex h-full flex-col">
           <div class="flex items-start justify-between border-b p-3 pb-2">
             <div class="min-w-0">
-              <div class="truncate text-sm font-medium" title={preset.name}>
-                {preset.name}
+              <div class="truncate text-sm font-medium" title={tPresetName(preset)}>
+                {tPresetName(preset)}
               </div>
               <div
                 class="truncate text-xs"
@@ -669,11 +678,11 @@
                 {:else if _models.length === 0 && _profile?.fetchedModels.length}
                   <div class="mt-0.5 flex items-center gap-1 text-xs text-red-500">
                     <AlertTriangle class="h-3 w-3" />
-                    No models available
+                    {$_('agentProfiles.noModelsAvailable')}
                   </div>
                 {:else if _models.length === 0}
                   <div class="text-muted-foreground mt-0.5 flex items-center gap-1 text-xs">
-                    No models fetched
+                    {$_('agentProfiles.noModelsFetched')}
                   </div>
                 {/if}
               {/if}
@@ -684,7 +693,7 @@
                 size="icon"
                 class="text-muted-foreground hover:text-foreground h-6 w-6"
                 onclick={() => startEditingPreset(preset)}
-                title="Edit Profile"
+                title={$_('agentProfiles.editProfile')}
               >
                 <Settings2 class="h-3 w-3" />
               </Button>
@@ -693,7 +702,7 @@
                 size="icon"
                 class="text-muted-foreground h-6 w-6 hover:text-red-500"
                 onclick={() => handleDeletePreset(preset.id)}
-                title="Delete Profile"
+                title={$_('agentProfiles.deleteProfile')}
               >
                 <Trash2 class="h-3 w-3" />
               </Button>
@@ -726,7 +735,7 @@
                     <div
                       class="text-muted-foreground px-2 py-1 text-[10px] font-bold tracking-wider uppercase"
                     >
-                      Move to...
+                      {$_('agentProfiles.moveTo')}
                     </div>
                     {#each settings.generationPresets as targetPreset (targetPreset.id)}
                       {#if targetPreset.id !== preset.id}
@@ -737,7 +746,7 @@
                             moveTask(service.id, targetPreset.id)
                           }}
                         >
-                          {targetPreset.name}
+                          {tPresetName(targetPreset)}
                         </button>
                       {/if}
                     {/each}
@@ -748,7 +757,7 @@
                         moveTask(service.id, 'custom')
                       }}
                     >
-                      Unassigned
+                      {$_('agentProfiles.unassigned')}
                     </button>
                   </div>
                 {/if}
@@ -758,7 +767,7 @@
               <div
                 class="text-muted-foreground flex flex-1 items-center justify-center py-2 text-xs italic"
               >
-                No tasks assigned
+                {$_('agentProfiles.noTasksAssigned')}
               </div>
             {/if}
           </Card.Content>
@@ -770,7 +779,7 @@
     {#if getServicesForProfile('custom').length !== 0}
       <Card.Root class="bg-muted/20 flex h-full flex-col border-dashed">
         <div class="border-b p-3 pb-2">
-          <div class="text-muted-foreground text-sm font-medium">Unassigned</div>
+          <div class="text-muted-foreground text-sm font-medium">{$_('agentProfiles.unassigned')}</div>
         </div>
         <Card.Content
           class="flex flex-1 flex-col gap-2 p-3 transition-all {getServicesForProfile('custom')
@@ -782,7 +791,7 @@
             <div
               class="mb-2 rounded border border-amber-500/20 bg-amber-500/10 px-2 py-1.5 text-xs text-amber-600 dark:text-amber-400"
             >
-              Unassigned agents will not work. Assign them to a profile.
+              {$_('agentProfiles.unassignedWarning')}
             </div>
           {/if}
           {#each getServicesForProfile('custom') as service (service.id)}
@@ -810,7 +819,7 @@
                   <div
                     class="text-muted-foreground px-2 py-1 text-[10px] font-bold tracking-wider uppercase"
                   >
-                    Move to...
+                    {$_('agentProfiles.moveTo')}
                   </div>
                   {#each settings.generationPresets as targetPreset (targetPreset.id)}
                     <button
@@ -820,7 +829,7 @@
                         moveTask(service.id, targetPreset.id)
                       }}
                     >
-                      {targetPreset.name}
+                      {tPresetName(targetPreset)}
                     </button>
                   {/each}
                 </div>

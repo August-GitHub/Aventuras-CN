@@ -72,10 +72,10 @@
   <div class="flex items-center justify-between pb-1">
     <h4 class="text-muted-foreground flex items-center gap-2 text-sm font-medium">
       <BookOpen class="h-4 w-4" />
-      Available in Vault
+      {$_('stepLorebook.availableInVault')}
     </h4>
     <Button variant="link" size="sm" class="h-auto p-0 text-xs" onclick={onNavigateToVault}>
-      Manage Vault
+      {$_('stepLorebook.manageVault')}
     </Button>
   </div>
 

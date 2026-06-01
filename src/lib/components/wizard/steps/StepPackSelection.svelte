@@ -42,7 +42,7 @@
     <div>
       <h3 class="text-lg font-semibold">{$_('settings.promptPack')}</h3>
       <p class="text-muted-foreground text-sm">
-        Choose which prompt templates to use for this story.
+        {$_('stepPackSelection.choosePromptTemplates')}
       </p>
     </div>
   </div>
@@ -59,9 +59,9 @@
         }}
       >
         <Select.Trigger class="w-full">
-          {selectedPack?.name ?? 'Select a pack'}
+          {selectedPack?.name ?? $_('stepPackSelection.selectPack')}
         </Select.Trigger>
-        <Select.Content>
+        <Select.Content portalProps={{ disabled: true }}>
           {#each availablePacks as pack (pack.id)}
             <Select.Item value={pack.id} label={pack.name}>
               <div class="flex items-center gap-2">
@@ -88,10 +88,9 @@
       <div class="bg-muted mb-3 rounded-full p-4">
         <Package class="text-muted-foreground h-10 w-10" />
       </div>
-      <h4 class="mb-1 text-sm font-medium">Default Pack Selected</h4>
+      <h4 class="mb-1 text-sm font-medium">{$_('stepPackSelection.defaultPackSelected')}</h4>
       <p class="text-muted-foreground max-w-sm text-sm">
-        Using the built-in prompt templates. You can create custom packs with configurable variables
-        in the Vault's Prompt Editor.
+        {$_('stepPackSelection.defaultPackDescription')}
       </p>
     </div>
   {/if}
@@ -104,7 +103,7 @@
         <div class="w-full border-t"></div>
       </div>
       <div class="relative flex justify-center text-xs uppercase">
-        <span class="bg-background text-muted-foreground px-2">Variables</span>
+        <span class="bg-background text-muted-foreground px-2">{$_('stepPackSelection.variables')}</span>
       </div>
     </div>
 
@@ -155,7 +154,7 @@
                 type="number"
                 value={variableValues[variable.variableName] ?? ''}
                 oninput={(e) => onVariableChange(variable.variableName, e.currentTarget.value)}
-                placeholder="0"
+                placeholder={$_('stepPackSelection.numberPlaceholder')}
               />
             {:else if variable.variableType === 'enum' && variable.enumOptions}
               <Select.Root
@@ -168,9 +167,9 @@
                 <Select.Trigger class="w-full">
                   {variable.enumOptions.find(
                     (o) => o.value === variableValues[variable.variableName],
-                  )?.label ?? 'Select...'}
+                  )?.label ?? $_('stepPackSelection.selectOption')}
                 </Select.Trigger>
-                <Select.Content>
+                <Select.Content portalProps={{ disabled: true }}>
                   {#each variable.enumOptions as opt (opt.value)}
                     {#if opt.value}
                       <Select.Item value={opt.value} label={opt.label || opt.value}>

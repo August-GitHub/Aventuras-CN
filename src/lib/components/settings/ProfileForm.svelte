@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import type { ProviderType, TextModel } from '$lib/types'
   import { PROVIDERS, hasDefaultEndpoint } from '$lib/services/ai/sdk/providers'
   import ProviderTypeSelector from './ProviderTypeSelector.svelte'
@@ -142,7 +143,7 @@
     const model = customModelDialogInput.trim()
     if (!model) return
     if (customModels.includes(model) || fetchedModels.find((m) => m.id === model)) {
-      customModelDialogError = `"${model}" is already in the list`
+      customModelDialogError = `"${model}" ${$_('settings.alreadyInList')}`
       return
     }
     customModelDialogError = ''
@@ -165,7 +166,7 @@
 
 <div class="space-y-3">
   <!-- Profile Name -->
-  <Input label="Profile Name" placeholder="e.g., OpenRouter, My Local LLM" bind:value={name} />
+  <Input label={$_('settings.profileName')} placeholder={$_('settings.profileNamePlaceholder')} bind:value={name} />
 
   <!-- Provider Type -->
   <ProviderTypeSelector value={providerType} onchange={handleProviderTypeChange} />
@@ -175,8 +176,7 @@
     <Alert class="border-yellow-500/50 bg-yellow-500/10">
       <AlertCircle class="h-4 w-4 text-yellow-500" />
       <AlertDescription class="text-xs">
-        This provider requires manual model configuration. Go to the <strong>Generation</strong> tab to
-        set models for each service.
+        {$_('settings.thisProviderRequiresManual')}
       </AlertDescription>
     </Alert>
   {/if}
@@ -185,7 +185,7 @@
   {#if providerType === 'openai-compatible'}
     <div class="space-y-2">
       <Label>
-        Base URL <span class="text-muted-foreground">(required)</span>
+        {$_('settings.baseURLRequired')}
       </Label>
       <Input
         placeholder="https://api.example.com/v1"
@@ -204,8 +204,8 @@
             ? 'rotate-90'
             : ''}"
         />
-        Custom Base URL
-        <span class="text-muted-foreground">(optional)</span>
+        {$_('settings.customBaseURL')}
+        <span class="text-muted-foreground">({$_('settings.optionalLabel')})</span>
       </button>
       {#if showBaseUrlCollapsible || baseUrl}
         <Input
@@ -213,14 +213,14 @@
           bind:value={baseUrl}
           class="font-mono text-xs"
         />
-        <p class="text-muted-foreground text-xs">Leave empty for default endpoint.</p>
+        <p class="text-muted-foreground text-xs">{$_('settings.leaveEmptyForDefault')}</p>
       {/if}
     </div>
   {/if}
 
   <!-- API Key -->
   <Input
-    label={isSelfHostedUrl(baseUrl) ? 'API Key (optional)' : 'API Key'}
+    label={isSelfHostedUrl(baseUrl) ? $_('settings.apiKeyOptional') : $_('settings.apiKeyLabel')}
     type="password"
     placeholder="sk-..."
     bind:value={apiKey}
@@ -232,7 +232,7 @@
     <div class="flex items-center justify-between">
       <Label class="flex items-center gap-2">
         <Box class="h-4 w-4" />
-        Models
+        {$_('settings.modelsLabel')}
       </Label>
       <div class="flex gap-2">
         <Button
@@ -244,7 +244,7 @@
           }}
         >
           <Plus class="h-3 w-3" />
-          {isMobileDevice() ? '' : 'Custom'}
+          {isMobileDevice() ? '' : $_('settings.customLabel')}
         </Button>
         <Button
           variant="outline"
@@ -254,10 +254,10 @@
         >
           {#if isFetchingModels}
             <RefreshCw class="h-3 w-3 animate-spin" />
-            Fetching...
+            {$_('settings.fetchingLabel')}
           {:else}
             <RefreshCw class="h-3 w-3" />
-            {isMobileDevice() ? 'Fetch' : 'Fetch Models'}
+            {isMobileDevice() ? $_('settings.fetchLabel') : $_('settings.fetchModelsLabel')}
           {/if}
         </Button>
       </div>
@@ -269,12 +269,11 @@
         <Label
           for="ping-enabled-{providerType}"
           class="cursor-pointer text-xs leading-snug font-normal"
-          title="Pings models to verify which ones respond and how fast. Shows a status icon next to each model and blocks sending if the selected model is unreachable. Consumes one API request per model every 30 minutes."
+          title={$_('settings.testAvailabilityTitle')}
         >
-          <span class="font-medium">Test model availability</span>
+          <span class="font-medium">{$_('settings.testAvailability')}</span>
           <span class="text-muted-foreground block">
-            Pings{providerType === 'openrouter' ? ' :free' : ''} models for latency and status. 1 request/model
-            per 30 min.
+            {$_('settings.pingsModelsForLatency')}
           </span>
         </Label>
       </div>
@@ -290,7 +289,7 @@
     <!-- Model filter (shown when there are enough models) -->
     {#if visibleFetchedModels.length + visibleCustomModels.length > 10}
       <Input
-        placeholder="Filter models..."
+        placeholder={$_('settings.filterModels')}
         bind:value={modelFilterInput}
         leftIcon={Search}
         class="text-xs"
@@ -301,7 +300,7 @@
     {#if visibleFetchedModels.length > 0}
       <div class="space-y-1">
         <p class="text-muted-foreground text-xs font-medium">
-          Fetched Models ({visibleFetchedModels.length})
+          {$_('settings.fetchedModelsLabel')} ({visibleFetchedModels.length})
         </p>
         <ScrollArea class="h-32 w-full rounded-md border">
           <div class="flex flex-wrap gap-1 p-2">
@@ -313,7 +312,7 @@
                     ? 'text-yellow-500'
                     : 'text-muted-foreground'}"
                   onclick={() => onToggleFavorite(model.id)}
-                  title={isFav ? 'Remove from favorites' : 'Add to favorites'}
+                  title={isFav ? $_('settings.removeFromFavorites') : $_('settings.addToFavorites')}
                 >
                   <Star class="h-3 w-3" fill={isFav ? 'currentColor' : 'none'} />
                 </button>
@@ -322,7 +321,7 @@
                   <button
                     class="hover:text-destructive text-muted-foreground p-0 transition-colors"
                     onclick={() => onRemoveFetchedModel(model.id)}
-                    title="Hide model"
+                    title={$_('settings.hideModel')}
                   >
                     <X class="h-3 w-3" />
                   </button>
@@ -338,7 +337,7 @@
     {#if visibleCustomModels.length > 0}
       <div class="space-y-1">
         <p class="text-muted-foreground text-xs font-medium">
-          Custom Models ({visibleCustomModels.length})
+          {$_('settings.customModelsLabel')} ({visibleCustomModels.length})
         </p>
         <ScrollArea class="h-24 w-full rounded-md border">
           <div class="flex flex-wrap gap-1 p-2">
@@ -350,7 +349,7 @@
                     ? 'text-yellow-500'
                     : 'text-muted-foreground'}"
                   onclick={() => onToggleFavorite(model.id)}
-                  title={isFav ? 'Remove from favorites' : 'Add to favorites'}
+                  title={isFav ? $_('settings.removeFromFavorites') : $_('settings.addToFavorites')}
                 >
                   <Star class="h-3 w-3" fill={isFav ? 'currentColor' : 'none'} />
                 </button>
@@ -359,7 +358,7 @@
                   <button
                     class="hover:text-destructive text-muted-foreground p-0 transition-colors"
                     onclick={() => onRemoveCustomModel(model.id)}
-                    title="Delete model"
+                    title={$_('settings.deleteModel')}
                   >
                     <X class="h-3 w-3" />
                   </button>
@@ -381,7 +380,7 @@
           <ChevronRight
             class="h-3 w-3 transition-transform {showHiddenModels ? 'rotate-90' : ''}"
           />
-          Hidden Models ({hiddenModels.length})
+          {$_('settings.hiddenModelsLabel')} ({hiddenModels.length})
         </button>
         {#if showHiddenModels}
           <ScrollArea class="h-24 w-full rounded-md border border-dashed">
@@ -392,7 +391,7 @@
                   <button
                     class="hover:text-primary text-muted-foreground p-0 transition-colors"
                     onclick={() => onRestoreHiddenModel(model.id)}
-                    title="Restore model"
+                    title={$_('settings.restoreModel')}
                   >
                     <RotateCcw class="h-3 w-3" />
                   </button>
@@ -424,14 +423,14 @@
 >
   <Dialog.Content class="sm:max-w-md">
     <Dialog.Header>
-      <Dialog.Title>Add Custom Model</Dialog.Title>
-      <Dialog.Description>Enter the model identifier (e.g., provider/model-name)</Dialog.Description
+      <Dialog.Title>{$_('settings.addCustomModelDialogTitle')}</Dialog.Title>
+      <Dialog.Description>{$_('settings.enterModelIdentifier')}</Dialog.Description
       >
     </Dialog.Header>
     <div class="flex flex-col gap-2 py-4">
       <div class="flex gap-2">
         <Input
-          placeholder="model-name or provider/model"
+          placeholder={$_('settings.modelNamePlaceholder')}
           bind:value={customModelDialogInput}
           class="flex-1"
           onkeydown={(e) => {
@@ -447,9 +446,9 @@
       {/if}
     </div>
     <Dialog.Footer>
-      <Button variant="outline" onclick={() => (showCustomModelDialog = false)}>Cancel</Button>
+      <Button variant="outline" onclick={() => (showCustomModelDialog = false)}>{$_('settings.cancelBtn')}</Button>
       <Button onclick={handleAddCustomModelFromDialog} disabled={!customModelDialogInput.trim()}>
-        Add
+        {$_('settings.addBtn')}
       </Button>
     </Dialog.Footer>
   </Dialog.Content>

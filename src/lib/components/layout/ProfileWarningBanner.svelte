@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { settings } from '$lib/stores/settings.svelte'
   import { ui } from '$lib/stores/ui.svelte'
   import { AlertTriangle, Settings } from 'lucide-svelte'
@@ -14,20 +15,20 @@
   let ctaLabel = $derived(
     healthReason
       ? healthReason === 'auth'
-        ? 'Fix API Key'
-        : 'Change Model'
+        ? $_('settings.fixApiKey')
+        : $_('settings.changeModel')
       : isProfileInvalid
-        ? 'Fix API Profiles'
-        : 'Configure Models',
+        ? $_('settings.fixApiProfiles')
+        : $_('settings.configureModels'),
   )
   let message = $derived(
     healthReason === 'auth'
-      ? 'Authentication failed — use a valid API key or select another model.'
+      ? $_('settings.authFailed')
       : healthReason === 'down'
-        ? 'Selected model is unreachable — change model or wait for recovery.'
+        ? $_('settings.modelUnreachableMessage')
         : isProfileInvalid
-          ? 'Some API profiles need to be reconfigured before you can use AI features.'
-          : 'Some AI services are missing a model. Story generation is blocked until all are configured.',
+          ? $_('settings.someApiProfilesNeedReconfigure')
+          : $_('settings.someServicesMissing'),
   )
 
   function handleFix() {
@@ -55,7 +56,7 @@
     >
       <Settings class="h-4 w-4" />
       <span class="hidden sm:inline">{ctaLabel}</span>
-      <span class="sm:hidden">Fix</span>
+      <span class="sm:hidden">{$_('settings.fix')}</span>
     </Button>
   </div>
 {/if}

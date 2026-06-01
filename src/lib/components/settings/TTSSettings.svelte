@@ -59,11 +59,11 @@
     }
   })
 
-  const providers = [
-    { value: 'openai', label: 'OpenAI Compatible (OpenRouter, OpenAI, Local)' },
-    { value: 'google', label: 'Google Translate' },
-    { value: 'microsoft', label: 'Windows System TTS (Microsoft SAPI)' },
-  ] as const
+  const providers = $derived([
+    { value: 'openai' as const, label: $_('settings.openaiCompatible') },
+    { value: 'google' as const, label: $_('settings.googleTranslate') },
+    { value: 'microsoft' as const, label: $_('settings.windowsSystemTts') },
+  ])
 
   /**
    * Validate TTS settings before preview
@@ -73,17 +73,17 @@
 
     if (tts.provider === 'openai') {
       if (!tts.endpoint || !tts.apiKey) {
-        return 'Endpoint and API key are required'
+        return $_('settings.endpointAndApiKeyRequired')
       }
     } else if (tts.provider === 'microsoft') {
       if (!tts.voice) {
-        return 'Please select a system voice'
+        return $_('settings.pleaseSelectSystemVoice')
       }
       if (typeof window === 'undefined' || !window.speechSynthesis) {
-        return 'Speech Synthesis API is not available in your browser'
+        return $_('settings.speechSynthesisNotAvailable')
       }
       if (systemVoices.length > 0 && !systemVoices.some((v) => v.name === tts.voice)) {
-        return `Voice "${tts.voice}" not found. Please select a different voice.`
+        return $_('settings.voiceNotFound', { values: { voice: tts.voice } })
       }
     }
     return null
@@ -116,7 +116,7 @@
       isPlayingPreview = false
     } catch (error) {
       console.error('[TTSSettings] Preview failed:', error)
-      previewError = error instanceof Error ? error.message : 'Preview failed'
+      previewError = error instanceof Error ? error.message : $_('settings.previewFailed')
       isPlayingPreview = false
       isLoadingPreview = false
     }
@@ -138,8 +138,8 @@
   <!-- Enable TTS Toggle -->
   <div class="flex items-center justify-between">
     <div>
-      <Label>Enable Text-to-Speech</Label>
-      <p class="text-muted-foreground text-xs">Configure text-to-speech settings for narration.</p>
+      <Label>{$_('settings.enableTextToSpeech')}</Label>
+      <p class="text-muted-foreground text-xs">{$_('settings.configureTextToSpeech')}</p>
     </div>
     <Switch
       checked={settings.systemServicesSettings.tts.enabled}
@@ -153,7 +153,7 @@
   {#if settings.systemServicesSettings.tts.enabled}
     <!-- Provider Selection -->
     <div>
-      <Label class="mb-2 block">TTS Provider</Label>
+      <Label class="mb-2 block">{$_('settings.ttsProvider')}</Label>
       <Select.Root
         type="single"
         value={settings.systemServicesSettings.tts.provider}
@@ -192,9 +192,9 @@
       >
         <Select.Trigger class="h-10 w-full">
           {providers.find((p) => p.value === settings.systemServicesSettings.tts.provider)?.label ??
-            'Select provider'}
+            $_('settings.selectProvider')}
         </Select.Trigger>
-        <Select.Content>
+        <Select.Content portalProps={{ disabled: true }}>
           {#each providers as provider (provider.value)}
             <Select.Item value={provider.value} label={provider.label}>
               {provider.label}
@@ -207,7 +207,7 @@
     {#if settings.systemServicesSettings.tts.provider === 'openai'}
       <!-- API Endpoint -->
       <div>
-        <Label class="mb-2 block">API Endpoint</Label>
+        <Label class="mb-2 block">{$_('settings.apiEndpoint')}</Label>
         <Input
           type="text"
           class="w-full"
@@ -222,7 +222,7 @@
 
       <!-- API Key -->
       <div>
-        <Label class="mb-2 block">API Key</Label>
+        <Label class="mb-2 block">{$_('settings.apiKey')}</Label>
         <Input
           type="password"
           class="w-full"
@@ -231,13 +231,13 @@
             settings.systemServicesSettings.tts.apiKey = e.currentTarget.value
             settings.saveSystemServicesSettings()
           }}
-          placeholder="Enter your API key"
+          placeholder={$_('settings.enterApiKey')}
         />
       </div>
 
       <!-- TTS Model -->
       <div>
-        <Label class="mb-2 block">TTS Model</Label>
+        <Label class="mb-2 block">{$_('settings.ttsModel')}</Label>
         <Input
           type="text"
           class="w-full"
@@ -252,7 +252,7 @@
 
       <!-- Voice -->
       <div>
-        <Label class="mb-2 block">Voice</Label>
+        <Label class="mb-2 block">{$_('settings.voice')}</Label>
         <Input
           type="text"
           class="w-full"
@@ -271,15 +271,15 @@
     {:else if settings.systemServicesSettings.tts.provider === 'microsoft'}
       <!-- Windows System Voice Selection -->
       <div>
-        <Label class="mb-2 block">System Voice</Label>
+        <Label class="mb-2 block">{$_('settings.systemVoice')}</Label>
         {#if isLoadingVoices}
           <div class="text-muted-foreground flex items-center gap-2 text-sm">
             <Loader2 class="h-4 w-4 animate-spin" />
-            Loading system voices...
+            {$_('settings.loadingSystemVoices')}
           </div>
         {:else if systemVoices.length === 0}
           <div class="text-muted-foreground text-sm">
-            No system voices found. Make sure you're running on Windows with TTS voices installed.
+            {$_('settings.noSystemVoicesFound')}
           </div>
         {:else}
           <Select.Root
@@ -295,9 +295,9 @@
           >
             <Select.Trigger class="h-10 w-full">
               {systemVoices.find((v) => v.name === settings.systemServicesSettings.tts.voice)
-                ?.name ?? 'Select system voice'}
+                ?.name ?? $_('settings.selectSystemVoice')}
             </Select.Trigger>
-            <Select.Content>
+            <Select.Content portalProps={{ disabled: true }}>
               {#each systemVoices as voice (voice.name)}
                 <Select.Item value={voice.name} label={voice.name}>
                   {voice.name}
@@ -311,7 +311,7 @@
     {:else if settings.systemServicesSettings.tts.provider === 'google'}
       <!-- Language Selection -->
       <div>
-        <Label class="mb-2 block">Language</Label>
+        <Label class="mb-2 block">{$_('settings.language')}</Label>
         <Select.Root
           type="single"
           value={settings.systemServicesSettings.tts.voice}
@@ -326,9 +326,9 @@
           <Select.Trigger class="h-10 w-full">
             {GOOGLE_TRANSLATE_LANGUAGES.find(
               (l) => l.id === settings.systemServicesSettings.tts.voice,
-            )?.name ?? 'Select language'}
+            )?.name ?? $_('settings.selectLanguage')}
           </Select.Trigger>
-          <Select.Content>
+          <Select.Content portalProps={{ disabled: true }}>
             {#each GOOGLE_TRANSLATE_LANGUAGES as lang (lang.id)}
               <Select.Item value={lang.id} label={lang.name}>
                 {lang.name}
@@ -349,13 +349,13 @@
       >
         {#if isLoadingPreview}
           <Loader2 class="mr-2 h-4 w-4 animate-spin" />
-          Loading...
+          {$_('common.loading')}
         {:else if isPlayingPreview}
           <Square class="mr-2 h-4 w-4" />
-          Stop
+          {$_('tts.stopPreview')}
         {:else}
           <Play class="mr-2 h-4 w-4" />
-          Preview Voice
+          {$_('settings.previewVoice')}
         {/if}
       </Button>
       {#if previewError}
@@ -368,7 +368,7 @@
       <div class="flex items-center justify-between">
         <div>
           <Label>{$_('settings.volumeOverride')}</Label>
-          <p class="text-muted-foreground text-xs">Manually control TTS narration volume.</p>
+          <p class="text-muted-foreground text-xs">{$_('settings.manuallyControlVolume')}</p>
         </div>
         <Switch
           checked={settings.systemServicesSettings.tts.volumeOverride}
@@ -382,7 +382,7 @@
       {#if settings.systemServicesSettings.tts.volumeOverride}
         <div>
           <Label class="mb-2 block">
-            Narration Volume: {Math.round(settings.systemServicesSettings.tts.volume * 100)}%
+            {$_('settings.narrationVolume', { values: { value: Math.round(settings.systemServicesSettings.tts.volume * 100) } })}
           </Label>
           <Slider
             value={settings.systemServicesSettings.tts.volume}
@@ -403,7 +403,7 @@
     <!-- Speech Speed -->
     <div>
       <Label class="mb-2 block">
-        Speech Speed: {settings.systemServicesSettings.tts.speed.toFixed(2)}x
+        {$_('settings.speechSpeed', { values: { value: settings.systemServicesSettings.tts.speed.toFixed(2) } })}
       </Label>
       <Slider
         value={settings.systemServicesSettings.tts.speed}
@@ -418,16 +418,16 @@
         class="w-full"
       />
       <p class="text-muted-foreground mt-1 text-xs">
-        Adjust the speed of speech generation (0.25-4.0).
+        {$_('settings.adjustSpeechSpeed')}
       </p>
     </div>
 
     <!-- Auto-Play Toggle -->
     <div class="flex items-center justify-between">
       <div>
-        <Label>Auto-Play Narration</Label>
+        <Label>{$_('settings.autoPlayNarration')}</Label>
         <p class="text-muted-foreground text-xs">
-          Automatically play TTS audio when story is narrated.
+          {$_('settings.automaticallyPlayWhenStory')}
         </p>
       </div>
       <Switch
@@ -441,7 +441,7 @@
 
     <!-- Excluded Characters -->
     <div>
-      <Label class="mb-2 block">Excluded Characters</Label>
+      <Label class="mb-2 block">{$_('settings.excludedCharacters')}</Label>
       <Input
         type="text"
         class="w-full"
@@ -450,9 +450,9 @@
           settings.systemServicesSettings.tts.excludedCharacters = e.currentTarget.value
           settings.saveSystemServicesSettings()
         }}
-        placeholder="Comma-separated characters (e.g., *, #, _, ~)"
+        placeholder={$_('settings.enterExcludedCharacters')}
       />
-      <p class="text-muted-foreground mt-1 text-xs">Characters excluded from TTS narration.</p>
+      <p class="text-muted-foreground mt-1 text-xs">{$_('settings.charactersExcludedFromTts')}</p>
     </div>
     <div class="border-border bg-muted/20 space-y-4 rounded-lg border p-4">
       <!-- Remove HTML tags Toggle -->
@@ -460,7 +460,7 @@
         <div>
           <Label>{$_('settings.removeHtmlTags')}</Label>
           <p class="text-muted-foreground text-xs">
-            Remove HTML tags from narrated text before sending to TTS.
+            {$_('settings.removeHtmlFromNarratedText')}
           </p>
         </div>
         <Switch
@@ -475,7 +475,7 @@
       {#if settings.systemServicesSettings.tts.removeHtmlTags}
         <!-- HTML tags to remove content from -->
         <div>
-          <Label class="mb-2 block">HTML tags to remove content from</Label>
+          <Label class="mb-2 block">{$_('settings.htmlTagsToRemoveContent')}</Label>
           <Input
             type="text"
             class="w-full"
@@ -484,11 +484,11 @@
               settings.systemServicesSettings.tts.htmlTagsToRemoveContent = e.currentTarget.value
               settings.saveSystemServicesSettings()
             }}
-            placeholder="Comma-separated HTML tags (e.g., div, span, font)"
+            placeholder={$_('settings.commaSeparatedHtmlTags')}
             disabled={settings.systemServicesSettings.tts.removeAllHtmlContent}
           />
           <p class="text-muted-foreground mt-1 text-xs">
-            Comma-separated list of HTML tags whose content should be removed before narration.
+            {$_('tts.htmlTagContentDescription')}
           </p>
         </div>
 
@@ -497,7 +497,7 @@
           <div>
             <Label>{$_('settings.removeAllTagContent')}</Label>
             <p class="text-muted-foreground text-xs">
-              Removes content inside any HTML tag before narration.
+              {$_('settings.removesContentInsideTags')}
             </p>
           </div>
           <Switch
@@ -513,7 +513,7 @@
     <!-- Reset Button -->
     <Button variant="outline" size="sm" onclick={resetSettings}>
       <RefreshCw class="mr-1 h-3 w-3" />
-      Reset to Defaults
+      {$_('settings.resetToDefaults')}
     </Button>
   {/if}
 </div>

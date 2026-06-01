@@ -162,7 +162,7 @@
       <Select.Trigger class="h-10 w-full">
         {THEMES.find((t) => t.id === settings.uiSettings.theme)?.label ?? $_('common.select')}
       </Select.Trigger>
-      <Select.Content>
+      <Select.Content class="max-h-60" portalProps={{ disabled: true }}>
         {#each THEMES as theme (theme.id)}
           <Select.Item value={theme.id} label={theme.label}>
             {theme.label}
@@ -188,7 +188,7 @@
           ? $_(fontSizes.find((s) => s.value === settings.uiSettings.fontSize)?.labelKey ?? '')
           : $_('common.select')}
       </Select.Trigger>
-      <Select.Content>
+      <Select.Content class="max-h-60" portalProps={{ disabled: true }}>
         {#each fontSizes as size (size.value)}
           <Select.Item value={size.value} label={$_(size.labelKey)}>
             {$_(size.labelKey)}
@@ -434,7 +434,7 @@
               (l) => l.code === settings.translationSettings.targetLanguage,
             )?.name ?? $_('tts.selectLanguage')}
           </Select.Trigger>
-          <Select.Content class="max-h-60">
+          <Select.Content class="max-h-60" portalProps={{ disabled: true }}>
             {#each getSupportedLanguages() as lang (lang.code)}
               <Select.Item value={lang.code} label={lang.name}>
                 {lang.name}

@@ -834,18 +834,18 @@
   <div class="flex items-center justify-end">
     <Button variant="ghost" size="sm" onclick={() => settings.resetImageGenerationSettings()}>
       <RotateCcw class="mr-1 h-3 w-3" />
-      Reset to Defaults
+      {$_('settings.resetToDefaults')}
     </Button>
   </div>
 
   <Tabs.Root value={activeTab} onValueChange={(v) => (activeTab = v as typeof activeTab)}>
     <Tabs.List class="grid w-full {settings.uiSettings.debugMode ? 'grid-cols-5' : 'grid-cols-4'}">
-      <Tabs.Trigger value="profiles">Profiles</Tabs.Trigger>
-      <Tabs.Trigger value="general">Story Images</Tabs.Trigger>
-      <Tabs.Trigger value="characters">Characters</Tabs.Trigger>
-      <Tabs.Trigger value="backgrounds">Backgrounds</Tabs.Trigger>
+      <Tabs.Trigger value="profiles">{$_('settings.profiles')}</Tabs.Trigger>
+      <Tabs.Trigger value="general">{$_('settings.storyImages')}</Tabs.Trigger>
+      <Tabs.Trigger value="characters">{$_('settings.characters')}</Tabs.Trigger>
+      <Tabs.Trigger value="backgrounds">{$_('settings.backgrounds')}</Tabs.Trigger>
       {#if settings.uiSettings.debugMode}
-        <Tabs.Trigger value="testing">Testing</Tabs.Trigger>
+        <Tabs.Trigger value="testing">{$_('settings.testing')}</Tabs.Trigger>
       {/if}
     </Tabs.List>
 
@@ -1161,7 +1161,7 @@
                 }}
                 itemLabel={(s: { label: string }) => s.label}
                 itemValue={(s: { value: string }) => s.value}
-                placeholder="Select size"
+                placeholder={$_('settings.selectSize')}
               />
             </div>
           {/if}
@@ -1235,13 +1235,13 @@
               }}
               itemLabel={(s: { label: string }) => s.label}
               itemValue={(s: { value: string }) => s.value}
-              placeholder="Select size"
+              placeholder={$_('settings.selectSize')}
             />
           </div>
 
           <div class="space-y-2">
             <Label>
-              Background Blur: {settings.systemServicesSettings.imageGeneration.backgroundBlur}px
+              {$_('settings.backgroundBlur', { values: { value: settings.systemServicesSettings.imageGeneration.backgroundBlur } })}
             </Label>
             <Slider
               type="multiple"
@@ -1357,7 +1357,7 @@
         }}
         itemLabel={(p: { label: string }) => p.label}
         itemValue={(p: { value: string }) => p.value}
-        placeholder="Select provider"
+        placeholder={$_('settings.selectProvider')}
       />
     </div>
 
@@ -1370,7 +1370,7 @@
             <Input
               type={showApiKey ? 'text' : 'password'}
               bind:value={profileApiKey}
-              placeholder="Enter API key"
+              placeholder={$_('settings.enterApiKey')}
             />
             <button
               type="button"
@@ -1394,7 +1394,7 @@
               onclick={() => (showCopyDropdown = !showCopyDropdown)}
             >
               <Copy class="mr-1 h-3 w-3" />
-              Copy from API Profile
+              {$_('settings.copyFromApiProfile')}
             </Button>
             {#if showCopyDropdown}
               <div class="bg-popover absolute z-10 mt-1 w-64 rounded-md border shadow-md">
@@ -1417,8 +1417,8 @@
 
     {#if profileProviderType === 'comfyui' || profileProviderType === 'openai' || profileProviderType === 'zhipu' || profileProviderType === 'a1111'}
       <div class="space-y-2">
-        <Label>Base URL (optional)</Label>
-        <Input bind:value={profileBaseUrl} placeholder="Custom base URL" />
+        <Label>{$_('settings.baseUrlOptional')}</Label>
+        <Input bind:value={profileBaseUrl} placeholder={$_('settings.customBaseUrl')} />
       </div>
     {/if}
 
@@ -1442,12 +1442,11 @@
       />
       {#if referenceProfileImg2ImgWarning}
         <p class="text-warning mt-1 text-xs">
-          This profile is used for reference image generation (img2img), but the selected model does
-          not support img2img.
+          {$_('settings.img2ImgWarning')}
         </p>
       {:else}
         <p class="text-muted-foreground mt-1 text-xs">
-          The image model this profile will use for generation.
+          {$_('settings.imageModelDescription')}
         </p>
       {/if}
     {/snippet}
@@ -1498,7 +1497,7 @@
         </div>
         <div class="col-span-2 space-y-2">
           <Label>{$_('settings.negativePrompt')}</Label>
-          <Textarea bind:value={profileNegativePrompt} placeholder="Negative prompt..." />
+          <Textarea bind:value={profileNegativePrompt} placeholder={$_('settings.negativePromptPlaceholder')} />
         </div>
       </div>
     {/if}
@@ -1514,7 +1513,7 @@
             }}
             itemLabel={(s: { label: string }) => s.label}
             itemValue={(s: { value: string }) => s.value}
-            placeholder="Select mode"
+            placeholder={$_('settings.selectMode')}
           />
         </div>
         {#if profileMode !== ComfyMode.CustomWorkflow}
@@ -1531,7 +1530,7 @@
               }}
               itemLabel={(s: { label: string }) => s.label}
               itemValue={(s: { value: string }) => s.value}
-              placeholder="Select sampler"
+              placeholder={$_('settings.selectSampler')}
             />
           </div>
           <div class="space-y-2">
@@ -1544,40 +1543,40 @@
               }}
               itemLabel={(s: { label: string }) => s.label}
               itemValue={(s: { value: string }) => s.value}
-              placeholder="Select scheduler"
+              placeholder={$_('settings.selectScheduler')}
             />
           </div>
           <div class="space-y-2">
             <Label>{$_('settings.cfg')}</Label>
-            <Input type="number" bind:value={profileCfg} placeholder="Enter CFG" step="0.1" />
+            <Input type="number" bind:value={profileCfg} placeholder={$_('settings.enterCfg')} step="0.1" />
           </div>
           <div class="space-y-2">
             <Label>{$_('settings.steps')}</Label>
-            <Input type="number" bind:value={profileSteps} placeholder="Enter Steps" />
+            <Input type="number" bind:value={profileSteps} placeholder={$_('settings.enterSteps')} />
           </div>
         {/if}
         <div class="col-span-2 space-y-2">
           <Label>{$_('settings.positivePromptBase')}</Label>
-          <Textarea bind:value={profilePositivePrompt} placeholder="Base positive prompt..." />
+          <Textarea bind:value={profilePositivePrompt} placeholder={$_('settings.basePositivePromptPlaceholder')} />
         </div>
         {#if (profileMode !== ComfyMode.CustomWorkflow && profileMode !== ComfyMode.UnetTxt2Img) || profileCustomWorkflow?.negativePromptPath}
           <div class="col-span-2 space-y-2">
             <Label>{$_('settings.negativePrompt')}</Label>
-            <Textarea bind:value={profileNegativePrompt} placeholder="Negative prompt..." />
+            <Textarea bind:value={profileNegativePrompt} placeholder={$_('settings.negativePromptPlaceholder')} />
           </div>
         {/if}
 
         {#if profileMode === ComfyMode.CustomWorkflow}
           <div class="col-span-2 space-y-3 border-t pt-3">
             <div class="flex items-center justify-between">
-              <Label>Custom Workflow (API format)</Label>
+              <Label>{$_('settings.customWorkflow')}</Label>
               {#if profileCustomWorkflow}
                 <button
                   type="button"
                   class="text-muted-foreground hover:text-destructive text-xs underline"
                   onclick={clearCustomWorkflow}
                 >
-                  Clear
+                  {$_('settings.clear')}
                 </button>
               {/if}
             </div>
@@ -1586,7 +1585,7 @@
               <!-- State B: workflow loaded and confirmed -->
               <div class="bg-muted/40 space-y-1 rounded-md border px-3 py-2 text-xs">
                 <p class="text-foreground font-medium">
-                  ✓ {workflowFileName ?? 'Workflow loaded'} ({Object.keys(
+                  ✓ {workflowFileName ?? $_('settings.workflowLoaded')} ({Object.keys(
                     profileCustomWorkflow.workflow,
                   ).length} nodes)
                 </p>
@@ -1604,7 +1603,7 @@
                   </p>
                 {:else}
                   <p class="text-muted-foreground italic">
-                    No negative prompt node detected (ignored).
+                    {$_('settings.noNegativePromptNode')}
                   </p>
                 {/if}
               </div>
@@ -1612,7 +1611,7 @@
               <!-- Picker: multiple CLIPTextEncode positive nodes found -->
               <div class="bg-muted/40 space-y-2 rounded-md border px-3 py-2">
                 <p class="text-muted-foreground text-xs">
-                  Multiple prompt nodes found. Select the one to use as the positive prompt:
+                  {$_('settings.multiplePromptNodesFound')}
                 </p>
                 {#each workflowAmbiguousNodes as node (node.nodeId)}
                   <label
@@ -1641,7 +1640,7 @@
                   </label>
                 {/each}
                 <Button size="sm" class="w-full" onclick={confirmWorkflowPicker}
-                  >Confirm selection</Button
+                  >{$_('settings.confirmSelection')}</Button
                 >
               </div>
             {:else}
@@ -1650,7 +1649,7 @@
                 <summary
                   class="text-muted-foreground hover:text-foreground mb-2 cursor-pointer list-none select-none"
                 >
-                  <span class="underline underline-offset-2">How to get the workflow file ›</span>
+                  <span class="underline underline-offset-2">{$_('settings.howToGetWorkflowFile')}</span>
                 </summary>
                 <ol class="text-muted-foreground mt-1 space-y-1.5 pl-1">
                   <li>
@@ -1694,7 +1693,7 @@
                   class="hidden"
                   onchange={handleWorkflowFileInput}
                 />
-                <span class="text-muted-foreground">Upload workflow JSON (API format)</span>
+                <span class="text-muted-foreground">{$_('settings.uploadWorkflowJson')}</span>
               </label>
             {/if}
 
@@ -1718,10 +1717,10 @@
               }}
               itemLabel={(s: { label: string }) => s.label}
               itemValue={(s: { value: string }) => s.value}
-              placeholder="Select LoRA..."
+              placeholder={$_('settings.selectLora')}
             />
             <p class="text-muted-foreground text-xs">
-              Select a LoRA to apply style or character details.
+              {$_('settings.selectLoraToApply')}
             </p>
           </div>
 
@@ -1731,7 +1730,7 @@
               <Input
                 type="number"
                 bind:value={profileLoraStrengthModel}
-                placeholder="Model Strength"
+                placeholder={$_('settings.modelStrength')}
                 step="0.05"
               />
             </div>
@@ -1740,7 +1739,7 @@
               <Input
                 type="number"
                 bind:value={profileLoraStrengthClip}
-                placeholder="CLIP Strength"
+                placeholder={$_('settings.clipStrength')}
                 step="0.05"
               />
             </div>
@@ -1758,7 +1757,7 @@
                 disabled={isLoadingUnetModels}
                 onclick={loadUnetModels}
               >
-                {isLoadingUnetModels ? 'Loading…' : '↻ Refresh'}
+                {isLoadingUnetModels ? $_('settings.loading') : $_('settings.refresh')}
               </button>
             </div>
             <Autocomplete
@@ -1777,10 +1776,10 @@
               }}
               itemLabel={(s: { label: string }) => s.label}
               itemValue={(s: { value: string }) => s.value}
-              placeholder="Auto-detect first available"
+              placeholder={$_('settings.autoDetectFirstAvailable')}
             />
             <p class="text-muted-foreground text-xs">
-              Leave empty to auto-detect the first text encoder found in ComfyUI.
+              {$_('settings.autoDetectFirstAvailable')}
             </p>
           </div>
 
@@ -1802,10 +1801,10 @@
               }}
               itemLabel={(s: { label: string }) => s.label}
               itemValue={(s: { value: string }) => s.value}
-              placeholder="Auto-detect first available"
+              placeholder={$_('settings.autoDetectFirstAvailable')}
             />
             <p class="text-muted-foreground text-xs">
-              Leave empty to auto-detect the first VAE found in ComfyUI.
+              {$_('settings.autoDetectFirstVae')}
             </p>
           </div>
 
@@ -1819,7 +1818,7 @@
               }}
               itemLabel={(s: { label: string }) => s.label}
               itemValue={(s: { value: string }) => s.value}
-              placeholder="Select CLIP type"
+              placeholder={$_('settings.selectCLIPType')}
             />
           </div>
 
@@ -1833,7 +1832,7 @@
               }}
               itemLabel={(s: { label: string }) => s.label}
               itemValue={(s: { value: string }) => s.value}
-              placeholder="Select dtype"
+              placeholder={$_('settings.selectDtype')}
             />
           </div>
         </div>

@@ -26,6 +26,7 @@
     itemSnippet?: Snippet<[T, number]>
     triggerSnippet?: Snippet
     disabled?: boolean
+    portalProps?: Record<string, unknown>
   }
 
   let {
@@ -46,6 +47,7 @@
     itemSnippet,
     triggerSnippet,
     disabled = false,
+    portalProps = { disabled: true },
   }: Props = $props()
 
   let open = $state(false)
@@ -176,7 +178,7 @@
       </Button>
     {/snippet}
   </Popover.Trigger>
-  <Popover.Content class="w-[var(--bits-popover-anchor-width)] p-0">
+  <Popover.Content class="w-[var(--bits-popover-anchor-width)] p-0" {...portalProps}>
     <Command.Root shouldFilter={false} filter={() => 1}>
       <Command.Input bind:value={inputValue} placeholder={searchPlaceholder} />
       <Command.List class={virtualized ? 'overflow-hidden' : ''}>
