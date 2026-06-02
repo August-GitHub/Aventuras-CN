@@ -375,9 +375,11 @@ class DatabaseService {
         memory_config,
         retry_state,
         style_review_state,
-        time_tracker
+        time_tracker,
+        current_branch_id,
+        current_background_image
       )
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         story.id,
         story.title,
@@ -392,6 +394,8 @@ class DatabaseService {
         story.retryState ? JSON.stringify(story.retryState) : null,
         story.styleReviewState ? JSON.stringify(story.styleReviewState) : null,
         story.timeTracker ? JSON.stringify(story.timeTracker) : null,
+        story.currentBranchId ?? null,
+        story.currentBackgroundImage ?? null,
       ],
     )
     return { ...story, createdAt: now, updatedAt: now }
@@ -625,9 +629,55 @@ class DatabaseService {
     return results.map(this.mapStoryEntry).reverse()
   }
 
-  async addStoryEntry(entry: Omit<StoryEntry, 'createdAt'>): Promise<StoryEntry> {
+  /**
+   * Add a story entry. If `position` is not provided, it is computed
+   * atomically (MAX(position)+1) inside the same INSERT to prevent race
+   * conditions when two entries are added concurrently.
+   */
+  async addStoryEntry(entry: Omit<StoryEntry, 'createdAt'> & { position?: number }): Promise<StoryEntry> {
     const db = await this.getDb()
     const now = Date.now()
+
+    if (entry.position === undefined || entry.position === null) {
+      // Atomic auto-position: compute position inside INSERT via subquery.
+      // Two variants needed because SQLite NULL = NULL is FALSE.
+      const branchIsNull = entry.branchId === null || entry.branchId === undefined
+      const positionSubquery = branchIsNull
+        ? '(SELECT IFNULL(MAX(position), -1) + 1 FROM story_entries WHERE story_id = ? AND branch_id IS NULL)'
+        : '(SELECT IFNULL(MAX(position), -1) + 1 FROM story_entries WHERE story_id = ? AND branch_id = ?)'
+
+      await db.execute(
+        `INSERT INTO story_entries (id, story_id, type, content, parent_id, position, created_at, metadata, branch_id, reasoning, translated_content, translation_language, original_input, world_state_delta, suggested_actions)
+         VALUES (?, ?, ?, ?, ?, ${positionSubquery}, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          entry.id,
+          entry.storyId,
+          entry.type,
+          entry.content,
+          entry.parentId,
+          entry.storyId,
+          ...(branchIsNull ? [] : [entry.branchId]),
+          now,
+          entry.metadata ? JSON.stringify(entry.metadata) : null,
+          entry.branchId || null,
+          entry.reasoning || null,
+          entry.translatedContent || null,
+          entry.translationLanguage || null,
+          entry.originalInput || null,
+          entry.worldStateDelta ? JSON.stringify(entry.worldStateDelta) : null,
+          entry.suggestedActions || null,
+        ],
+      )
+
+      // Read back the auto-assigned position
+      const result = await db.select<{ position: number }[]>(
+        'SELECT position FROM story_entries WHERE id = ?',
+        [entry.id],
+      )
+      return { ...entry, position: result[0]?.position ?? 0, createdAt: now }
+    }
+
+    // Explicit position provided (restore / bulk-import path) — insert directly
     await db.execute(
       `INSERT INTO story_entries (id, story_id, type, content, parent_id, position, created_at, metadata, branch_id, reasoning, translated_content, translation_language, original_input, world_state_delta, suggested_actions)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,

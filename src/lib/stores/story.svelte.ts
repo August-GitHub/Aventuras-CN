@@ -598,6 +598,9 @@ class StoryStore {
 
     this.allStories = [storyData, ...this.allStories]
 
+    // Force WAL checkpoint to guard against Android process-kill data loss
+    await database.checkpoint()
+
     // Emit event
     eventBus.emit<StoryCreatedEvent>({ type: 'StoryCreated', storyId: storyData.id, mode })
 
@@ -697,17 +700,14 @@ class StoryStore {
       : { years: 0, days: 0, hours: 0, minutes: 0 }
     const timeEnd = { ...timeStart }
 
-    const position = await database.getNextEntryPosition(
-      this.currentStory.id,
-      this.currentStory.currentBranchId,
-    )
+    // Position is auto-computed atomically inside addStoryEntry (MAX(position)+1)
+    // to prevent race conditions when two entries are added concurrently.
     const entry = await database.addStoryEntry({
       id: id ?? crypto.randomUUID(),
       storyId: this.currentStory.id,
       type,
       content,
       parentId: null,
-      position,
       metadata: { ...metadata, tokenCount, timeStart, timeEnd },
       branchId: this.currentStory.currentBranchId,
       reasoning,
@@ -721,6 +721,9 @@ class StoryStore {
 
     // Update story's updatedAt
     await database.updateStory(this.currentStory.id, {})
+
+    // Force WAL checkpoint — entry must survive Android process kill
+    await database.checkpoint()
 
     return entry
   }
@@ -764,6 +767,9 @@ class StoryStore {
 
     // Update story's updatedAt
     await database.updateStory(this.currentStory.id, {})
+
+    // Force WAL checkpoint — edited content must survive Android process kill
+    await database.checkpoint()
   }
 
   /**
@@ -875,6 +881,9 @@ class StoryStore {
         this.currentStory = { ...this.currentStory, timeTracker: freshStory.timeTracker }
       }
 
+      // Force WAL checkpoint — cascade delete must survive Android process kill
+      await database.checkpoint()
+
       this.postDeleteCleanup()
 
       return
@@ -890,6 +899,9 @@ class StoryStore {
 
     // Update story's updatedAt
     await database.updateStory(this.currentStory.id, {})
+
+    // Force WAL checkpoint — deleted content must not reappear after process kill
+    await database.checkpoint()
 
     this.postDeleteCleanup()
   }
@@ -1126,6 +1138,9 @@ class StoryStore {
 
     // Update story's updatedAt
     await database.updateStory(this.currentStory.id, {})
+
+    // Force WAL checkpoint — batch delete must survive Android process kill
+    await database.checkpoint()
 
     // Restore suggested actions from the new last narration entry
     this.restoreSuggestedActionsAfterDelete()
@@ -2761,6 +2776,9 @@ class StoryStore {
           result.entryUpdates.newStoryBeats.length + result.entryUpdates.storyBeatUpdates.length,
       })
     }
+
+    // Force WAL checkpoint — classification may update dozens of entities atomically
+    await database.checkpoint()
   }
 
   // Clear current story (when switching or closing)
@@ -4086,6 +4104,9 @@ class StoryStore {
     await database.deleteStory(storyId)
     this.allStories = this.allStories.filter((s) => s.id !== storyId)
 
+    // Force WAL checkpoint so story is truly gone from disk
+    await database.checkpoint()
+
     if (this.currentStory?.id === storyId) {
       this.clearCurrentStory()
     }
@@ -4341,6 +4362,9 @@ class StoryStore {
 
     // Emit event
     eventBus.emit<StoryCreatedEvent>({ type: 'StoryCreated', storyId, mode: data.mode })
+
+    // Force WAL checkpoint after wizard creates story + entries + characters + lorebook
+    await database.checkpoint()
 
     log('Story created from wizard:', storyId)
     return storyData

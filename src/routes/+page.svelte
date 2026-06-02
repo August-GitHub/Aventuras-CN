@@ -74,17 +74,27 @@
 
   // Force a SQLite WAL checkpoint when the page is being unloaded or hidden.
   // This is critical on Android where swiping an app away kills the process
-  // immediately — without this, pending WAL writes are lost and all settings
-  // revert to defaults on next launch.
-  function handleBeforeUnload(): void {
+  // immediately — without this, pending WAL writes are lost.
+  //
+  // Strategy (defense-in-depth):
+  //   1. Every mutation in story.svelte.ts already calls checkpoint() after write.
+  //   2. This visibilitychange/pagehide listener acts as a safety net — if any
+  //      code path missed a checkpoint, switching away from the app flushes WAL to disk.
+  function handleCheckpoint(): void {
     database.checkpoint().catch(() => {})
   }
-  // pagehide fires for tab close, navigation, and Android app background/kill.
-  // visibilitychange alone does NOT fire when Android kills a process,
-  // but pagehide fires synchronously during teardown in most cases.
+  // pagehide fires during tab close / navigation / app background-kill.
+  // visibilitychange → hidden covers switching away from the app on Android,
+  //   which is the most common "psuedo-kill" scenario (Android may keep the
+  //   WebView alive but suspend JS execution).
   if (typeof window !== 'undefined') {
-    window.addEventListener('pagehide', handleBeforeUnload)
-    window.addEventListener('beforeunload', handleBeforeUnload)
+    window.addEventListener('pagehide', handleCheckpoint)
+    window.addEventListener('beforeunload', handleCheckpoint)
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        handleCheckpoint()
+      }
+    })
   }
 
   async function handleProviderSetupComplete() {
