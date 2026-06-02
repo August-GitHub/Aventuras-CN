@@ -50,6 +50,8 @@
   let nsfwMode = $state<NsfwMode>(loadNsfwMode())
   let hasInitialSearched = $state(false)
   let selectedCard = $state<DiscoveryCard | null>(null)
+  let resultsScrollContainer = $state<HTMLElement | null>(null)
+  let savedScrollTop = $state(0)
 
   let importedUrls = $derived.by(() => {
     const urls = new SvelteSet<string>()
@@ -249,8 +251,22 @@
   }
 
   function handleViewDetails(card: DiscoveryCard) {
+    if (resultsScrollContainer) {
+      savedScrollTop = resultsScrollContainer.scrollTop
+    }
     selectedCard = card
   }
+
+  // Restore scroll position when returning to the list view
+  $effect(() => {
+    if (!selectedCard && resultsScrollContainer && savedScrollTop > 0) {
+      requestAnimationFrame(() => {
+        if (resultsScrollContainer) {
+          resultsScrollContainer.scrollTop = savedScrollTop
+        }
+      })
+    }
+  })
 </script>
 
 <ResponsiveModal.Root open={isOpen} onOpenChange={(v) => !v && onClose()}>
@@ -538,7 +554,7 @@
         </div>
       </div>
 
-      <div class="bg-muted/5 flex-1 overflow-y-auto p-4">
+      <div class="bg-muted/5 flex-1 overflow-y-auto p-4" bind:this={resultsScrollContainer}>
         {#if errorMessage}
           <div
             class="border-destructive/50 bg-destructive/10 text-destructive mb-4 rounded-lg border px-4 py-3 text-sm"

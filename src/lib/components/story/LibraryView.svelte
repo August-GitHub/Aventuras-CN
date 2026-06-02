@@ -4,9 +4,10 @@
   import { ui } from '$lib/stores/ui.svelte'
   import { exportService } from '$lib/services/export'
   import { ask } from '@tauri-apps/plugin-dialog'
-  import { BookOpen, Upload, RefreshCw, Archive, Plus, MessageSquareShare } from 'lucide-svelte'
+  import { BookOpen, Upload, RefreshCw, Archive, Plus, MessageSquareShare, X } from 'lucide-svelte'
   import SetupWizard from '../wizard/SetupWizard.svelte'
   import STImportWizard from '../wizard/STImportWizard.svelte'
+  import { WizardStore, type WizardDraft } from '$lib/stores/wizard/wizard.svelte'
 
   import { Button } from '$lib/components/ui/button'
   import EmptyState from '$lib/components/ui/empty-state/empty-state.svelte'
@@ -17,17 +18,52 @@
 
   let showSetupWizard = $state(false)
   let setupWizardKey = $state(0)
+  let wizardDraft = $state<WizardDraft | null>(null)
   let showSTImportWizard = $state(false)
   let stImportWizardKey = $state(0)
+  let showDraftDialog = $state(false)
+  let pendingDraft = $state<WizardDraft | null>(null)
 
   // Load stories on mount
   $effect(() => {
     story.loadAllStories()
   })
 
-  function openSetupWizard() {
+  async function openSetupWizard() {
+    // Check for existing draft
+    const existingDraft = await WizardStore.loadDraft()
+    if (existingDraft) {
+      pendingDraft = existingDraft
+      showDraftDialog = true
+      return
+    }
+    startSetupWizard(null)
+  }
+
+  function startSetupWizard(draft: WizardDraft | null) {
+    wizardDraft = draft
     setupWizardKey += 1
     showSetupWizard = true
+  }
+
+  async function resumeDraft() {
+    showDraftDialog = false
+    if (pendingDraft) {
+      startSetupWizard(pendingDraft)
+      pendingDraft = null
+    }
+  }
+
+  async function startFresh() {
+    showDraftDialog = false
+    pendingDraft = null
+    await WizardStore.deleteDraft()
+    startSetupWizard(null)
+  }
+
+  function dismissDraftDialog() {
+    showDraftDialog = false
+    pendingDraft = null
   }
 
   function openSTImportWizard() {
@@ -178,7 +214,7 @@
 <!-- Setup Wizard -->
 {#if showSetupWizard}
   {#key setupWizardKey}
-    <SetupWizard onClose={() => (showSetupWizard = false)} />
+    <SetupWizard onClose={() => (showSetupWizard = false)} draft={wizardDraft} />
   {/key}
 {/if}
 
@@ -187,4 +223,32 @@
   {#key stImportWizardKey}
     <STImportWizard onClose={() => (showSTImportWizard = false)} />
   {/key}
+{/if}
+
+<!-- Draft Recovery Dialog -->
+{#if showDraftDialog}
+  <div class="bg-background/80 fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-card border-border w-full max-w-md rounded-xl border p-6 shadow-xl">
+      <div class="mb-4 flex items-start justify-between">
+        <h3 class="text-foreground text-lg font-semibold">{$_('wizard.draftFoundTitle')}</h3>
+        <button
+          class="text-muted-foreground hover:text-foreground rounded-md p-1 transition-colors"
+          onclick={dismissDraftDialog}
+        >
+          <X class="h-5 w-5" />
+        </button>
+      </div>
+      <p class="text-muted-foreground mb-6 text-sm">
+        {$_('wizard.draftFoundDescription')}
+      </p>
+      <div class="flex justify-end gap-3">
+        <Button variant="outline" onclick={startFresh}>
+          {$_('wizard.draftStartFresh')}
+        </Button>
+        <Button variant="default" onclick={resumeDraft}>
+          {$_('wizard.draftResume')}
+        </Button>
+      </div>
+    </div>
+  </div>
 {/if}

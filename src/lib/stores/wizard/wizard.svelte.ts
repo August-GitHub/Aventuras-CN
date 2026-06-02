@@ -5,12 +5,14 @@ import { aiService } from '$lib/services/ai'
 import {
   type ExpandedSetting,
   type GeneratedCharacter,
+  type GeneratedProtagonist,
+  type GeneratedOpening,
 } from '$lib/services/ai/sdk/schemas/scenario'
 import { scenarioService, type WizardData } from '$lib/services/ai/wizard/ScenarioService'
 import { TranslationService } from '$lib/services/ai/utils/TranslationService'
 import { QUICK_START_SEEDS } from '$lib/services/templates'
 import { replaceUserPlaceholders } from '$lib/components/wizard/wizardTypes'
-import type { VaultScenario } from '$lib/types'
+import type { VaultScenario, StoryMode, POV } from '$lib/types'
 import { lorebookVault } from '$lib/stores/lorebookVault.svelte'
 import { stringToDescriptors } from '$lib/utils/visualDescriptors'
 import { packService } from '$lib/services/packs/pack-service'
@@ -23,6 +25,56 @@ import { SettingStore } from './settingStore.svelte'
 import { CharacterStore } from './characterStore.svelte'
 import { ImageStore } from './imageStore.svelte'
 import { SvelteSet } from 'svelte/reactivity'
+
+export interface WizardDraft {
+  currentStep: number
+  selectedPackId: string
+  customVariableValues: Record<string, string>
+  narrative: {
+    selectedMode: StoryMode
+    selectedGenre: string
+    customGenre: string
+    selectedPOV: POV
+    selectedTense: string
+    tone: string
+    visualProseMode: boolean
+    imageGenerationMode: string
+    backgroundImagesEnabled: boolean
+    referenceMode: boolean
+    storyTitle: string
+    openingGuidance: string
+    manualOpeningText: string
+    generatedOpening: GeneratedOpening | null
+    lorebookVaultIds: string[]
+  }
+  setting: {
+    settingSeed: string
+    expandedSetting: ExpandedSetting | null
+    selectedScenarioId: string | null
+  }
+  character: {
+    protagonist: GeneratedProtagonist | null
+    manualCharacterName: string
+    manualCharacterDescription: string
+    manualCharacterBackground: string
+    manualCharacterMotivation: string
+    manualCharacterTraits: string
+    showManualInput: boolean
+    supportingCharacters: GeneratedCharacter[]
+    cardImportedTitle: string | null
+    cardImportedFirstMessage: string | null
+    cardImportedAlternateGreetings: string[]
+    selectedGreetingIndex: number
+    importedCardNpcs: GeneratedCharacter[]
+    importedSettingSeed: string | null
+  }
+  image: {
+    protagonistVisualDescriptors: string
+    supportingCharacterVisualDescriptors: Record<string, string>
+  }
+}
+
+const WIZARD_DRAFT_KEY = 'wizard_draft'
 
 export class WizardStore {
   // Sub-stores
@@ -126,6 +178,173 @@ export class WizardStore {
       if (v.variableType === 'boolean') return true
       return val !== undefined && val !== ''
     })
+  }
+
+  // Serialization for draft persistence
+  serialize(): WizardDraft {
+    return {
+      currentStep: this.currentStep,
+      selectedPackId: this.selectedPackId,
+      customVariableValues: { ...this.customVariableValues },
+      narrative: {
+        selectedMode: this.narrative.selectedMode,
+        selectedGenre: this.narrative.selectedGenre,
+        customGenre: this.narrative.customGenre,
+        selectedPOV: this.narrative.selectedPOV,
+        selectedTense: this.narrative.selectedTense,
+        tone: this.narrative.tone,
+        visualProseMode: this.narrative.visualProseMode,
+        imageGenerationMode: this.narrative.imageGenerationMode,
+        backgroundImagesEnabled: this.narrative.backgroundImagesEnabled,
+        referenceMode: this.narrative.referenceMode,
+        storyTitle: this.narrative.storyTitle,
+        openingGuidance: this.narrative.openingGuidance,
+        manualOpeningText: this.narrative.manualOpeningText,
+        generatedOpening: this.narrative.generatedOpening
+          ? { ...this.narrative.generatedOpening }
+          : null,
+        lorebookVaultIds: this.narrative.importedLorebooks
+          .map((lb) => lb.vaultId)
+          .filter((id): id is string => !!id),
+      },
+      setting: {
+        settingSeed: this.setting.settingSeed,
+        expandedSetting: this.setting.expandedSetting
+          ? { ...this.setting.expandedSetting }
+          : null,
+        selectedScenarioId: this.setting.selectedScenarioId,
+      },
+      character: {
+        protagonist: this.character.protagonist
+          ? { ...this.character.protagonist }
+          : null,
+        manualCharacterName: this.character.manualCharacterName,
+        manualCharacterDescription: this.character.manualCharacterDescription,
+        manualCharacterBackground: this.character.manualCharacterBackground,
+        manualCharacterMotivation: this.character.manualCharacterMotivation,
+        manualCharacterTraits: this.character.manualCharacterTraits,
+        showManualInput: this.character.showManualInput,
+        supportingCharacters: this.character.supportingCharacters.map((c) => ({ ...c })),
+        cardImportedTitle: this.character.cardImportedTitle,
+        cardImportedFirstMessage: this.character.cardImportedFirstMessage,
+        cardImportedAlternateGreetings: [...this.character.cardImportedAlternateGreetings],
+        selectedGreetingIndex: this.character.selectedGreetingIndex,
+        importedCardNpcs: this.character.importedCardNpcs.map((c) => ({ ...c })),
+        importedSettingSeed: this.character.importedSettingSeed,
+      },
+      image: {
+        protagonistVisualDescriptors: this.image.protagonistVisualDescriptors,
+        supportingCharacterVisualDescriptors: {
+          ...this.image.supportingCharacterVisualDescriptors,
+        },
+      },
+    }
+  }
+
+  async saveDraft() {
+    try {
+      const draft = this.serialize()
+      await database.setSetting(WIZARD_DRAFT_KEY, JSON.stringify(draft))
+    } catch (e) {
+      console.error('[Wizard] Failed to save draft:', e)
+    }
+  }
+
+  static async hasDraft(): Promise<boolean> {
+    try {
+      const data = await database.getSetting(WIZARD_DRAFT_KEY)
+      return !!data
+    } catch {
+      return false
+    }
+  }
+
+  static async loadDraft(): Promise<WizardDraft | null> {
+    try {
+      const data = await database.getSetting(WIZARD_DRAFT_KEY)
+      if (!data) return null
+      return JSON.parse(data) as WizardDraft
+    } catch (e) {
+      console.error('[Wizard] Failed to load draft:', e)
+      return null
+    }
+  }
+
+  static async deleteDraft() {
+    try {
+      await database.deleteSetting(WIZARD_DRAFT_KEY)
+    } catch (e) {
+      console.error('[Wizard] Failed to delete draft:', e)
+    }
+  }
+
+  async restoreFromDraft(draft: WizardDraft) {
+    // Restore wizard state
+    this.currentStep = draft.currentStep
+    this.selectedPackId = draft.selectedPackId
+    this.customVariableValues = { ...draft.customVariableValues }
+
+    // Restore narrative state
+    this.narrative.selectedMode = draft.narrative.selectedMode
+    this.narrative.selectedGenre = draft.narrative.selectedGenre as any
+    this.narrative.customGenre = draft.narrative.customGenre
+    this.narrative.selectedPOV = draft.narrative.selectedPOV
+    this.narrative.selectedTense = draft.narrative.selectedTense as any
+    this.narrative.tone = draft.narrative.tone
+    this.narrative.visualProseMode = draft.narrative.visualProseMode
+    this.narrative.imageGenerationMode = draft.narrative.imageGenerationMode as any
+    this.narrative.backgroundImagesEnabled = draft.narrative.backgroundImagesEnabled
+    this.narrative.referenceMode = draft.narrative.referenceMode
+    this.narrative.storyTitle = draft.narrative.storyTitle
+    this.narrative.openingGuidance = draft.narrative.openingGuidance
+    this.narrative.manualOpeningText = draft.narrative.manualOpeningText
+    this.narrative.generatedOpening = draft.narrative.generatedOpening
+
+    // Restore lorebooks from vault IDs
+    if (draft.narrative.lorebookVaultIds.length > 0) {
+      for (const vaultId of draft.narrative.lorebookVaultIds) {
+        const lorebook = lorebookVault.getById(vaultId)
+        if (lorebook) {
+          const alreadyAdded = this.narrative.importedLorebooks.some(
+            (lb) => lb.vaultId === vaultId,
+          )
+          if (!alreadyAdded) {
+            this.narrative.addLorebookFromVault(lorebook)
+          }
+        }
+      }
+    }
+
+    // Restore setting state
+    this.setting.settingSeed = draft.setting.settingSeed
+    this.setting.expandedSetting = draft.setting.expandedSetting
+    this.setting.selectedScenarioId = draft.setting.selectedScenarioId
+
+    // Restore character state
+    this.character.protagonist = draft.character.protagonist
+    this.character.manualCharacterName = draft.character.manualCharacterName
+    this.character.manualCharacterDescription = draft.character.manualCharacterDescription
+    this.character.manualCharacterBackground = draft.character.manualCharacterBackground
+    this.character.manualCharacterMotivation = draft.character.manualCharacterMotivation
+    this.character.manualCharacterTraits = draft.character.manualCharacterTraits
+    this.character.showManualInput = draft.character.showManualInput
+    this.character.supportingCharacters = draft.character.supportingCharacters
+    this.character.cardImportedTitle = draft.character.cardImportedTitle
+    this.character.cardImportedFirstMessage = draft.character.cardImportedFirstMessage
+    this.character.cardImportedAlternateGreetings = draft.character.cardImportedAlternateGreetings
+    this.character.selectedGreetingIndex = draft.character.selectedGreetingIndex
+    this.character.importedCardNpcs = draft.character.importedCardNpcs
+    this.character.importedSettingSeed = draft.character.importedSettingSeed
+
+    // Restore image state (descriptors only, no portraits)
+    this.image.protagonistVisualDescriptors = draft.image.protagonistVisualDescriptors
+    this.image.supportingCharacterVisualDescriptors = {
+      ...draft.image.supportingCharacterVisualDescriptors,
+    }
+
+    // Load pack variables
+    await this.loadPacks()
+    await this.loadPackVariables(this.selectedPackId)
   }
 
   // Orchestrations
@@ -580,6 +799,7 @@ export class WizardStore {
 
     await story.loadStory(newStory.id)
     ui.setActivePanel('story')
+    await WizardStore.deleteDraft()
     this.onClose()
   }
 }

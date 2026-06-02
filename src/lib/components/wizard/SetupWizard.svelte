@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { WizardStore } from '$lib/stores/wizard/wizard.svelte'
+  import { WizardStore, type WizardDraft } from '$lib/stores/wizard/wizard.svelte'
   import { _ } from 'svelte-i18n'
   import * as ResponsiveModal from '$lib/components/ui/responsive-modal'
   import { Button } from '$lib/components/ui/button'
@@ -25,12 +25,22 @@
 
   interface Props {
     onClose: () => void
+    draft?: WizardDraft | null
   }
 
-  let { onClose }: Props = $props()
+  let { onClose, draft = null }: Props = $props()
 
   // Initialize Wizard Store
   const wizard = new WizardStore(() => onClose())
+
+  // Restore from draft if provided
+  let draftRestored = $state(false)
+  $effect(() => {
+    if (draft && !draftRestored) {
+      draftRestored = true
+      wizard.restoreFromDraft(draft)
+    }
+  })
 
   // Auto-link embedded lorebook when selecting a vault character
   function autoLinkCharacterLorebook(char: VaultCharacter, isProtagonist = false) {
@@ -76,6 +86,23 @@
   $effect(() => {
     if (wizard.currentStep === 2) {
       wizard.loadPacks()
+    }
+  })
+
+  // Auto-save draft on step change
+  $effect(() => {
+    const _step = wizard.currentStep
+    if (_step >= 1) {
+      wizard.saveDraft()
+    }
+  })
+
+  // Clean up draft when component is destroyed (modal closed)
+  $effect(() => {
+    return () => {
+      // Only clean up if the wizard hasn't created a story (draft still exists)
+      // We'll let createStory() handle its own cleanup
+      wizard.saveDraft().catch(() => {})
     }
   })
 </script>
